@@ -29,6 +29,7 @@ import { Button } from '@/components/ui/button';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: <Home /> },
+  { href: '/dashboard/employees', label: 'Colaboradores', icon: <Users /> },
   { href: '/dashboard/production', label: 'Produção', icon: <Factory /> },
   { href: '/dashboard/inventory', label: 'Estoque', icon: <Boxes /> },
   { href: '/dashboard/performance', label: 'Desempenho', icon: <CheckCircle /> },
