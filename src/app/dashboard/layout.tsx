@@ -11,16 +11,16 @@ import {
   SidebarInset,
 } from '@/components/ui/sidebar';
 import {
-  BarChart,
   Home,
   Users,
   Clock,
-  Settings,
   Puzzle,
   LogOut,
   Boxes,
   Factory,
   CheckCircle,
+  FileText,
+  Bell,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -34,6 +34,8 @@ const menuItems = [
   { href: '/dashboard/inventory', label: 'Estoque', icon: <Boxes /> },
   { href: '/dashboard/performance', label: 'Desempenho', icon: <CheckCircle /> },
   { href: '/dashboard/attendance', label: 'Ponto', icon: <Clock /> },
+  { href: '/dashboard/documents', label: 'Documentos', icon: <FileText /> },
+  { href: '/dashboard/notices', label: 'Avisos', icon: <Bell /> },
   { href: '/dashboard/integration', label: 'Integração', icon: <Puzzle /> },
 ];
 
