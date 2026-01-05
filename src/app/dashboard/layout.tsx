@@ -110,6 +110,7 @@ const StatusServicosPage = lazy(() => import('./pages/status-servicos/page'));
 const GestaoPessoasPage = lazy(() => import('./pages/gestao-pessoas/page'));
 const GestaoFinanceiraPage = lazy(() => import('./pages/gestao-financeira/page'));
 const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
+const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/page'));
 
 
 const topBarIcons = [
@@ -134,11 +135,11 @@ const navMenuItems = [
 ];
 
 const navRightIcons = [
-    { icon: <ChevronUp size={16} /> },
-    { icon: <Globe size={16} /> },
-    { icon: <FileText size={16} /> },
-    { icon: <ChevronDown size={16} /> },
-    { icon: <HelpCircle size={16} /> },
+    { id: 'chevron-up', icon: <ChevronUp size={16} /> },
+    { id: 'atualizacao-sistema', icon: <Globe size={16} /> },
+    { id: 'file-text', icon: <FileText size={16} /> },
+    { id: 'chevron-down', icon: <ChevronDown size={16} /> },
+    { id: 'help-circle', icon: <HelpCircle size={16} /> },
 ];
 
 const toolbarItems = [
@@ -255,6 +256,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'gestao-pessoas': GestaoPessoasPage,
   'gestao-financeira': GestaoFinanceiraPage,
   'gestao-producao': GestaoProducaoPage,
+  'atualizacao-sistema': AtualizacaoSistemaPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -343,6 +345,17 @@ export default function DashboardLayout({
         title: "Cache Limpo!",
         description: `O cache do ambiente de ${currentEnvironment} foi limpo com sucesso.`
     });
+  }
+  
+  const handleNavRightClick = (id: string) => {
+    switch (id) {
+        case 'atualizacao-sistema':
+            openTab({ id: 'atualizacao-sistema', title: 'Atualização do Sistema' });
+            break;
+        // Add other cases for other icons if needed
+        default:
+            break;
+    }
   }
 
   const dashboardContextValue = {
@@ -448,8 +461,8 @@ export default function DashboardLayout({
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <div className='flex items-center'>
-                     {navRightIcons.map((item, index) => (
-                        <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
+                     {navRightIcons.map((item) => (
+                        <Button variant='ghost' size='icon' key={item.id} onClick={() => handleNavRightClick(item.id)} className='h-6 w-6'>
                             {item.icon}
                         </Button>
                     ))}
