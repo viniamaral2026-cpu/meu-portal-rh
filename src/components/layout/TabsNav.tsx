@@ -21,12 +21,12 @@ export function TabsNav({ activeTab }: { activeTab: string }) {
             key={tab.id}
             href={`/?tab=${tab.id}`}
             className={`
+              whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm transition-colors
               ${
                 activeTab === tab.id
                   ? 'bg-card text-foreground border-border'
-                  : 'bg-muted/50 text-muted-foreground hover:bg-muted border-transparent hover:text-foreground'
+                  : 'bg-muted/50 text-muted-foreground hover:bg-muted/80 border-transparent hover:text-foreground'
               }
-              whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm transition-colors
             `}
           >
             {tab.name}

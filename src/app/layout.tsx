@@ -6,8 +6,8 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'Gerador de Saídas',
-  description: 'Geração de arquivos de exportação',
+  title: 'MeuRH',
+  description: 'Software de Gestão para Fábricas de Calçados',
 };
 
 export default function RootLayout({
