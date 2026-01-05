@@ -38,7 +38,7 @@ import {
   ClipboardList,
   Rss,
   PlayCircle,
-  Link,
+  Link as LinkIcon,
   BookUser,
   Wrench,
   ExternalLink,
@@ -126,7 +126,7 @@ const toolbarItems = [
         group: 'RM Conec',
         items: [
              { icon: <Users size={24} />, label: 'Meus Canais' },
-             { icon: <Link size={24} />, label: 'RM Conector' },
+             { icon: <LinkIcon size={24} />, label: 'RM Conector' },
         ]
     },
     {
