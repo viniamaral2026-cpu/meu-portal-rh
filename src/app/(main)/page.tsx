@@ -40,7 +40,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-secondary p-4">
+    <div 
+      className="flex min-h-screen items-center justify-center p-4 bg-cover bg-center"
+      style={{ backgroundImage: "url('https://matoleitao.rs.gov.br/wp-content/uploads/2021/04/beira-1-scaled-750x450.jpg')" }}
+    >
+      <div className="absolute inset-0 bg-black/50" />
       <Card className="w-full max-w-sm z-10">
         <CardHeader className="text-center">
           <MeuRHLogo className="w-24 mx-auto mb-4" />
