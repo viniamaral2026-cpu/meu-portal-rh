@@ -1,30 +1,30 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Users, Clock, CheckCircle } from "lucide-react";
+import { Factory, Boxes, CheckCircle, Users } from "lucide-react";
 
 const summaryCards = [
     {
-        title: "Colaboradores Ativos",
-        value: "1,254",
-        change: "+20.1% from last month",
+        title: "Produção por Linha",
+        value: "1,254 unidades",
+        change: "Linha A: 800 | Linha B: 454",
+        icon: <Factory className="h-4 w-4 text-muted-foreground" />,
+    },
+    {
+        title: "Funcionários Ausentes",
+        value: "5",
+        change: "2 atrasos registrados hoje",
         icon: <Users className="h-4 w-4 text-muted-foreground" />,
     },
     {
-        title: "Avaliações Pendentes",
-        value: "32",
-        change: "+180.1% from last month",
-        icon: <Activity className="h-4 w-4 text-muted-foreground" />,
+        title: "Pedidos Pendentes",
+        value: "12",
+        change: "+2% vs ontem",
+        icon: <Boxes className="h-4 w-4 text-muted-foreground" />,
     },
     {
-        title: "Horas Registradas (Mês)",
-        value: "12,548",
-        change: "+19% from last month",
-        icon: <Clock className="h-4 w-4 text-muted-foreground" />,
-    },
-    {
-        title: "Compliance",
-        value: "99.8%",
-        change: "+0.2% from last month",
-        icon: <CheckCircle className="h-4 w-4 text-muted-foreground" />,
+        title: "Alertas de Estoque Baixo",
+        value: "3 itens",
+        change: "Couro, Solado Tipo B",
+        icon: <CheckCircle className="h-4 w-4 text-destructive" />,
     },
 ];
 

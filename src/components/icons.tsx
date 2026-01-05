@@ -12,7 +12,7 @@ export function GPWayLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
       <text
         x="0"
         y="15"
-        fontFamily="var(--font-headline), sans-serif"
+        fontFamily="sans-serif"
         fontSize="16"
         fontWeight="bold"
         className="fill-foreground"

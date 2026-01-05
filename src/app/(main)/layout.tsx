@@ -1,16 +1,5 @@
-import { Footer } from "@/components/layout/footer";
-import { Header } from "@/components/layout/header";
+import { ReactNode } from 'react';
 
-export default function MainLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
-      <main className="flex-1">{children}</main>
-      <Footer />
-    </div>
-  );
+export default function PublicLayout({ children }: { children: ReactNode }) {
+  return <div className="min-h-screen bg-secondary">{children}</div>;
 }

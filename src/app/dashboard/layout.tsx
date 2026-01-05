@@ -9,7 +9,6 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarInset,
-  SidebarFooter,
 } from '@/components/ui/sidebar';
 import {
   BarChart,
@@ -19,6 +18,9 @@ import {
   Settings,
   Puzzle,
   LogOut,
+  Boxes,
+  Factory,
+  CheckCircle,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -27,10 +29,11 @@ import { Button } from '@/components/ui/button';
 
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: <Home /> },
-  { href: '/dashboard/performance', label: 'Desempenho', icon: <BarChart /> },
+  { href: '/dashboard/production', label: 'Produção', icon: <Factory /> },
+  { href: '/dashboard/inventory', label: 'Estoque', icon: <Boxes /> },
+  { href: '/dashboard/performance', label: 'Desempenho', icon: <CheckCircle /> },
   { href: '/dashboard/attendance', label: 'Ponto', icon: <Clock /> },
   { href: '/dashboard/integration', label: 'Integração', icon: <Puzzle /> },
-  { href: '/dashboard/settings', label: 'Personalização', icon: <Settings /> },
 ];
 
 export default function DashboardLayout({
@@ -39,6 +42,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+
+  const getPageTitle = () => {
+    const currentItem = menuItems.find(item => pathname.startsWith(item.href));
+    return currentItem?.label || 'Dashboard';
+  }
 
   return (
     <SidebarProvider>
@@ -53,7 +61,7 @@ export default function DashboardLayout({
               <SidebarMenuItem key={item.href}>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === item.href}
+                  isActive={pathname.startsWith(item.href)}
                   tooltip={item.label}
                 >
                   <Link href={item.href}>
@@ -65,30 +73,20 @@ export default function DashboardLayout({
             ))}
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter>
-            <SidebarMenu>
-                <SidebarMenuItem>
-                    <SidebarMenuButton asChild tooltip="Sair">
-                        <Link href="/">
-                            <LogOut />
-                            <span>Sair</span>
-                        </Link>
-                    </SidebarMenuButton>
-                </SidebarMenuItem>
-            </SidebarMenu>
-        </SidebarFooter>
       </Sidebar>
       <SidebarInset className="bg-secondary">
         <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:px-6">
           <SidebarTrigger />
           <div className="w-full flex-1">
             <h1 className="text-lg font-semibold md:text-xl">
-              {menuItems.find(item => item.href === pathname)?.label || 'Dashboard'}
+              {getPageTitle()}
             </h1>
           </div>
-          <Button variant="secondary" size="icon" className="rounded-full">
-            <Users className="h-5 w-5" />
-            <span className="sr-only">Toggle user menu</span>
+          <Button asChild variant="ghost" size="icon" className="rounded-full">
+            <Link href="/">
+              <LogOut className="h-5 w-5" />
+              <span className="sr-only">Sair</span>
+            </Link>
           </Button>
         </header>
         <main className="flex-1 p-4 lg:p-6">{children}</main>
