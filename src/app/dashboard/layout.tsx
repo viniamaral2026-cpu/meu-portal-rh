@@ -49,6 +49,7 @@ import {
   HeartHandshake,
   DollarSign,
   TrendingUp,
+  UserSquare,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
@@ -115,6 +116,7 @@ const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
 const ControleJornadaPage = lazy(() => import('./pages/controle-jornada/page'));
 const MonitoramentoUsuariosPage = lazy(() => import('./pages/monitoramento-usuarios/page'));
 const FiliaisPage = lazy(() => import('./pages/filiais/page'));
+const PortalColaboradorPage = lazy(() => import('./pages/portal-colaborador/page'));
 
 
 const topBarIcons = [
@@ -122,6 +124,7 @@ const topBarIcons = [
   { id: 'monitoramento-usuarios', title: 'Monitoramento de Usuários', icon: <Users size={16} /> },
   { id: 'downloads', title: 'Downloads', icon: <FileDown size={16} /> },
   { id: 'filiais', title: 'Gestão de Filiais', icon: <Factory size={16} /> },
+  { id: 'portal-colaborador', title: 'Portal do Colaborador', icon: <UserSquare size={16} /> },
 ];
 
 const navMenuItems = [
@@ -265,6 +268,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'controle-jornada': ControleJornadaPage,
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
   'filiais': FiliaisPage,
+  'portal-colaborador': PortalColaboradorPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
