@@ -42,7 +42,7 @@ export default function LoginPage() {
   return (
     <div 
       className="flex min-h-screen items-center justify-center p-4 bg-cover bg-center"
-      style={{ backgroundImage: "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIEF9A8y2EW5rD-qG0HMbwUhTUgTCHSsqTkg&s')" }}
+      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1556909292-6f0183575b5b?q=80&w=1920&auto=format&fit=crop')" }}
     >
       <div className="absolute inset-0 bg-black/50" />
       <Card className="w-full max-w-sm z-10">
