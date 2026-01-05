@@ -9,9 +9,18 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
-import { Briefcase, Building, Mail, MapPin, Phone, PlusCircle, Search, Star, User, GraduationCap, GripVertical, FileText, Paperclip, MessageSquare } from 'lucide-react';
+import { Briefcase, Building, Mail, MapPin, Phone, PlusCircle, Search, Star, User, GraduationCap, GripVertical, FileText, Paperclip, MessageSquare, Video } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import Image from 'next/image';
 
 // --- Mock Data Structures ---
 
@@ -102,6 +111,69 @@ const CandidateCard = ({ candidate }: { candidate: Candidate }) => (
   </Card>
 );
 
+const InterviewModal = ({ candidate }: { candidate: Candidate }) => (
+    <DialogContent className="max-w-6xl h-[90vh] flex flex-col p-0">
+        <DialogHeader className="p-4 border-b">
+            <DialogTitle className="flex items-center gap-2">
+                <Video /> Entrevista com {candidate.name}
+            </DialogTitle>
+            <DialogDescription>
+                Vaga: {candidate.role}
+            </DialogDescription>
+        </DialogHeader>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 flex-grow overflow-hidden">
+            {/* Main video and candidate info */}
+            <div className="md:col-span-2 flex flex-col gap-4">
+                <div className="bg-muted aspect-video w-full rounded-lg flex items-center justify-center">
+                    <p className="text-muted-foreground">Área do vídeo da entrevista</p>
+                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Informações do Candidato</CardTitle>
+                    </CardHeader>
+                     <CardContent className="text-sm">
+                        <p><strong>Email:</strong> {candidate.details.email}</p>
+                        <p><strong>Telefone:</strong> {candidate.details.phone}</p>
+                        <p><strong>Localização:</strong> {candidate.details.location}</p>
+                    </CardContent>
+                </Card>
+            </div>
+            {/* Notes and guide */}
+            <div className="flex flex-col gap-4 overflow-y-auto">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Anotações do Entrevistador</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Textarea placeholder="Digite suas anotações sobre o candidato aqui..." className="h-32"/>
+                    </CardContent>
+                </Card>
+                <Card className="flex-grow">
+                    <CardHeader>
+                        <CardTitle>Guia de Entrevista</CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-sm space-y-2">
+                        <p className="font-semibold">Perguntas Comportamentais:</p>
+                        <ul className="list-disc list-inside text-muted-foreground">
+                            <li>Fale sobre um desafio que você enfrentou.</li>
+                            <li>Como você lida com prazos apertados?</li>
+                        </ul>
+                        <p className="font-semibold mt-4">Perguntas Técnicas:</p>
+                        <ul className="list-disc list-inside text-muted-foreground">
+                            <li>Qual sua experiência com a máquina X?</li>
+                            <li>Descreva seu conhecimento em eSocial.</li>
+                        </ul>
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+         <div className="p-4 border-t flex justify-end gap-2 bg-background">
+            <Button variant="outline">Salvar Anotações</Button>
+            <Button>Finalizar e Mover Candidato</Button>
+        </div>
+    </DialogContent>
+);
+
 
 export default function CurriculosPage() {
     const [selectedVacancy, setSelectedVacancy] = useState<string>('v2');
@@ -162,94 +234,100 @@ export default function CurriculosPage() {
             </div>
 
             {/* Candidate Details Panel */}
-            <Card className="w-[450px] flex-shrink-0 flex flex-col">
-                {selectedCandidate ? (
-                    <>
-                        <CardHeader className="text-center">
-                            <Avatar className="h-20 w-20 mx-auto">
-                               <AvatarFallback>{selectedCandidate.name.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <CardTitle className="mt-2">{selectedCandidate.name}</CardTitle>
-                            <CardDescription>{selectedCandidate.role}</CardDescription>
-                            <div className="flex justify-center gap-2 pt-2">
-                                <Button size="sm">Aprovar</Button>
-                                <Button size="sm" variant="destructive">Reprovar</Button>
-                                <Button size="sm" variant="outline">Mover</Button>
-                            </div>
-                        </CardHeader>
-                        <Separator />
-                        <ScrollArea className="flex-grow">
-                            <CardContent className="p-4 space-y-4">
-                                <div>
-                                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><User size={16}/> Contato</h4>
-                                    <div className="text-xs space-y-1 text-muted-foreground">
-                                        <p className="flex items-center gap-2"><Mail size={12}/> {selectedCandidate.details.email}</p>
-                                        <p className="flex items-center gap-2"><Phone size={12}/> {selectedCandidate.details.phone}</p>
-                                        <p className="flex items-center gap-2"><MapPin size={12}/> {selectedCandidate.details.location}</p>
+            <Dialog>
+                <Card className="w-[450px] flex-shrink-0 flex flex-col">
+                    {selectedCandidate ? (
+                        <>
+                            <CardHeader className="text-center">
+                                <Avatar className="h-20 w-20 mx-auto">
+                                <AvatarFallback>{selectedCandidate.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <CardTitle className="mt-2">{selectedCandidate.name}</CardTitle>
+                                <CardDescription>{selectedCandidate.role}</CardDescription>
+                                <div className="flex justify-center gap-2 pt-2">
+                                    <DialogTrigger asChild>
+                                        <Button size="sm" variant="outline">
+                                            <Image src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-32dp/logo_meet_2020q4_color_2x_web_32dp.png" alt="Google Meet" width={16} height={16} className="mr-2" />
+                                            Agendar Entrevista
+                                        </Button>
+                                    </DialogTrigger>
+                                    <Button size="sm" variant="destructive">Reprovar</Button>
+                                    <Button size="sm">Mover</Button>
+                                </div>
+                            </CardHeader>
+                            <Separator />
+                            <ScrollArea className="flex-grow">
+                                <CardContent className="p-4 space-y-4">
+                                    <div>
+                                        <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><User size={16}/> Contato</h4>
+                                        <div className="text-xs space-y-1 text-muted-foreground">
+                                            <p className="flex items-center gap-2"><Mail size={12}/> {selectedCandidate.details.email}</p>
+                                            <p className="flex items-center gap-2"><Phone size={12}/> {selectedCandidate.details.phone}</p>
+                                            <p className="flex items-center gap-2"><MapPin size={12}/> {selectedCandidate.details.location}</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <Separator />
-                                 <div>
-                                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><FileText size={16}/> Resumo e Documentos</h4>
-                                    <div className="flex gap-2">
-                                        <Button variant="outline" size="sm"><Paperclip size={14} className="mr-2"/> Currículo.pdf</Button>
-                                        <Button variant="outline" size="sm"><Paperclip size={14} className="mr-2"/> Portfólio.zip</Button>
+                                    <Separator />
+                                    <div>
+                                        <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><FileText size={16}/> Resumo e Documentos</h4>
+                                        <div className="flex gap-2">
+                                            <Button variant="outline" size="sm"><Paperclip size={14} className="mr-2"/> Currículo.pdf</Button>
+                                            <Button variant="outline" size="sm"><Paperclip size={14} className="mr-2"/> Portfólio.zip</Button>
+                                        </div>
                                     </div>
-                                </div>
-                                <Separator />
-                                <div>
-                                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><GraduationCap size={16}/> Formação</h4>
-                                     {selectedCandidate.details.education.length > 0 ? selectedCandidate.details.education.map((edu, i) => (
-                                         <p key={i} className="text-xs text-muted-foreground">{edu.course} em {edu.institution} ({edu.period})</p>
-                                     )) : <p className="text-xs text-muted-foreground">Nenhuma formação informada.</p>}
-                                </div>
-                                <Separator />
-                                 <div>
-                                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><Briefcase size={16}/> Experiência</h4>
-                                     {selectedCandidate.details.experience.length > 0 ? selectedCandidate.details.experience.map((exp, i) => (
-                                         <div key={i} className='mb-2'>
-                                             <p className="text-xs font-bold">{exp.role} @ {exp.company}</p>
-                                             <p className="text-xs text-muted-foreground">{exp.period}</p>
-                                             <p className="text-xs text-muted-foreground mt-1">{exp.description}</p>
-                                         </div>
-                                     )) : <p className="text-xs text-muted-foreground">Nenhuma experiência informada.</p>}
-                                </div>
-                                <Separator />
-                                 <div>
-                                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><Star size={16}/> Habilidades</h4>
-                                    <div className="flex flex-wrap gap-2">
-                                         {selectedCandidate.details.skills.map(skill => (
-                                             <Badge key={skill} variant="default">{skill}</Badge>
-                                         ))}
+                                    <Separator />
+                                    <div>
+                                        <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><GraduationCap size={16}/> Formação</h4>
+                                        {selectedCandidate.details.education.length > 0 ? selectedCandidate.details.education.map((edu, i) => (
+                                            <p key={i} className="text-xs text-muted-foreground">{edu.course} em {edu.institution} ({edu.period})</p>
+                                        )) : <p className="text-xs text-muted-foreground">Nenhuma formação informada.</p>}
                                     </div>
-                                </div>
-                                <Separator />
-                                <div>
-                                    <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><MessageSquare size={16}/> Anotações Internas</h4>
-                                    <div className="space-y-3">
-                                        {notes.map(note => (
-                                            <div key={note.id} className="text-xs p-2 bg-muted/50 rounded-md">
-                                                <p className="font-bold">{note.author} <span className="font-normal text-muted-foreground">- {note.timestamp}</span></p>
-                                                <p>{note.content}</p>
+                                    <Separator />
+                                    <div>
+                                        <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><Briefcase size={16}/> Experiência</h4>
+                                        {selectedCandidate.details.experience.length > 0 ? selectedCandidate.details.experience.map((exp, i) => (
+                                            <div key={i} className='mb-2'>
+                                                <p className="text-xs font-bold">{exp.role} @ {exp.company}</p>
+                                                <p className="text-xs text-muted-foreground">{exp.period}</p>
+                                                <p className="text-xs text-muted-foreground mt-1">{exp.description}</p>
                                             </div>
-                                        ))}
+                                        )) : <p className="text-xs text-muted-foreground">Nenhuma experiência informada.</p>}
                                     </div>
-                                    <div className='mt-2 space-y-2'>
-                                        <Textarea placeholder='Adicionar uma nova anotação...' className="text-xs" />
-                                        <Button size="sm" className='w-full' onClick={handleNewNote}>Salvar Anotação</Button>
+                                    <Separator />
+                                    <div>
+                                        <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><Star size={16}/> Habilidades</h4>
+                                        <div className="flex flex-wrap gap-2">
+                                            {selectedCandidate.details.skills.map(skill => (
+                                                <Badge key={skill} variant="default">{skill}</Badge>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            </CardContent>
-                        </ScrollArea>
-                    </>
-                ) : (
-                    <div className="flex-grow flex items-center justify-center">
-                        <p className="text-muted-foreground">Selecione um candidato para ver os detalhes</p>
-                    </div>
-                )}
-            </Card>
+                                    <Separator />
+                                    <div>
+                                        <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><MessageSquare size={16}/> Anotações Internas</h4>
+                                        <div className="space-y-3">
+                                            {notes.map(note => (
+                                                <div key={note.id} className="text-xs p-2 bg-muted/50 rounded-md">
+                                                    <p className="font-bold">{note.author} <span className="font-normal text-muted-foreground">- {note.timestamp}</span></p>
+                                                    <p>{note.content}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className='mt-2 space-y-2'>
+                                            <Textarea placeholder='Adicionar uma nova anotação...' className="text-xs" />
+                                            <Button size="sm" className='w-full' onClick={handleNewNote}>Salvar Anotação</Button>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </ScrollArea>
+                        </>
+                    ) : (
+                        <div className="flex-grow flex items-center justify-center">
+                            <p className="text-muted-foreground">Selecione um candidato para ver os detalhes</p>
+                        </div>
+                    )}
+                </Card>
+                {selectedCandidate && <InterviewModal candidate={selectedCandidate} />}
+            </Dialog>
         </div>
     );
 }
-
-    

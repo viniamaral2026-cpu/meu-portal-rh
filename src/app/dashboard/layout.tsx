@@ -117,6 +117,7 @@ const ControleJornadaPage = lazy(() => import('./pages/controle-jornada/page'));
 const MonitoramentoUsuariosPage = lazy(() => import('./pages/monitoramento-usuarios/page'));
 const FiliaisPage = lazy(() => import('./pages/filiais/page'));
 const PortalColaboradorPage = lazy(() => import('./pages/portal-colaborador/page'));
+const PortalCarreirasPage = lazy(() => import('../portal-carreiras/page'));
 
 
 const topBarIcons = [
@@ -125,6 +126,7 @@ const topBarIcons = [
   { id: 'downloads', title: 'Downloads', icon: <FileDown size={16} /> },
   { id: 'filiais', title: 'Gestão de Filiais', icon: <Factory size={16} /> },
   { id: 'portal-colaborador', title: 'Portal do Colaborador', icon: <UserSquare size={16} /> },
+  { id: 'portal-carreiras', title: 'Portal de Carreiras', icon: <UserPlus size={16} /> },
 ];
 
 const navMenuItems = [
@@ -269,6 +271,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
   'filiais': FiliaisPage,
   'portal-colaborador': PortalColaboradorPage,
+  'portal-carreiras': PortalCarreirasPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
