@@ -577,7 +577,7 @@ export default function DashboardLayout({
                     <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
                       <Suspense fallback={<PageSkeleton />}>
                         {PageComponent ? <PageComponent {...props} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
-                      </Susp-Suspense>
+                      </Suspense>
                     </TabsContent>
                 )
                 })}
