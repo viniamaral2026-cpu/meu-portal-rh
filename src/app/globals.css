@@ -25,9 +25,9 @@
     --ring: 210 90% 50%;
     --radius: 0.5rem;
 
-    --header-background: hsl(220, 40%, 25%);
-    --header-foreground: hsl(220, 20%, 90%);
-    --header-primary-background: hsl(210, 100%, 98%);
+    --header-top-background: hsl(200, 45%, 35%);
+    --header-primary-background: hsl(200, 45%, 35%);
+    --header-foreground: hsl(210, 20%, 94%);
   }
 }
 
