@@ -14,9 +14,8 @@ import {
 import {
   Undo, Redo, Printer, Bold, Italic, Underline, PaintBucket,
   AlignCenter, AlignLeft, AlignRight, AlignJustify,
-  File, ChevronDown, Link, MessageSquare, Image as ImageIcon
+  File, MessageSquare, Image as ImageIcon, Link
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import {
     Select,
@@ -52,6 +51,25 @@ const insertItems = [
     { id: 'comment', icon: <MessageSquare size={18} /> },
     { id: 'image', icon: <ImageIcon size={18} /> },
 ]
+
+function Ruler() {
+  return (
+    <div className="sticky top-0 z-10 h-7 w-full bg-secondary pl-16 pr-16" style={{ paddingLeft: 'calc(4rem)', paddingRight: 'calc(4rem)' }}>
+      <div className="relative h-full w-full border-b bg-card shadow-sm">
+        {/* Ruler ticks - assuming 1cm is approx 37.8px */}
+        {Array.from({ length: 16 }).map((_, i) => (
+          <div key={`cm-${i}`} className="absolute top-2 h-5" style={{ left: `${(i + 1) * 37.8}px` }}>
+            <span className="absolute -translate-x-1/2 bottom-0 text-xs text-muted-foreground">{i + 1}</span>
+            <div className="h-2 border-l"></div>
+          </div>
+        ))}
+         {Array.from({ length: 16 * 2 }).map((_, i) => (
+          <div key={`half-cm-${i}`} className="absolute top-4 h-3 border-l" style={{ left: `${(i + 1) * 18.9}px` }}></div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 
 export default function WordPage() {
@@ -149,10 +167,11 @@ export default function WordPage() {
       {/* Main Content Area */}
       <div className="flex-1 overflow-auto p-8">
         <div className="bg-white text-black shadow-lg mx-auto" style={{width: '21cm', minHeight: '29.7cm'}}>
+            <Ruler />
             <Textarea
                 value={documentContent}
                 onChange={(e) => setDocumentContent(e.target.value)}
-                className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-16"
+                className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-16 pt-4"
                 placeholder="Comece a escrever seu documento..."
             />
         </div>
