@@ -88,28 +88,29 @@ const toolbarItems = [
             { id: 'calculator', icon: <Calculator size={20} />, label: 'Calculadora' },
             { id: 'agenda', icon: <BookUser size={20} />, label: 'Agenda' },
             { id: 'calendars', icon: <CalendarDays size={20} />, label: 'Calendários' },
-            { id: 'sharing', icon: <Share2 size={20} />, label: 'TOTVS Compartilhamento' },
+            { id: 'sharing', icon: <Share2 size={20} />, label: 'Compartilhamento' },
             { id: 'cube', icon: <Cuboid size={20} />, label: 'Cubo' },
-            { id: 'spreadsheet', icon: <Sheet size={20} />, label: 'Planilha Net' },
-            { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula Visual' },
+            { id: 'spreadsheet', icon: <Sheet size={20} />, label: 'Planilha' },
+            { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula' },
         ]
     },
     {
         group: 'Ferramentas de Análise',
         items: [
-            { id: 'reports', icon: <FileText size={20} />, label: 'RM Reports' },
-            { id: 'report-generator', icon: <FilePlus2 size={20} />, label: 'Gerador de Relatórios' },
+            { id: 'employees', icon: <Users size={20} />, label: 'Colaboradores' },
+            { id: 'reports', icon: <FileText size={20} />, label: 'Relatórios' },
+            { id: 'report-generator', icon: <FilePlus2 size={20} />, label: 'Gerador' },
             { id: 'data-views', icon: <Database size={20} />, label: 'Visões de Dados' },
-            { id: 'dashboards', icon: <LayoutDashboard size={20} />, label: 'Painéis de Cenários' },
+            { id: 'dashboards', icon: <LayoutDashboard size={20} />, label: 'Painéis' },
         ]
     },
     {
         group: 'Gráficos',
         items: [
-            { id: 'output-generator', icon: <Mail size={20} />, label: 'Gerador de Saída' },
+            { id: 'output-generator', icon: <Mail size={20} />, label: 'Gerador Saída' },
             { id: 'chart', icon: <BarChart size={20} />, label: 'Gráfico' },
             { id: 'categories', icon: <ClipboardList size={20} />, label: 'Categorias' },
-            { id: 'chart-sources', icon: <Sigma size={20} />, label: 'Fontes de Gráficos' },
+            { id: 'chart-sources', icon: <Sigma size={20} />, label: 'Fontes' },
         ]
     },
     {
@@ -125,7 +126,7 @@ const toolbarItems = [
         group: 'RM Conec',
         items: [
              { id: 'my-channels', icon: <Users size={20} />, label: 'Meus Canais' },
-             { id: 'rm-connector', icon: <LinkIcon size={20} />, label: 'RM Conector' },
+             { id: 'rm-connector', icon: <LinkIcon size={20} />, label: 'Conector' },
         ]
     },
     {
@@ -133,13 +134,13 @@ const toolbarItems = [
         items: [
              { id: 'comm-sources', icon: <Wrench size={20} />, label: 'Fontes' },
              { id: 'comm-accounts', icon: <Users size={20} />, label: 'Contas' },
-             { id: 'external-apps', icon: <ExternalLink size={20} />, label: 'Aplicativos Externos' },
-             { id: 'saml-apps', icon: <ExternalLink size={20} />, label: 'Aplicativos SAML' },
+             { id: 'external-apps', icon: <ExternalLink size={20} />, label: 'Apps Externos' },
+             { id: 'saml-apps', icon: <ExternalLink size={20} />, label: 'Apps SAML' },
         ]
     },
 ];
 
-const pageComponents = {
+const pageComponents: { [key: string]: React.ComponentType } = {
   employees: EmployeesPage,
   dashboard: DashboardPage,
 };
@@ -187,7 +188,7 @@ export default function DashboardLayout({
                 ))}
             </div>
             <div className='text-xs opacity-80'>
-                TOTVS Compartilhamento - 03.9.0507 - TOTVS Linha RM - Serviços Alias: CorporeRM | 1-TOTVS SA
+                Minha Empresa Calçados | Unidade Matriz | Usuário: Admin
             </div>
             <div className='flex items-center gap-2'>
                 <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Sistema</Button>
@@ -231,14 +232,14 @@ export default function DashboardLayout({
           <div className="flex h-full items-start">
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
-                <div className="flex flex-col items-center justify-center h-full px-2">
-                    <div className='flex items-center justify-center gap-1 h-full'>
+                <div className="flex flex-col items-center justify-center h-full px-1">
+                    <div className='flex items-center justify-center gap-0.5 h-full'>
                     {group.items.map((item) => (
                     <Button 
                       variant="ghost" 
                       key={item.id}
                       onClick={() => openTab({ id: item.id, title: item.label })}
-                      className="flex flex-col items-center justify-center h-full p-1 w-16 text-xs font-normal gap-1"
+                      className="flex flex-col items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1"
                     >
                         {item.icon}
                         <span className='w-full text-center truncate'>{item.label}</span>
