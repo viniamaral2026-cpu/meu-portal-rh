@@ -146,8 +146,8 @@ const toolbarItems = [
         group: 'Utilitários',
         items: [
             { id: 'calculadora', icon: <Calculator size={20} />, label: 'Calculadora' },
-            { id: 'agenda', icon: <BookUser size={20} />, label: 'Agenda' },
-            { id: 'calendarios', icon: <CalendarDays size={20} />, label: 'Calendários' },
+            { id: 'agenda', icon: <CalendarDays size={20} />, label: 'Agenda' },
+            { id: 'calendarios', icon: <BookUser size={20} />, label: 'Currículos' },
             { id: 'compartilhamento', icon: <Share2 size={20} />, label: 'Compartilhamento' },
             { id: 'cubo', icon: <Cuboid size={20} />, label: 'Cubo' },
             { id: 'planilha', icon: <Sheet size={20} />, label: 'Planilha' },
