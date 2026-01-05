@@ -79,7 +79,7 @@ const AssinaturaEletronicaPage = lazy(() => import('./pages/assinatura-eletronic
 const CustomizacaoPage = lazy(() => import('./pages/customizacao/page'));
 const CalculadoraPage = lazy(() => import('./pages/calculadora/page'));
 const AgendaPage = lazy(() => import('./pages/agenda/page'));
-const CalendariosPage = lazy(() => import('./pages/calendarios/page'));
+const CurriculosPage = lazy(() => import('./pages/curriculos/page'));
 const CompartilhamentoPage = lazy(() => import('./pages/compartilhamento/page'));
 const CuboPage = lazy(() => import('./pages/cubo/page'));
 const PlanilhaPage = lazy(() => import('./pages/planilha/page'));
@@ -147,7 +147,7 @@ const toolbarItems = [
         items: [
             { id: 'calculadora', icon: <Calculator size={20} />, label: 'Calculadora' },
             { id: 'agenda', icon: <CalendarDays size={20} />, label: 'Agenda' },
-            { id: 'calendarios', icon: <BookUser size={20} />, label: 'Currículos' },
+            { id: 'curriculos', icon: <BookUser size={20} />, label: 'Currículos' },
             { id: 'compartilhamento', icon: <Share2 size={20} />, label: 'Compartilhamento' },
             { id: 'cubo', icon: <Cuboid size={20} />, label: 'Cubo' },
             { id: 'planilha', icon: <Sheet size={20} />, label: 'Planilha' },
@@ -226,7 +226,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'customizacao': CustomizacaoPage,
   'calculadora': CalculadoraPage,
   'agenda': AgendaPage,
-  'calendarios': CalendariosPage,
+  'curriculos': CurriculosPage,
   'compartilhamento': CompartilhamentoPage,
   'cubo': CuboPage,
   'planilha': PlanilhaPage,
@@ -573,3 +573,5 @@ export default function DashboardLayout({
     </div>
   );
 }
+
+    
