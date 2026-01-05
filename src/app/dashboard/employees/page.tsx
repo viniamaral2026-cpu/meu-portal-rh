@@ -141,7 +141,7 @@ export default function EmployeesPage() {
         <div className='flex justify-end items-center p-4 gap-2 border-t'>
             <Button variant="outline" size="sm"><Edit className='mr-2' />Alterar</Button>
             <Button variant="destructive" size="sm"><Trash2 className='mr-2'/>Excluir</Button>
-            <Button variant="outline" size="sm"><Eye className='mr-2'/>Visualizar</" + "button>
+            <Button variant="outline" size="sm"><Eye className='mr-2'/>Visualizar</Button>
             <Button variant="secondary" size="sm"><FileDown className='mr-2'/>Baixar Arquivo</Button>
         </div>
       </div>
