@@ -85,56 +85,56 @@ const toolbarItems = [
     {
         group: 'Utilitários',
         items: [
-            { id: 'calculator', icon: <Calculator size={24} />, label: 'Calculadora' },
-            { id: 'agenda', icon: <BookUser size={24} />, label: 'Agenda' },
-            { id: 'calendars', icon: <CalendarDays size={24} />, label: 'Calendários' },
-            { id: 'sharing', icon: <Share2 size={24} />, label: 'TOTVS Compartilhamento' },
-            { id: 'cube', icon: <Cuboid size={24} />, label: 'Cubo' },
-            { id: 'spreadsheet', icon: <Sheet size={24} />, label: 'Planilha Net' },
-            { id: 'formula', icon: <FunctionSquare size={24} />, label: 'Fórmula Visual' },
+            { id: 'calculator', icon: <Calculator size={20} />, label: 'Calculadora' },
+            { id: 'agenda', icon: <BookUser size={20} />, label: 'Agenda' },
+            { id: 'calendars', icon: <CalendarDays size={20} />, label: 'Calendários' },
+            { id: 'sharing', icon: <Share2 size={20} />, label: 'TOTVS Compartilhamento' },
+            { id: 'cube', icon: <Cuboid size={20} />, label: 'Cubo' },
+            { id: 'spreadsheet', icon: <Sheet size={20} />, label: 'Planilha Net' },
+            { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula Visual' },
         ]
     },
     {
         group: 'Ferramentas de Análise',
         items: [
-            { id: 'reports', icon: <FileText size={24} />, label: 'RM Reports' },
-            { id: 'report-generator', icon: <FilePlus2 size={24} />, label: 'Gerador de Relatórios' },
-            { id: 'data-views', icon: <Database size={24} />, label: 'Visões de Dados' },
-            { id: 'dashboards', icon: <LayoutDashboard size={24} />, label: 'Painéis de Cenários' },
+            { id: 'reports', icon: <FileText size={20} />, label: 'RM Reports' },
+            { id: 'report-generator', icon: <FilePlus2 size={20} />, label: 'Gerador de Relatórios' },
+            { id: 'data-views', icon: <Database size={20} />, label: 'Visões de Dados' },
+            { id: 'dashboards', icon: <LayoutDashboard size={20} />, label: 'Painéis de Cenários' },
         ]
     },
     {
         group: 'Gráficos',
         items: [
-            { id: 'output-generator', icon: <Mail size={24} />, label: 'Gerador de Saída' },
-            { id: 'chart', icon: <BarChart size={24} />, label: 'Gráfico' },
-            { id: 'categories', icon: <ClipboardList size={24} />, label: 'Categorias' },
-            { id: 'chart-sources', icon: <Sigma size={24} />, label: 'Fontes de Gráficos' },
+            { id: 'output-generator', icon: <Mail size={20} />, label: 'Gerador de Saída' },
+            { id: 'chart', icon: <BarChart size={20} />, label: 'Gráfico' },
+            { id: 'categories', icon: <ClipboardList size={20} />, label: 'Categorias' },
+            { id: 'chart-sources', icon: <Sigma size={20} />, label: 'Fontes de Gráficos' },
         ]
     },
     {
         group: 'RSS',
         items: [
-            { id: 'rss-reader', icon: <Rss size={24} />, label: 'Leitor RSS' },
-            { id: 'start-service', icon: <PlayCircle size={24} />, label: 'Iniciar Serviço' },
-            { id: 'rss-config', icon: <Settings size={24} />, label: 'Configuração' },
-            { id: 'rss-channels', icon: <Rss size={24} />, label: 'Canais RSS' },
+            { id: 'rss-reader', icon: <Rss size={20} />, label: 'Leitor RSS' },
+            { id: 'start-service', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
+            { id: 'rss-config', icon: <Settings size={20} />, label: 'Configuração' },
+            { id: 'rss-channels', icon: <Rss size={20} />, label: 'Canais RSS' },
         ]
     },
     {
         group: 'RM Conec',
         items: [
-             { id: 'my-channels', icon: <Users size={24} />, label: 'Meus Canais' },
-             { id: 'rm-connector', icon: <LinkIcon size={24} />, label: 'RM Conector' },
+             { id: 'my-channels', icon: <Users size={20} />, label: 'Meus Canais' },
+             { id: 'rm-connector', icon: <LinkIcon size={20} />, label: 'RM Conector' },
         ]
     },
     {
         group: 'Comunicação',
         items: [
-             { id: 'comm-sources', icon: <Wrench size={24} />, label: 'Fontes' },
-             { id: 'comm-accounts', icon: <Users size={24} />, label: 'Contas' },
-             { id: 'external-apps', icon: <ExternalLink size={24} />, label: 'Aplicativos Externos' },
-             { id: 'saml-apps', icon: <ExternalLink size={24} />, label: 'Aplicativos SAML' },
+             { id: 'comm-sources', icon: <Wrench size={20} />, label: 'Fontes' },
+             { id: 'comm-accounts', icon: <Users size={20} />, label: 'Contas' },
+             { id: 'external-apps', icon: <ExternalLink size={20} />, label: 'Aplicativos Externos' },
+             { id: 'saml-apps', icon: <ExternalLink size={20} />, label: 'Aplicativos SAML' },
         ]
     },
 ];
@@ -227,18 +227,18 @@ export default function DashboardLayout({
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border overflow-x-auto">
           <div className="flex h-full items-start">
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
                 <div className="flex flex-col items-center justify-center h-full px-2">
-                    <div className='flex items-center justify-center gap-2 h-full'>
+                    <div className='flex items-center justify-center gap-1 h-full'>
                     {group.items.map((item) => (
                     <Button 
                       variant="ghost" 
                       key={item.id}
                       onClick={() => openTab({ id: item.id, title: item.label })}
-                      className="flex flex-col items-center justify-center h-full p-1 w-20 text-xs font-normal gap-1"
+                      className="flex flex-col items-center justify-center h-full p-1 w-16 text-xs font-normal gap-1"
                     >
                         {item.icon}
                         <span className='w-full text-center truncate'>{item.label}</span>
