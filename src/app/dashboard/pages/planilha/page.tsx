@@ -14,7 +14,7 @@ import {
 import {
   Undo, Redo, Printer, Percent, Bold, Italic, Strikethrough, PaintBucket,
   Merge, AlignLeft, AlignCenter, AlignRight, MoreVertical, Star, MessageSquare, Video,
-  ArrowUp, ArrowDown, ArrowLeft, ArrowRight, CornerUpLeft, Sigma, TextColor, Braces, WrapText,
+  ArrowUp, ArrowDown, ArrowLeft, ArrowRight, CornerUpLeft, Sigma, Baseline, Braces, WrapText,
   File, Edit, Eye, Plus, Table as TableIcon, BarChart2,
   Trash2, Copy, Scissors, Minus, ZoomIn, ZoomOut, FileUp, FileDown as FileDownIcon,
 } from 'lucide-react';
@@ -101,7 +101,7 @@ export default function PlanilhaPage() {
         <Button variant="ghost" size="icon" className='h-7 w-7'><Bold size={18} /></Button>
         <Button variant="ghost" size="icon" className='h-7 w-7'><Italic size={18} /></Button>
         <Button variant="ghost" size="icon" className='h-7 w-7'><Strikethrough size={18} /></Button>
-        <Button variant="ghost" size="icon" className='h-7 w-7'><TextColor size={18} /></Button>
+        <Button variant="ghost" size="icon" className='h-7 w-7'><Baseline size={18} /></Button>
          <Separator orientation='vertical' className='h-5' />
         <Button variant="ghost" size="icon" className='h-7 w-7'><PaintBucket size={18} /></Button>
         <Button variant="ghost" size="icon" className='h-7 w-7'><TableIcon size={18} /></Button>
