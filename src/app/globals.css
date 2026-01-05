@@ -24,6 +24,12 @@
     --input: 220 13% 91%;
     --ring: 210 90% 50%;
     --radius: 0.5rem;
+    --chart-1: 200 60% 35%;
+    --chart-2: 30 100% 60%;
+    --chart-3: 0 80% 65%;
+    --chart-4: 300 70% 60%;
+    --chart-5: 260 70% 60%;
+
 
     --header-top-background: hsl(200, 45%, 35%);
     --header-primary-background: hsl(200, 45%, 35%);
