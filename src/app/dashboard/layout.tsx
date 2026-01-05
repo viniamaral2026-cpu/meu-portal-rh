@@ -45,6 +45,7 @@ import {
   Sigma,
   Server,
   Cloud,
+  Trash2,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
@@ -57,6 +58,7 @@ import type { Employee } from './employees/page';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 // Lazy load all page components for better performance
 const DashboardPage = lazy(() => import('./page'));
@@ -101,6 +103,7 @@ const EditarColaboradorPage = lazy(() => import('./pages/editar-colaborador/page
 const WordPage = lazy(() => import('./pages/word/page'));
 const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
 const SistemaPage = lazy(() => import('./pages/sistema/page'));
+const StatusServicosPage = lazy(() => import('./pages/status-servicos/page'));
 
 
 const topBarIcons = [
@@ -242,6 +245,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'word': WordPage,
   'assistente-ai': AssistenteAiPage,
   'sistema': SistemaPage,
+  'status-servicos': StatusServicosPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -286,6 +290,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const { toast } = useToast();
   const [openTabs, setOpenTabs] = useState<Tab[]>([
     { id: 'dashboard', title: 'Dashboard Principal' },
     { id: 'employees', title: 'Consulta de Colaboradores' },
@@ -323,6 +328,13 @@ export default function DashboardLayout({
     // Here you would typically clear session, tokens, etc.
     router.push('/');
   };
+
+  const handleClearCache = () => {
+    toast({
+        title: "Cache Limpo!",
+        description: `O cache do ambiente de ${currentEnvironment} foi limpo com sucesso.`
+    });
+  }
 
   const dashboardContextValue = {
     openTab,
@@ -409,11 +421,11 @@ export default function DashboardLayout({
                             </DropdownMenuRadioItem>
                         </DropdownMenuRadioGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => openTab({ id: 'status-servicos', title: 'Status dos Serviços' })}>
                             <Settings className="mr-2" /> Status dos Serviços
                         </DropdownMenuItem>
-                         <DropdownMenuItem>
-                            <ExternalLink className="mr-2" /> Limpar Cache do Ambiente
+                         <DropdownMenuItem onSelect={handleClearCache}>
+                            <Trash2 className="mr-2" /> Limpar Cache do Ambiente
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
