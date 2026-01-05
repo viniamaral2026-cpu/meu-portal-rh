@@ -40,11 +40,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div 
-      className="flex min-h-screen items-center justify-center p-4 bg-cover bg-center"
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1556909292-6f0183575b5b?q=80&w=1920&auto=format&fit=crop')" }}
-    >
-      <div className="absolute inset-0 bg-black/50" />
+    <div className="flex min-h-screen items-center justify-center bg-secondary p-4">
       <Card className="w-full max-w-sm z-10">
         <CardHeader className="text-center">
           <MeuRHLogo className="w-24 mx-auto mb-4" />
