@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Search, PlusCircle, Upload, Eye, ThumbsUp, ThumbsDown, Mail, Phone, ChevronRight, Video } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -58,7 +58,7 @@ export default function GestaoCurriculosPage() {
                 <Separator />
                 <div className="flex-1 overflow-y-auto">
                     {Object.keys(vagas).map(vaga => (
-                        <button key={vaga} 
+                        <button key={vaga}
                            className={`w-full text-left p-4 text-sm font-medium hover:bg-accent ${selectedVaga === vaga ? 'bg-accent' : ''}`}
                            onClick={() => setSelectedVaga(vaga)}
                         >
