@@ -46,6 +46,9 @@ import {
   Server,
   Cloud,
   Trash2,
+  HeartHandshake,
+  DollarSign,
+  TrendingUp,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
@@ -104,6 +107,9 @@ const WordPage = lazy(() => import('./pages/word/page'));
 const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
 const SistemaPage = lazy(() => import('./pages/sistema/page'));
 const StatusServicosPage = lazy(() => import('./pages/status-servicos/page'));
+const GestaoPessoasPage = lazy(() => import('./pages/gestao-pessoas/page'));
+const GestaoFinanceiraPage = lazy(() => import('./pages/gestao-financeira/page'));
+const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
 
 
 const topBarIcons = [
@@ -246,6 +252,9 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'assistente-ai': AssistenteAiPage,
   'sistema': SistemaPage,
   'status-servicos': StatusServicosPage,
+  'gestao-pessoas': GestaoPessoasPage,
+  'gestao-financeira': GestaoFinanceiraPage,
+  'gestao-producao': GestaoProducaoPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -398,9 +407,18 @@ export default function DashboardLayout({
                   <DropdownMenuContent>
                     <DropdownMenuLabel>Painéis de Gestão</DropdownMenuLabel>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem>Gestão de Pessoas</DropdownMenuItem>
-                    <DropdownMenuItem>Gestão Financeira/Contábil</DropdownMenuItem>
-                    <DropdownMenuItem>Gestão de Produção</DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => openTab({ id: 'gestao-pessoas', title: 'Gestão de Pessoas'})}>
+                      <HeartHandshake className="mr-2 h-4 w-4" />
+                      <span>Gestão de Pessoas</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => openTab({ id: 'gestao-financeira', title: 'Gestão Financeira/Contábil'})}>
+                      <DollarSign className="mr-2 h-4 w-4" />
+                      <span>Gestão Financeira/Contábil</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => openTab({ id: 'gestao-producao', title: 'Gestão de Produção'})}>
+                      <Factory className="mr-2 h-4 w-4" />
+                      <span>Gestão de Produção</span>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
