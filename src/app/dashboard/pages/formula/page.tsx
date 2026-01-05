@@ -24,7 +24,7 @@ const initialFormulas: Formula[] = [
     { id: 'f001', code: 'HE100', name: 'Horas Extras 100%', description: 'Calcula o valor das horas extras com 100% de acréscimo.', type: 'provento', expression: '(SALARIO_BASE / 220) * HORAS_EXTRAS_100 * 2' },
     { id: 'f002', code: 'DSR', name: 'D.S.R. sobre Horas Extras', description: 'Calcula o descanso semanal remunerado sobre o total de horas extras.', type: 'provento', expression: '(TOTAL_HORAS_EXTRAS / DIAS_UTEIS) * DIAS_NAO_UTEIS' },
     { id: 'f003', code: 'FALTAS', name: 'Desconto por Faltas', description: 'Calcula o desconto de dias de falta não justificada.', type: 'desconto', expression: '(SALARIO_BASE / 30) * DIAS_FALTA' },
-    { id: 'f004', code: 'INSS', name'Base INSS', description: 'Base de cálculo para o INSS.', type: 'base', expression: 'SALARIO_BASE + TOTAL_PROVENTOS_INSS' },
+    { id: 'f004', code: 'INSS', name: 'Base INSS', description: 'Base de cálculo para o INSS.', type: 'base', expression: 'SALARIO_BASE + TOTAL_PROVENTOS_INSS' },
 ];
 
 const payrollVariables = ['SALARIO_BASE', 'HORAS_EXTRAS_50', 'HORAS_EXTRAS_100', 'TOTAL_PROVENTOS_INSS', 'DIAS_FALTA', 'DIAS_UTEIS', 'DIAS_NAO_UTEIS'];
