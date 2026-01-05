@@ -14,7 +14,7 @@ import {
 import {
   Undo, Redo, Printer, PaintRoller, Bold, Italic, Underline, CaseSensitive,
   AlignCenter, AlignLeft, AlignRight, AlignJustify,
-  File, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Link, ImageIcon as ImageIconLucide, ChevronDown, Check, Lock,
+  File, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Link, ImageIcon as ImageIconLucide, ChevronDown, Check, Lock
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -26,11 +26,10 @@ import {
 } from "@/components/ui/select"
 import Image from 'next/image';
 
-
 function HorizontalRuler() {
   return (
-    <div className="sticky top-0 z-10 h-7 w-full bg-secondary" style={{ paddingLeft: 'calc(1cm + 28px)', paddingRight: '1cm' }}>
-      <div className="relative h-full w-full border-b border-l border-r bg-card shadow-sm pl-[1cm] pr-[1cm]">
+    <div className="sticky top-0 z-10 h-7 w-full bg-secondary pl-[calc(1cm)] pr-[calc(1cm)]">
+      <div className="relative h-full w-full border-b border-l border-r bg-card shadow-sm pl-4">
         {/* Ruler ticks - assuming 1cm is approx 37.8px */}
         {Array.from({ length: 19 }).map((_, i) => (
           <div key={`cm-${i}`} className="absolute top-2 h-5" style={{ left: `${i * 37.8}px` }}>
@@ -48,16 +47,16 @@ function HorizontalRuler() {
 
 function VerticalRuler() {
     return (
-        <div className="absolute top-0 left-0 h-full w-7 bg-card border-r shadow-sm" style={{ paddingTop: 'calc(1cm + 28px)' }}>
+        <div className="absolute top-0 left-0 h-full w-7 bg-card border-r shadow-sm pt-[calc(1cm)]">
              {/* Ruler ticks - assuming 1cm is approx 37.8px */}
             {Array.from({ length: 27 }).map((_, i) => (
-            <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i * 37.8) + 65}px` }}>
+            <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i * 37.8) + 38}px` }}>
                 <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
                 <div className="w-2 border-t"></div>
             </div>
             ))}
             {Array.from({ length: 27 * 2 }).map((_, i) => (
-                <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i * 18.9) + 65}px` }}></div>
+                <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i * 18.9) + 38}px` }}></div>
             ))}
         </div>
     )
@@ -71,7 +70,7 @@ export default function WordPage() {
   return (
     <div className="flex flex-col h-full bg-card text-sm">
       {/* Header with Menubar */}
-      <div className="p-2 flex items-center justify-between border-b bg-card text-card-foreground shadow-sm">
+      <header className="p-2 flex items-center justify-between border-b bg-card text-card-foreground shadow-sm flex-shrink-0">
             <div className="flex items-center gap-2">
                 <File className='w-10 h-10 text-blue-600'/>
                 <div>
@@ -91,10 +90,10 @@ export default function WordPage() {
                     </Menubar>
                 </div>
             </div>
-      </div>
+      </header>
       
       {/* Toolbar */}
-       <div className="p-1 flex items-center gap-1 border-b bg-card flex-wrap text-card-foreground">
+       <div className="p-1 flex items-center gap-1 border-b bg-card flex-wrap text-card-foreground flex-shrink-0">
             <Button variant="ghost" size="icon" className='h-8 w-8'><Undo size={18} /></Button>
             <Button variant="ghost" size="icon" className='h-8 w-8'><Redo size={18} /></Button>
             <Button variant="ghost" size="icon" className='h-8 w-8'><Printer size={18} /></Button>
@@ -171,9 +170,9 @@ export default function WordPage() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex overflow-auto bg-secondary">
+      <div className="flex-1 flex overflow-hidden">
         {/* Sidebar on the left */}
-        <aside className="w-60 bg-card p-4 border-r">
+        <aside className="w-60 bg-card p-4 border-r flex-shrink-0">
             <div className='flex items-center justify-between'>
                 <Button variant="ghost" size="icon"><ArrowLeft /></Button>
                 <div className='flex-grow' />
@@ -194,19 +193,23 @@ export default function WordPage() {
         </aside>
 
         {/* Scrollable area for rulers and paper */}
-        <div className="flex-1 overflow-auto p-8 relative">
-             <HorizontalRuler />
-             <VerticalRuler />
-            <div className="mx-auto bg-white text-black shadow-lg" style={{width: '21cm', minHeight: '29.7cm'}}>
-                <Textarea
-                    value={documentContent}
-                    onChange={(e) => setDocumentContent(e.target.value)}
-                    className="w-full h-full resize-none border-none focus-visible:ring-0 text-base"
-                    style={{paddingTop: '2.54cm', paddingBottom: '2.54cm', paddingLeft: '3cm', paddingRight: '3cm'}}
-                    placeholder="Comece a escrever seu documento..."
-                />
+        <main className="flex-1 overflow-auto bg-secondary p-8">
+          <div className="relative mx-auto" style={{width: 'calc(21cm + 28px)'}}>
+            <HorizontalRuler />
+            <div className='relative' style={{paddingLeft: '28px'}}>
+              <VerticalRuler />
+              <div className="bg-white text-black shadow-lg" style={{width: '21cm', minHeight: '29.7cm'}}>
+                  <Textarea
+                      value={documentContent}
+                      onChange={(e) => setDocumentContent(e.target.value)}
+                      className="w-full h-full resize-none border-none focus-visible:ring-0 text-base"
+                      style={{minHeight: '29.7cm', paddingTop: '2.54cm', paddingBottom: '2.54cm', paddingLeft: '3cm', paddingRight: '3cm'}}
+                      placeholder="Comece a escrever seu documento..."
+                  />
+              </div>
             </div>
-        </div>
+          </div>
+        </main>
       </div>
     </div>
   );
