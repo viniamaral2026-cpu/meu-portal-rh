@@ -14,7 +14,7 @@ import {
 import {
   Undo, Redo, Printer, PaintRoller, Bold, Italic, Underline, CaseSensitive,
   AlignCenter, AlignLeft, AlignRight, AlignJustify,
-  File, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Link, ImageIcon, ChevronDown, Check, Lock,
+  File, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Link, ImageIcon as ImageIconLucide, ChevronDown, Check, Lock,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -24,6 +24,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import Image from 'next/image';
 
 
 function HorizontalRuler() {
@@ -47,16 +48,16 @@ function HorizontalRuler() {
 
 function VerticalRuler() {
     return (
-        <div className="relative h-full w-7 bg-card border-r shadow-sm">
+        <div className="absolute top-0 left-0 h-full w-7 bg-card border-r shadow-sm" style={{ paddingTop: 'calc(1cm + 28px)' }}>
              {/* Ruler ticks - assuming 1cm is approx 37.8px */}
             {Array.from({ length: 27 }).map((_, i) => (
-            <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i) * 37.8}px` }}>
+            <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i * 37.8) + 65}px` }}>
                 <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
                 <div className="w-2 border-t"></div>
             </div>
             ))}
             {Array.from({ length: 27 * 2 }).map((_, i) => (
-                <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i) * 18.9}px` }}></div>
+                <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i * 18.9) + 65}px` }}></div>
             ))}
         </div>
     )
@@ -144,7 +145,7 @@ export default function WordPage() {
             <Button variant="ghost" size="icon" className='h-8 w-8'><Pilcrow size={18} /></Button>
              <Separator orientation='vertical' className='h-6 mx-1' />
             <Button variant="ghost" size="icon" className='h-8 w-8'><Link size={18} /></Button>
-            <Button variant="ghost" size="icon" className='h-8 w-8'><ImageIcon size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><ImageIconLucide size={18} /></Button>
             <Separator orientation='vertical' className='h-6 mx-1' />
             <Button variant="ghost" size="icon" className='h-8 w-8'><AlignLeft size={18} /></Button>
             <Button variant="ghost" size="icon" className='h-8 w-8'><AlignCenter size={18} /></Button>
@@ -170,7 +171,7 @@ export default function WordPage() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex-1 flex overflow-auto bg-secondary">
         {/* Sidebar on the left */}
         <aside className="w-60 bg-card p-4 border-r">
             <div className='flex items-center justify-between'>
@@ -193,21 +194,17 @@ export default function WordPage() {
         </aside>
 
         {/* Scrollable area for rulers and paper */}
-        <div className="flex-1 overflow-auto bg-secondary p-8">
-            <div className="mx-auto" style={{ width: 'calc(21cm + 28px)' }}>
-                <HorizontalRuler />
-                <div className="flex">
-                    <VerticalRuler />
-                    <div className="bg-white text-black shadow-lg" style={{width: '21cm', minHeight: '29.7cm'}}>
-                        <Textarea
-                            value={documentContent}
-                            onChange={(e) => setDocumentContent(e.target.value)}
-                            className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-16"
-                            style={{paddingTop: '1cm', paddingBottom: '1cm', paddingLeft: '1cm', paddingRight: '1cm'}}
-                            placeholder="Comece a escrever seu documento..."
-                        />
-                    </div>
-                </div>
+        <div className="flex-1 overflow-auto p-8 relative">
+             <HorizontalRuler />
+             <VerticalRuler />
+            <div className="mx-auto bg-white text-black shadow-lg" style={{width: '21cm', minHeight: '29.7cm'}}>
+                <Textarea
+                    value={documentContent}
+                    onChange={(e) => setDocumentContent(e.target.value)}
+                    className="w-full h-full resize-none border-none focus-visible:ring-0 text-base"
+                    style={{paddingTop: '2.54cm', paddingBottom: '2.54cm', paddingLeft: '3cm', paddingRight: '3cm'}}
+                    placeholder="Comece a escrever seu documento..."
+                />
             </div>
         </div>
       </div>
