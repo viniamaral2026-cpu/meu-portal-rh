@@ -53,6 +53,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import Image from 'next/image';
 import type { Employee } from './employees/page';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useRouter } from 'next/navigation';
 
 // Lazy load all page components for better performance
 const DashboardPage = lazy(() => import('./page'));
@@ -279,6 +280,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const [openTabs, setOpenTabs] = useState<Tab[]>([
     { id: 'dashboard', title: 'Dashboard Principal' },
     { id: 'employees', title: 'Consulta de Colaboradores' },
@@ -311,6 +313,11 @@ export default function DashboardLayout({
     });
   };
   
+  const handleLogout = () => {
+    // Here you would typically clear session, tokens, etc.
+    router.push('/');
+  };
+
   const dashboardContextValue = {
     openTab,
   };
@@ -328,9 +335,22 @@ export default function DashboardLayout({
                     </Button>
                 ))}
             </div>
-            <div className='text-xs opacity-80'>
-                Minha Empresa Calçados | Unidade Matriz | Usuário: Admin
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="text-xs opacity-80 h-auto py-1 px-3">
+                    Minha Empresa Calçados | Unidade Matriz | Usuário: Admin
+                    <ChevronDown className="ml-2 h-3 w-3" />
+                  </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sair</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <div className='flex items-center gap-2'>
                 <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Sistema</Button>
                 <div className='flex items-center'>
@@ -482,5 +502,3 @@ export default function DashboardLayout({
     </div>
   );
 }
-
-    
