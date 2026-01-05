@@ -116,7 +116,6 @@ const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
 const ControleJornadaPage = lazy(() => import('./pages/controle-jornada/page'));
 const MonitoramentoUsuariosPage = lazy(() => import('./pages/monitoramento-usuarios/page'));
 const FiliaisPage = lazy(() => import('./pages/filiais/page'));
-const PortalColaboradorPage = lazy(() => import('./pages/portal-colaborador/page'));
 const PortalCarreirasPage = lazy(() => import('./portal-carreiras/page'));
 
 
@@ -270,7 +269,6 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'controle-jornada': ControleJornadaPage,
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
   'filiais': FiliaisPage,
-  'portal-colaborador': PortalColaboradorPage,
   'portal-carreiras': PortalCarreirasPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
@@ -325,6 +323,16 @@ export default function DashboardLayout({
   const [currentEnvironment, setCurrentEnvironment] = useState('production');
 
   const openTab = (tab: Tab) => {
+    // Handle external links for portals
+    if (tab.id === 'portal-colaborador') {
+        window.open('/portal-colaborador/login', '_blank');
+        return;
+    }
+    if (tab.id === 'portal-carreiras') {
+        window.open('/portal-carreiras/page.tsx', '_blank'); // This should be a proper route
+        return;
+    }
+
     if (!openTabs.find(t => t.id === tab.id)) {
       setOpenTabs(prev => [...prev, tab]);
     }

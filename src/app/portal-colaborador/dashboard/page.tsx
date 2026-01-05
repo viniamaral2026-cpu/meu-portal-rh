@@ -40,7 +40,7 @@ const notices = [
     { title: "Pesquisa de Clima Organizacional", date: "25/06/2024", read: false },
 ]
 
-export default function PortalColaboradorPage() {
+export default function PortalColaboradorDashboardPage() {
     return (
         <div className="p-4 bg-muted/20 min-h-full">
             <div className="max-w-7xl mx-auto space-y-6">
