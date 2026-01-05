@@ -28,7 +28,7 @@ import Image from 'next/image';
 
 function HorizontalRuler() {
   return (
-    <div className="sticky top-0 z-10 h-7 w-full bg-secondary pl-[calc(1cm)] pr-[calc(1cm)]">
+    <div className="sticky top-0 z-10 h-7 w-full bg-secondary">
       <div className="relative h-full w-full border-b border-l border-r bg-card shadow-sm pl-4">
         {/* Ruler ticks - assuming 1cm is approx 37.8px */}
         {Array.from({ length: 19 }).map((_, i) => (
@@ -47,16 +47,16 @@ function HorizontalRuler() {
 
 function VerticalRuler() {
     return (
-        <div className="absolute top-0 left-0 h-full w-7 bg-card border-r shadow-sm pt-[calc(1cm)]">
+        <div className="absolute top-0 left-0 h-full w-7 bg-card border-r shadow-sm">
              {/* Ruler ticks - assuming 1cm is approx 37.8px */}
             {Array.from({ length: 27 }).map((_, i) => (
-            <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i * 37.8) + 38}px` }}>
+            <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i * 37.8)}px` }}>
                 <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
                 <div className="w-2 border-t"></div>
             </div>
             ))}
             {Array.from({ length: 27 * 2 }).map((_, i) => (
-                <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i * 18.9) + 38}px` }}></div>
+                <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i * 18.9)}px` }}></div>
             ))}
         </div>
     )
@@ -196,17 +196,23 @@ export default function WordPage() {
         <main className="flex-1 overflow-auto bg-secondary p-8">
           <div className="relative mx-auto" style={{width: 'calc(21cm + 28px)'}}>
             <HorizontalRuler />
-            <div className='relative' style={{paddingLeft: '28px'}}>
-              <VerticalRuler />
-              <div className="bg-white text-black shadow-lg" style={{width: '21cm', minHeight: '29.7cm'}}>
-                  <Textarea
-                      value={documentContent}
-                      onChange={(e) => setDocumentContent(e.target.value)}
-                      className="w-full h-full resize-none border-none focus-visible:ring-0 text-base"
-                      style={{minHeight: '29.7cm', paddingTop: '2.54cm', paddingBottom: '2.54cm', paddingLeft: '3cm', paddingRight: '3cm'}}
-                      placeholder="Comece a escrever seu documento..."
-                  />
-              </div>
+            <div className="flex">
+                <VerticalRuler />
+                <div 
+                    className="bg-white text-black shadow-lg"
+                    style={{
+                        width: '21cm', 
+                        minHeight: '29.7cm'
+                    }}
+                >
+                    <Textarea
+                        value={documentContent}
+                        onChange={(e) => setDocumentContent(e.target.value)}
+                        className="w-full h-full resize-none border-none focus-visible:ring-0 text-base bg-white"
+                        style={{minHeight: '29.7cm', paddingTop: '2.54cm', paddingBottom: '2.54cm', paddingLeft: '3cm', paddingRight: '3cm'}}
+                        placeholder="Comece a escrever seu documento..."
+                    />
+                </div>
             </div>
           </div>
         </main>
