@@ -40,8 +40,12 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-sm">
+    <div 
+      className="flex min-h-screen items-center justify-center p-4 bg-cover bg-center"
+      style={{ backgroundImage: "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4r53TM4p6hAtUwfv8JOz32i0drj75mueYBQ&s')" }}
+    >
+      <div className="absolute inset-0 bg-black/50" />
+      <Card className="w-full max-w-sm z-10">
         <CardHeader className="text-center">
           <MeuRHLogo className="w-24 mx-auto mb-4" />
           <CardTitle className="text-2xl">Acessar o MeuRH</CardTitle>
