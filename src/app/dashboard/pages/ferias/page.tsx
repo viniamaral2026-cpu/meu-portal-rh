@@ -1,15 +1,18 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function FeriasPage() {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Férias</CardTitle>
-                <CardDescription>Gerencie as férias dos colaboradores.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">Conteúdo da página de Férias em breve.</p>
-            </CardContent>
-        </Card>
+        <div className="p-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Férias</CardTitle>
+                    <CardDescription>Gerencie o controle de períodos aquisitivos, programação e cálculo de férias dos colaboradores.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">Interface para solicitação, aprovação e visualização do histórico de férias.</p>
+                </CardContent>
+            </Card>
+        </div>
     );
 }

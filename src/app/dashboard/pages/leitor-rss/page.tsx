@@ -1,15 +1,18 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function LeitorRssPage() {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Leitor RSS</CardTitle>
-                <CardDescription>Acompanhe seus feeds RSS.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">Conteúdo da página do Leitor RSS em breve.</p>
-            </CardContent>
-        </Card>
+        <div className="p-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Leitor de RSS</CardTitle>
+                    <CardDescription>Acompanhe notícias e atualizações de legislação trabalhista e outros temas.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">Agregador de notícias para manter você informado diretamente pelo sistema.</p>
+                </CardContent>
+            </Card>
+        </div>
     );
 }

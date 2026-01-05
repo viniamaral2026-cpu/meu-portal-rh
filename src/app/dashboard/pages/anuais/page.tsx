@@ -1,15 +1,18 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function AnuaisPage() {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Anuais</CardTitle>
-                <CardDescription>Gerencie as obrigações anuais como 13º salário e DIRF.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">Conteúdo da página de Anuais em breve.</p>
-            </CardContent>
-        </Card>
+        <div className="p-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Obrigações Anuais</CardTitle>
+                    <CardDescription>Gerencie as obrigações anuais como 13º salário, DIRF e RAIS.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">Controle e geração de relatórios para as principais obrigações anuais.</p>
+                </CardContent>
+            </Card>
+        </div>
     );
 }

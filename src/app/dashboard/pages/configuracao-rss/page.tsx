@@ -1,15 +1,18 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function ConfiguracaoRssPage() {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Configuração RSS</CardTitle>
-                <CardDescription>Configure os parâmetros do serviço de RSS.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">Conteúdo da página de Configuração RSS em breve.</p>
-            </CardContent>
-        </Card>
+        <div className="p-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Configuração RSS</CardTitle>
+                    <CardDescription>Configure os parâmetros do serviço de RSS, como frequência de atualização.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">Ajustes gerais do serviço de RSS.</p>
+                </CardContent>
+            </Card>
+        </div>
     );
 }

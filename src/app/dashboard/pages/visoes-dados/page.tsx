@@ -1,15 +1,18 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function VisoesDadosPage() {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Visões de Dados</CardTitle>
-                <CardDescription>Crie e gerencie visões de dados personalizadas.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">Conteúdo da página de Visões de Dados em breve.</p>
-            </CardContent>
-        </Card>
+        <div className="p-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Visões de Dados</CardTitle>
+                    <CardDescription>Crie e gerencie visões de dados personalizadas para consultas rápidas.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">Monte suas próprias tabelas e consultas para acessar as informações que mais importam.</p>
+                </CardContent>
+            </Card>
+        </div>
     );
 }

@@ -1,15 +1,18 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function RescisaoPage() {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>Rescisão</CardTitle>
-                <CardDescription>Gerencie os processos de rescisão de contrato.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">Conteúdo da página de Rescisão em breve.</p>
-            </CardContent>
-        </Card>
+        <div className="p-4">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Rescisão</CardTitle>
+                    <CardDescription>Execute e gerencie os processos de rescisão de contrato de trabalho.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">Cálculo de verbas rescisórias, geração de termos e documentação necessária.</p>
+                </CardContent>
+            </Card>
+        </div>
     );
 }
