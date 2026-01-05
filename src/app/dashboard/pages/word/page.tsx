@@ -30,17 +30,17 @@ import Image from 'next/image';
 
 function HorizontalRuler() {
   return (
-    <div className="sticky top-0 z-10 h-7 w-full bg-secondary" style={{ paddingLeft: 'calc(50% - 21cm / 2)', paddingRight: 'calc(50% - 21cm / 2)' }}>
-      <div className="relative h-full w-full border-b border-l border-r bg-card shadow-sm pl-16 pr-16">
+    <div className="sticky top-0 z-10 h-7 w-full bg-secondary" style={{ paddingLeft: 'calc(50% - 10.5cm)', paddingRight: 'calc(50% - 10.5cm)' }}>
+      <div className="relative h-full w-full border-b border-l border-r bg-card shadow-sm pl-[1cm] pr-[1cm]">
         {/* Ruler ticks - assuming 1cm is approx 37.8px */}
-        {Array.from({ length: 16 }).map((_, i) => (
-          <div key={`cm-${i}`} className="absolute top-2 h-5" style={{ left: `${(i + 1) * 37.8}px` }}>
+        {Array.from({ length: 19 }).map((_, i) => (
+          <div key={`cm-${i}`} className="absolute top-2 h-5" style={{ left: `calc(1cm + ${i * 37.8}px)` }}>
             <span className="absolute -translate-x-1/2 bottom-0 text-xs text-muted-foreground">{i + 1}</span>
             <div className="h-2 border-l"></div>
           </div>
         ))}
-         {Array.from({ length: 16 * 4 }).map((_, i) => (
-            <div key={`mm-${i}`} className="absolute top-4 h-1 border-l" style={{ left: `${(i + 1) * 9.45}px` }}></div>
+         {Array.from({ length: 19 * 4 }).map((_, i) => (
+            <div key={`mm-${i}`} className="absolute top-4 h-1 border-l" style={{ left: `calc(1cm + ${i * 9.45}px)` }}></div>
         ))}
       </div>
     </div>
@@ -49,17 +49,17 @@ function HorizontalRuler() {
 
 function VerticalRuler() {
     return (
-        <div className="absolute left-0 top-0 h-full w-7 bg-secondary" style={{paddingTop: 'calc(118px + 1.75rem)'}}>
+        <div className="absolute left-0 top-0 h-full w-7 bg-secondary" style={{paddingTop: 'calc(118px + 2rem + 1cm)'}}>
              <div className="relative h-full w-full border-r bg-card shadow-sm">
                  {/* Ruler ticks - assuming 1cm is approx 37.8px */}
                 {Array.from({ length: 25 }).map((_, i) => (
-                <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i + 1) * 37.8}px` }}>
+                <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i) * 37.8}px` }}>
                     <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
                     <div className="w-2 border-t"></div>
                 </div>
                 ))}
-                {Array.from({ length: 25 * 4 }).map((_, i) => (
-                    <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i + 1) * 9.45}px` }}></div>
+                {Array.from({ length: 25 * 2 }).map((_, i) => (
+                    <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i + 1) * 18.9}px` }}></div>
                 ))}
              </div>
         </div>
@@ -102,6 +102,7 @@ export default function WordPage() {
                      <Image src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-32dp/logo_meet_2020q4_color_2x_web_32dp.png" alt="Meet" width={20} height={20} />
                 </Button>
                 <Button className="bg-blue-200 hover:bg-blue-300 text-blue-800 font-medium">
+                    <Lock className="mr-2 h-4 w-4" />
                     Compartilhar
                 </Button>
             </div>
@@ -177,9 +178,9 @@ export default function WordPage() {
             <div className='flex-grow' />
 
             <Button variant="ghost" className='h-8 px-3 text-sm'>
-                <Pilcrow className='mr-2' />
+                <Pilcrow className='mr-2 h-4 w-4' />
                 Edição
-                <ChevronDown className='ml-2' />
+                <ChevronDown className='ml-2 h-4 w-4' />
             </Button>
       </div>
 
@@ -207,11 +208,11 @@ export default function WordPage() {
 
         <VerticalRuler />
         <HorizontalRuler />
-        <div className="bg-white text-black shadow-lg mx-auto relative" style={{width: '21cm', minHeight: '29.7cm'}}>
+        <div className="bg-white text-black shadow-lg mx-auto relative" style={{width: '21cm', minHeight: '29.7cm', paddingTop: '1cm', paddingBottom: '1cm', paddingLeft: '1cm', paddingRight: '1cm' }}>
             <Textarea
                 value={documentContent}
                 onChange={(e) => setDocumentContent(e.target.value)}
-                className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-16 pt-4"
+                className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-4"
                 placeholder="Comece a escrever seu documento..."
             />
         </div>
