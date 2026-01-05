@@ -16,34 +16,34 @@ const menuItems = [
 
 export function HeaderPrimary() {
   return (
-    <header className="bg-header-primary-background shadow-sm border-b border-black/10">
-      <nav className="px-4 h-10 flex items-center justify-between text-header-foreground">
-        <div className="flex items-center gap-2">
-          <a href="#" className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-black/10">
-            <LayoutGrid className="h-5 w-5" />
+    <header className="bg-card shadow-sm border-b">
+      <nav className="px-4 h-9 flex items-center justify-between text-foreground">
+        <div className="flex items-center gap-1">
+          <a href="#" className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-accent">
+            <LayoutGrid className="h-4 w-4" />
           </a>
           {menuItems.map((item, index) => (
             <a
               key={index}
               href="#"
-              className={`px-3 py-1.5 rounded-md text-sm font-medium ${
+              className={`px-2 py-1 rounded-md text-sm font-medium ${
                 item === 'Folha Mensal'
-                  ? 'bg-black/20'
+                  ? 'bg-muted'
                   : ''
-              } hover:bg-black/10`}
+              } hover:bg-accent`}
             >
               {item}
             </a>
           ))}
         </div>
-        <div className="flex items-center gap-4 text-sm">
-           <div className="flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-md hover:bg-black/10">
+        <div className="flex items-center gap-2 text-sm">
+           <div className="flex items-center gap-1 cursor-pointer px-2 py-1 rounded-md hover:bg-accent">
               <span>Gestão</span>
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="h-3.5 w-3.5" />
             </div>
-            <div className="flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-md hover:bg-black/10">
+            <div className="flex items-center gap-1 cursor-pointer px-2 py-1 rounded-md hover:bg-accent">
               <span>Ambiente</span>
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown className="h-3.5 w-3.5" />
             </div>
         </div>
       </nav>

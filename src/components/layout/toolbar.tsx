@@ -73,40 +73,40 @@ const toolbarGroups = [
 
 export function Toolbar() {
   return (
-    <div className="bg-card px-2 py-1 border-b flex items-start justify-between">
-      <div className="flex items-start gap-2">
+    <div className="bg-card px-2 py-1 border-b flex items-start justify-between h-[68px]">
+      <div className="flex items-start gap-1">
         {toolbarGroups.map((group, groupIndex) => (
-          <div key={groupIndex} className="flex items-start">
-            <div className="flex flex-col items-center">
-              <div className="flex items-center gap-1">
+          <div key={groupIndex} className="flex items-start h-full">
+            <div className="flex flex-col items-center justify-between h-full">
+              <div className="flex items-center gap-0.5">
                 {group.items.map((item, itemIndex) => (
                   <div
                     key={itemIndex}
-                    className="flex flex-col items-center text-xs text-center cursor-pointer p-1 rounded hover:bg-accent w-14"
+                    className="flex flex-col items-center text-xs text-center cursor-pointer p-1 rounded hover:bg-accent w-12"
                   >
-                    <item.icon className="h-5 w-5 text-gray-600 mb-1" />
-                    <span className="text-gray-700">{item.label}</span>
+                    <item.icon className="h-4 w-4 text-gray-600 mb-0.5" />
+                    <span className="text-gray-700 leading-tight text-[11px]">{item.label}</span>
                   </div>
                 ))}
               </div>
-              <span className="text-xs text-gray-500 font-semibold mt-1">
+              <span className="text-[10px] text-gray-500 font-semibold -mt-1">
                 {group.label}
               </span>
             </div>
-            {groupIndex < toolbarGroups.length -1 && <Separator orientation="vertical" className="h-16 mx-2" />}
+            {groupIndex < toolbarGroups.length -1 && <Separator orientation="vertical" className="h-full mx-1" />}
           </div>
         ))}
       </div>
-      <div className="flex items-center h-16">
-         <Separator orientation="vertical" className="h-16 mx-2" />
-          <div className="flex flex-col items-center justify-center h-full px-2">
-            <button className="p-1 hover:bg-accent rounded-md"><ChevronUp className="h-4 w-4" /></button>
-            <div className="w-0.5 h-6 bg-gray-300 my-1 rounded-full"></div>
-            <button className="p-1 hover:bg-accent rounded-md"><ChevronDown className="h-4 w-4" /></button>
+      <div className="flex items-center h-full">
+         <Separator orientation="vertical" className="h-full mx-1" />
+          <div className="flex flex-col items-center justify-center h-full px-1">
+            <button className="p-0.5 hover:bg-accent rounded-sm"><ChevronUp className="h-3.5 w-3.5" /></button>
+            <div className="w-0.5 h-4 bg-gray-300 my-1 rounded-full"></div>
+            <button className="p-0.5 hover:bg-accent rounded-sm"><ChevronDown className="h-3.5 w-3.5" /></button>
           </div>
-        <div className="flex flex-col items-center text-xs text-center cursor-pointer p-1 rounded hover:bg-accent w-16">
-          <LayoutGrid className="h-5 w-5 text-gray-600 mb-1" />
-          <span className="text-gray-700">Painéis</span>
+        <div className="flex flex-col items-center justify-center text-xs text-center cursor-pointer p-1 rounded hover:bg-accent w-14 h-full">
+          <LayoutGrid className="h-4 w-4 text-gray-600 mb-0.5" />
+          <span className="text-gray-700 leading-tight text-[11px]">Painéis</span>
         </div>
       </div>
     </div>

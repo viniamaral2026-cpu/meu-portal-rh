@@ -31,9 +31,9 @@
     --chart-5: 260 70% 60%;
 
 
-    --header-top-background: hsl(200, 45%, 35%);
-    --header-primary-background: hsl(200, 45%, 35%);
-    --header-foreground: hsl(210, 20%, 94%);
+    --header-top-background: hsl(0, 0%, 100%);
+    --header-primary-background: hsl(0, 0%, 100%);
+    --header-foreground: hsl(224, 71.4%, 4.1%);
   }
 }
 
@@ -43,6 +43,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 13px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
