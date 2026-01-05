@@ -476,6 +476,9 @@ export default function DashboardLayout({
           </div>
         )}
       </main>
+      <footer className="p-1 text-center text-xs bg-card text-card-foreground border-t">
+        Desenvolvido por Tech Ops 2026 | Versão 0.0.1
+      </footer>
     </div>
   );
 }
