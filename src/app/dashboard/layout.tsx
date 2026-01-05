@@ -111,6 +111,7 @@ const GestaoPessoasPage = lazy(() => import('./pages/gestao-pessoas/page'));
 const GestaoFinanceiraPage = lazy(() => import('./pages/gestao-financeira/page'));
 const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
 const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/page'));
+const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
 
 
 const topBarIcons = [
@@ -137,7 +138,7 @@ const navMenuItems = [
 const navRightIcons = [
     { id: 'chevron-up', icon: <ChevronUp size={16} /> },
     { id: 'atualizacao-sistema', icon: <Globe size={16} /> },
-    { id: 'file-text', icon: <FileText size={16} /> },
+    { id: 'documentacao', icon: <FileText size={16} /> },
     { id: 'chevron-down', icon: <ChevronDown size={16} /> },
     { id: 'help-circle', icon: <HelpCircle size={16} /> },
 ];
@@ -257,6 +258,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'gestao-financeira': GestaoFinanceiraPage,
   'gestao-producao': GestaoProducaoPage,
   'atualizacao-sistema': AtualizacaoSistemaPage,
+  'documentacao': DocumentacaoPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -351,6 +353,9 @@ export default function DashboardLayout({
     switch (id) {
         case 'atualizacao-sistema':
             openTab({ id: 'atualizacao-sistema', title: 'Atualização do Sistema' });
+            break;
+        case 'documentacao':
+            openTab({ id: 'documentacao', title: 'Documentação do Sistema' });
             break;
         // Add other cases for other icons if needed
         default:
@@ -586,5 +591,3 @@ export default function DashboardLayout({
     </div>
   );
 }
-
-    
