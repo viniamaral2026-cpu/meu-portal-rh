@@ -44,8 +44,7 @@ import {
   ExternalLink,
   Sigma,
 } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import React, { useState } from 'react';
 import { MeuRHLogo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -86,66 +85,94 @@ const toolbarItems = [
     {
         group: 'Utilitários',
         items: [
-            { icon: <Calculator size={24} />, label: 'Calculadora' },
-            { icon: <BookUser size={24} />, label: 'Agenda' },
-            { icon: <CalendarDays size={24} />, label: 'Calendários' },
-            { icon: <Share2 size={24} />, label: 'TOTVS Compartilhamento' },
-            { icon: <Cuboid size={24} />, label: 'Cubo' },
-            { icon: <Sheet size={24} />, label: 'Planilha Net' },
-            { icon: <FunctionSquare size={24} />, label: 'Fórmula Visual' },
+            { id: 'calculator', icon: <Calculator size={24} />, label: 'Calculadora' },
+            { id: 'agenda', icon: <BookUser size={24} />, label: 'Agenda' },
+            { id: 'calendars', icon: <CalendarDays size={24} />, label: 'Calendários' },
+            { id: 'sharing', icon: <Share2 size={24} />, label: 'TOTVS Compartilhamento' },
+            { id: 'cube', icon: <Cuboid size={24} />, label: 'Cubo' },
+            { id: 'spreadsheet', icon: <Sheet size={24} />, label: 'Planilha Net' },
+            { id: 'formula', icon: <FunctionSquare size={24} />, label: 'Fórmula Visual' },
         ]
     },
     {
         group: 'Ferramentas de Análise',
         items: [
-            { icon: <FileText size={24} />, label: 'RM Reports' },
-            { icon: <FilePlus2 size={24} />, label: 'Gerador de Relatórios' },
-            { icon: <Database size={24} />, label: 'Visões de Dados' },
-            { icon: <LayoutDashboard size={24} />, label: 'Painéis de Cenários' },
+            { id: 'reports', icon: <FileText size={24} />, label: 'RM Reports' },
+            { id: 'report-generator', icon: <FilePlus2 size={24} />, label: 'Gerador de Relatórios' },
+            { id: 'data-views', icon: <Database size={24} />, label: 'Visões de Dados' },
+            { id: 'dashboards', icon: <LayoutDashboard size={24} />, label: 'Painéis de Cenários' },
         ]
     },
     {
         group: 'Gráficos',
         items: [
-            { icon: <Mail size={24} />, label: 'Gerador de Saída' },
-            { icon: <BarChart size={24} />, label: 'Gráfico' },
-            { icon: <ClipboardList size={24} />, label: 'Categorias' },
-            { icon: <Sigma size={24} />, label: 'Fontes de Gráficos' },
+            { id: 'output-generator', icon: <Mail size={24} />, label: 'Gerador de Saída' },
+            { id: 'chart', icon: <BarChart size={24} />, label: 'Gráfico' },
+            { id: 'categories', icon: <ClipboardList size={24} />, label: 'Categorias' },
+            { id: 'chart-sources', icon: <Sigma size={24} />, label: 'Fontes de Gráficos' },
         ]
     },
     {
         group: 'RSS',
         items: [
-            { icon: <Rss size={24} />, label: 'Leitor RSS' },
-            { icon: <PlayCircle size={24} />, label: 'Iniciar Serviço' },
-            { icon: <Settings size={24} />, label: 'Configuração' },
-            { icon: <Rss size={24} />, label: 'Canais RSS' },
+            { id: 'rss-reader', icon: <Rss size={24} />, label: 'Leitor RSS' },
+            { id: 'start-service', icon: <PlayCircle size={24} />, label: 'Iniciar Serviço' },
+            { id: 'rss-config', icon: <Settings size={24} />, label: 'Configuração' },
+            { id: 'rss-channels', icon: <Rss size={24} />, label: 'Canais RSS' },
         ]
     },
     {
         group: 'RM Conec',
         items: [
-             { icon: <Users size={24} />, label: 'Meus Canais' },
-             { icon: <LinkIcon size={24} />, label: 'RM Conector' },
+             { id: 'my-channels', icon: <Users size={24} />, label: 'Meus Canais' },
+             { id: 'rm-connector', icon: <LinkIcon size={24} />, label: 'RM Conector' },
         ]
     },
     {
         group: 'Comunicação',
         items: [
-             { icon: <Wrench size={24} />, label: 'Fontes' },
-             { icon: <Users size={24} />, label: 'Contas' },
-             { icon: <ExternalLink size={24} />, label: 'Aplicativos Externos' },
-             { icon: <ExternalLink size={24} />, label: 'Aplicativos SAML' },
+             { id: 'comm-sources', icon: <Wrench size={24} />, label: 'Fontes' },
+             { id: 'comm-accounts', icon: <Users size={24} />, label: 'Contas' },
+             { id: 'external-apps', icon: <ExternalLink size={24} />, label: 'Aplicativos Externos' },
+             { id: 'saml-apps', icon: <ExternalLink size={24} />, label: 'Aplicativos SAML' },
         ]
     },
 ];
+
+const pageComponents = {
+  employees: EmployeesPage,
+  dashboard: DashboardPage,
+};
+
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  const [openTabs, setOpenTabs] = useState([
+    { id: 'employees', title: 'Consulta de Colaboradores' },
+    { id: 'dashboard', title: 'Dashboard Principal' },
+  ]);
+  const [activeTab, setActiveTab] = useState('employees');
+
+  const openTab = (tab: { id: string, title: string }) => {
+    if (!openTabs.find(t => t.id === tab.id)) {
+      setOpenTabs(prev => [...prev, tab]);
+    }
+    setActiveTab(tab.id);
+  };
+
+  const closeTab = (e: React.MouseEvent, tabId: string) => {
+    e.stopPropagation();
+    setOpenTabs(prev => {
+      const newTabs = prev.filter(t => t.id !== tabId);
+      if (activeTab === tabId) {
+        setActiveTab(newTabs[newTabs.length - 1]?.id || '');
+      }
+      return newTabs;
+    });
+  };
 
   return (
     <div className="flex flex-col h-screen bg-secondary text-sm text-white">
@@ -207,7 +234,12 @@ export default function DashboardLayout({
                 <div className="flex flex-col items-center justify-center h-full px-2">
                     <div className='flex items-center justify-center gap-2 h-full'>
                     {group.items.map((item) => (
-                    <Button variant="ghost" key={item.label} className="flex flex-col items-center justify-center h-full p-1 w-20 text-xs font-normal gap-1">
+                    <Button 
+                      variant="ghost" 
+                      key={item.id}
+                      onClick={() => openTab({ id: item.id, title: item.label })}
+                      className="flex flex-col items-center justify-center h-full p-1 w-20 text-xs font-normal gap-1"
+                    >
                         {item.icon}
                         <span className='w-full text-center truncate'>{item.label}</span>
                     </Button>
@@ -223,17 +255,30 @@ export default function DashboardLayout({
       </header>
 
       <main className="flex-1 p-4 overflow-auto bg-background text-foreground">
-        <Tabs defaultValue="employees" className='h-full flex flex-col'>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
           <TabsList>
-            <TabsTrigger value="employees">Consulta de Colaboradores</TabsTrigger>
-            <TabsTrigger value="dashboard">Dashboard Principal</TabsTrigger>
+            {openTabs.map(tab => (
+              <TabsTrigger key={tab.id} value={tab.id} className="relative pr-8">
+                {tab.title}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
+                  onClick={(e) => closeTab(e, tab.id)}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              </TabsTrigger>
+            ))}
           </TabsList>
-          <TabsContent value="employees" className='bg-card border rounded-b-lg mt-0 flex-1'>
-            <EmployeesPage />
-          </TabsContent>
-          <TabsContent value="dashboard" className='bg-card border rounded-b-lg mt-0 p-4 flex-1'>
-            <DashboardPage />
-          </TabsContent>
+          {openTabs.map(tab => {
+            const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
+            return (
+              <TabsContent key={tab.id} value={tab.id} className='bg-card border rounded-b-lg mt-0 flex-1'>
+                {PageComponent ? <PageComponent /> : <div className="p-4">Conteúdo para {tab.title}</div>}
+              </TabsContent>
+            )
+          })}
         </Tabs>
       </main>
     </div>
