@@ -93,6 +93,7 @@ import AplicativosSamlPage from './pages/aplicativos-saml/page';
 import VisualizarColaboradorPage from './pages/visualizar-colaborador/page';
 import EditarColaboradorPage from './pages/editar-colaborador/page';
 import WordPage from './pages/word/page';
+import AssistenteAiPage from './pages/assistente-ai/page';
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -163,6 +164,7 @@ const toolbarItems = [
             { id: 'canais-rss', icon: <Rss size={20} />, label: 'Canais RSS' },
             { id: 'planilha', icon: <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
             { id: 'word', icon: <Image src="https://img.icons8.com/?size=50&id=11571&format=png" width={20} height={20} alt="Word Icon" />, label: 'Word' },
+            { id: 'assistente-ai', icon: <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Gemini' },
         ]
     },
 ];
@@ -230,6 +232,7 @@ const pageComponents: { [key: string]: React.ComponentType<PageComponentProps> }
   'aplicativos-externos': AplicativosExternosPage,
   'aplicativos-saml': AplicativosSamlPage,
   'word': WordPage,
+  'assistente-ai': AssistenteAiPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
