@@ -12,7 +12,7 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar';
 import {
-  Undo, Redo, Printer, PaintFormat, Bold, Italic, Underline, CaseSensitive,
+  Undo, Redo, Printer, PaintRoller, Bold, Italic, Underline, CaseSensitive,
   AlignCenter, AlignLeft, AlignRight, AlignJustify,
   File, MessageSquare, Image as ImageIcon, Link, ChevronDown, Check, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser
 } from 'lucide-react';
@@ -25,6 +25,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 
 function HorizontalRuler() {
@@ -112,7 +113,7 @@ export default function WordPage() {
             <Button variant="ghost" size="icon" className='h-8 w-8'><Redo size={18} /></Button>
             <Button variant="ghost" size="icon" className='h-8 w-8'><Printer size={18} /></Button>
             <Button variant="ghost" size="icon" className='h-8 w-8'><CaseSensitive size={18} /></Button>
-            <Button variant="ghost" size="icon" className='h-8 w-8'><PaintFormat size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><PaintRoller size={18} /></Button>
             <Separator orientation='vertical' className='h-6 mx-1' />
              <Select defaultValue='100'>
                 <SelectTrigger className="w-24 h-8">
