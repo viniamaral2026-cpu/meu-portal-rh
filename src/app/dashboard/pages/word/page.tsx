@@ -14,7 +14,7 @@ import {
 import {
   Undo, Redo, Printer, PaintRoller, Bold, Italic, Underline, CaseSensitive,
   AlignCenter, AlignLeft, AlignRight, AlignJustify,
-  File, MessageSquare, Image as ImageIcon, Link, ChevronDown, Check, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Lock,
+  File, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Link, ImageIcon, ChevronDown
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -24,8 +24,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
 
 
 function HorizontalRuler() {
@@ -35,7 +33,7 @@ function HorizontalRuler() {
         {/* Ruler ticks - assuming 1cm is approx 37.8px */}
         {Array.from({ length: 19 }).map((_, i) => (
           <div key={`cm-${i}`} className="absolute top-2 h-5" style={{ left: `calc(1cm + ${i * 37.8}px)` }}>
-            <span className="absolute -translate-x-1/2 bottom-0 text-xs text-muted-foreground">{i + 1}</span>
+            <span className="absolute -translate-y-1/2 bottom-0 text-xs text-muted-foreground">{i + 1}</span>
             <div className="h-2 border-l"></div>
           </div>
         ))}
@@ -49,17 +47,17 @@ function HorizontalRuler() {
 
 function VerticalRuler() {
     return (
-        <div className="absolute left-0 top-0 h-full w-7 bg-secondary" style={{paddingTop: 'calc(118px + 2rem + 1cm)'}}>
-             <div className="relative h-full w-full border-r bg-card shadow-sm">
+        <div className="absolute left-0 h-full w-7 bg-secondary" style={{ paddingTop: 'calc(118px + 2rem + 28px)' }}>
+             <div className="relative h-full w-full border-r bg-card shadow-sm pt-[1cm]">
                  {/* Ruler ticks - assuming 1cm is approx 37.8px */}
-                {Array.from({ length: 25 }).map((_, i) => (
-                <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i) * 37.8}px` }}>
+                {Array.from({ length: 27 }).map((_, i) => (
+                <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `calc(1cm + ${i * 37.8}px)` }}>
                     <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
                     <div className="w-2 border-t"></div>
                 </div>
                 ))}
-                {Array.from({ length: 25 * 2 }).map((_, i) => (
-                    <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i + 1) * 18.9}px` }}></div>
+                {Array.from({ length: 27 * 2 }).map((_, i) => (
+                    <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `calc(1cm + ${(i) * 18.9}px)` }}></div>
                 ))}
              </div>
         </div>
@@ -146,7 +144,6 @@ export default function WordPage() {
             <Button variant="ghost" size="icon" className='h-8 w-8'><Pilcrow size={18} /></Button>
              <Separator orientation='vertical' className='h-6 mx-1' />
             <Button variant="ghost" size="icon" className='h-8 w-8'><Link size={18} /></Button>
-            <Button variant="ghost" size="icon" className='h-8 w-8'><MessageSquare size={18} /></Button>
             <Button variant="ghost" size="icon" className='h-8 w-8'><ImageIcon size={18} /></Button>
             <Separator orientation='vertical' className='h-6 mx-1' />
             <Button variant="ghost" size="icon" className='h-8 w-8'><AlignLeft size={18} /></Button>
