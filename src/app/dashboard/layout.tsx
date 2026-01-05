@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { GPWayLogo } from '@/components/icons';
+import { MeuRHLogo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 
 const menuItems = [
@@ -52,8 +52,8 @@ export default function DashboardLayout({
     <SidebarProvider>
       <Sidebar collapsible="icon" className="border-r">
         <SidebarHeader className="p-4">
-          <GPWayLogo className="w-24 group-data-[collapsible=icon]:hidden" />
-          <GPWayLogo className="w-8 hidden group-data-[collapsible=icon]:block" />
+          <MeuRHLogo className="w-24 group-data-[collapsible=icon]:hidden" />
+          <MeuRHLogo className="w-8 hidden group-data-[collapsible=icon]:block" />
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>

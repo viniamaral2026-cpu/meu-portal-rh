@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'GPWay - Gestão de Fábricas',
+  title: 'MeuRH - Gestão de Fábricas',
   description: 'Software de Gestão para Fábricas de Calçados',
 };
 

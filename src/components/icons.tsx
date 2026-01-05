@@ -1,7 +1,7 @@
 import type { SVGProps } from 'react';
 import { cn } from '@/lib/utils';
 
-export function GPWayLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
+export function MeuRHLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,8 +17,8 @@ export function GPWayLogo({ className, ...props }: SVGProps<SVGSVGElement>) {
         fontWeight="bold"
         className="fill-foreground"
       >
-        GP
-        <tspan className="fill-primary">Way</tspan>
+        Meu
+        <tspan className="fill-primary">RH</tspan>
       </text>
     </svg>
   );

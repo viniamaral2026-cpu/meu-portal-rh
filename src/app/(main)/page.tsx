@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { GPWayLogo } from '@/components/icons';
+import { MeuRHLogo } from '@/components/icons';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,7 +43,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <GPWayLogo className="w-24 mx-auto mb-4" />
+          <MeuRHLogo className="w-24 mx-auto mb-4" />
           <CardTitle className="text-2xl">Acessar Painel</CardTitle>
           <CardDescription>Software de Gestão para Fábricas de Calçados</CardDescription>
         </CardHeader>
