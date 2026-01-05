@@ -47,17 +47,17 @@ function HorizontalRuler() {
 
 function VerticalRuler() {
     return (
-        <div className="absolute left-0 h-full w-7 bg-secondary" style={{ paddingTop: 'calc(118px + 2rem + 28px)' }}>
-             <div className="relative h-full w-full border-r bg-card shadow-sm pt-[1cm]">
+        <div className="absolute left-0 h-full w-7 bg-secondary" style={{ paddingTop: 'calc(118px + 2rem + 28px + 1cm)' }}>
+             <div className="relative h-full w-full border-r bg-card shadow-sm">
                  {/* Ruler ticks - assuming 1cm is approx 37.8px */}
                 {Array.from({ length: 27 }).map((_, i) => (
-                <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `calc(1cm + ${i * 37.8}px)` }}>
+                <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${i * 37.8}px` }}>
                     <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
                     <div className="w-2 border-t"></div>
                 </div>
                 ))}
                 {Array.from({ length: 27 * 2 }).map((_, i) => (
-                    <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `calc(1cm + ${(i) * 18.9}px)` }}></div>
+                    <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i) * 18.9}px` }}></div>
                 ))}
              </div>
         </div>
@@ -70,7 +70,7 @@ export default function WordPage() {
   const [documentTitle, setDocumentTitle] = useState('Documento sem título');
 
   return (
-    <div className="flex flex-col h-full bg-secondary text-sm">
+    <div className="flex flex-col h-full bg-card text-sm">
       {/* Header with Menubar */}
       <div className="p-2 flex items-center justify-between border-b bg-card text-card-foreground shadow-sm">
             <div className="flex items-center gap-2">
@@ -170,9 +170,9 @@ export default function WordPage() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-auto p-8 relative">
-        <aside className='absolute top-8 left-8 w-60 bg-card rounded-lg shadow-sm p-4'>
-            <div className='flex items-center justify-between'>
+      <div className="flex flex-1 bg-secondary overflow-auto">
+        <div className="w-60 bg-card p-4">
+             <div className='flex items-center justify-between'>
                 <Button variant="ghost" size="icon"><ArrowLeft /></Button>
                 <div className='flex-grow' />
                 <Button variant="ghost" size="icon"><Plus /></Button>
@@ -189,17 +189,19 @@ export default function WordPage() {
                 </div>
                 <p className='text-xs text-muted-foreground mt-2'>Os títulos que forem adicionados ao documento aparecerão aqui.</p>
             </div>
-        </aside>
+        </div>
 
-        <VerticalRuler />
-        <HorizontalRuler />
-        <div className="bg-white text-black shadow-lg mx-auto relative" style={{width: '21cm', minHeight: '29.7cm', paddingTop: '1cm', paddingBottom: '1cm', paddingLeft: '1cm', paddingRight: '1cm' }}>
-            <Textarea
-                value={documentContent}
-                onChange={(e) => setDocumentContent(e.target.value)}
-                className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-4"
-                placeholder="Comece a escrever seu documento..."
-            />
+        <div className="flex-1 p-8 relative">
+            <VerticalRuler />
+            <HorizontalRuler />
+            <div className="bg-white text-black shadow-lg mx-auto relative" style={{width: '21cm', minHeight: '29.7cm', paddingTop: '1cm', paddingBottom: '1cm', paddingLeft: '1cm', paddingRight: '1cm' }}>
+                <Textarea
+                    value={documentContent}
+                    onChange={(e) => setDocumentContent(e.target.value)}
+                    className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-4"
+                    placeholder="Comece a escrever seu documento..."
+                />
+            </div>
         </div>
       </div>
     </div>
