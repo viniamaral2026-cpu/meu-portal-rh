@@ -1,5 +1,5 @@
-import GeradorSaidasPage from './gerador-saidas/page';
+import DashboardLayout from './dashboard/layout';
 
 export default function Home() {
-  return <GeradorSaidasPage />;
+  return <DashboardLayout />;
 }
