@@ -12,10 +12,11 @@ import {
 } from '@/components/ui/menubar';
 import {
   Undo, Redo, Printer, Percent, Bold, Italic, Strikethrough, PaintBucket,
-  Merge, AlignLeft, AlignCenter, AlignRight, MoreVertical, Star, MessageSquare, Video,
-  ArrowUp, ArrowDown, ArrowLeft, ArrowRight, CornerUpLeft, Sigma, Baseline, Braces, WrapText,
-  File, Edit, Eye, Plus, Table as TableIcon, BarChart2,
-  Trash2, Copy, Scissors, Minus, ZoomIn, ZoomOut, FileUp, FileDown as FileDownIcon, Lock,
+  Merge, AlignCenter, WrapText,
+  Sigma, Baseline, Braces,
+  File, MessageSquare, Video,
+  Table as TableIcon,
+  Lock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
@@ -168,7 +169,6 @@ export default function PlanilhaPage() {
 
        {/* Bottom Bar for Sheets */}
         <div className="p-1 flex items-center gap-2 border-t bg-card">
-            <Button variant='ghost' size='icon' className='h-7 w-7'><Plus size={18} /></Button>
             <Button variant='ghost' size='icon' className='h-7 w-7'><Braces size={18} /></Button>
             <Button variant='ghost' className='h-7 px-3 bg-green-100 text-green-800 border-b-2 border-green-600 rounded-b-none'>Página1</Button>
         </div>
