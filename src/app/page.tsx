@@ -1,10 +1,5 @@
-import DashboardLayout from './dashboard/layout';
-import InicioPage from './dashboard/pages/inicio/page';
+import GeradorSaidasPage from './gerador-saidas/page';
 
 export default function Home() {
-  return (
-    <DashboardLayout>
-      <InicioPage />
-    </DashboardLayout>
-  );
+  return <GeradorSaidasPage />;
 }
