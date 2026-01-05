@@ -94,18 +94,6 @@ export default function WordPage() {
                     </Menubar>
                 </div>
             </div>
-             <div className="flex items-center gap-2">
-                <Button variant="ghost" size="icon">
-                    <MessageSquare size={20} />
-                </Button>
-                <Button variant="ghost" size="icon">
-                     <Image src="https://fonts.gstatic.com/s/i/productlogos/meet_2020q4/v1/web-32dp/logo_meet_2020q4_color_2x_web_32dp.png" alt="Meet" width={20} height={20} />
-                </Button>
-                <Button className="bg-blue-200 hover:bg-blue-300 text-blue-800 font-medium">
-                    <Lock className="mr-2 h-4 w-4" />
-                    Compartilhar
-                </Button>
-            </div>
       </div>
       
       {/* Toolbar */}
