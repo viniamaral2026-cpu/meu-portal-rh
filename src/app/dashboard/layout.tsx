@@ -112,13 +112,14 @@ const GestaoFinanceiraPage = lazy(() => import('./pages/gestao-financeira/page')
 const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
 const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/page'));
 const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
+const ControleJornadaPage = lazy(() => import('./pages/controle-jornada/page'));
 
 
 const topBarIcons = [
-  { icon: <Clock size={16} /> },
-  { icon: <Users size={16} /> },
-  { icon: <FileDown size={16} /> },
-  { icon: <LayoutGrid size={16} /> },
+  { id: 'controle-jornada', title: 'Controle de Jornada', icon: <Clock size={16} /> },
+  { id: 'users', title: 'Usuários', icon: <Users size={16} /> },
+  { id: 'downloads', title: 'Downloads', icon: <FileDown size={16} /> },
+  { id: 'apps', title: 'Aplicativos', icon: <LayoutGrid size={16} /> },
 ];
 
 const navMenuItems = [
@@ -259,6 +260,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'gestao-producao': GestaoProducaoPage,
   'atualizacao-sistema': AtualizacaoSistemaPage,
   'documentacao': DocumentacaoPage,
+  'controle-jornada': ControleJornadaPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -375,7 +377,7 @@ export default function DashboardLayout({
         <div className="flex h-8 items-center px-2 justify-between bg-[hsl(var(--primary-darker))]">
             <div className='flex items-center gap-2'>
                 {topBarIcons.map((item, index) => (
-                    <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
+                    <Button variant='ghost' size='icon' key={item.id} className='h-6 w-6' onClick={() => openTab({ id: item.id, title: item.title })}>
                         {item.icon}
                     </Button>
                 ))}
