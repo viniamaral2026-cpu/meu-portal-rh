@@ -4,44 +4,50 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
+import { Search, Circle } from "lucide-react";
 import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const activityLog = [
   {
+    id: 1,
     user: 'Alice',
-    action: 'LOGIN',
-    details: 'Login successful from IP 192.168.1.10',
-    timestamp: '2023-10-27 09:00:15',
-    status: 'Success',
+    level: 'Admin',
+    loginTime: '08:30:15',
+    activity: 'Visualizou relatório de folha',
+    status: 'Ativo',
   },
   {
+    id: 2,
     user: 'Bob',
-    action: 'UPDATE_SALARY',
-    details: 'Failed to update salary for employee #123. Insufficient permissions.',
-    timestamp: '2023-10-27 09:05:22',
-    status: 'Failure',
+    level: 'RH',
+    loginTime: '09:05:22',
+    activity: 'Editando cadastro de Carlos',
+    status: 'Ativo',
   },
   {
-    user: 'Alice',
-    action: 'VIEW_REPORT',
-    details: 'Viewed financial report for Q3 2023',
-    timestamp: '2023-10-27 09:08:41',
-    status: 'Success',
-  },
-  {
+    id: 3,
     user: 'Charlie',
-    action: 'CREATE_USER',
-    details: 'Created new user: "dave"',
-    timestamp: '2023-10-27 09:15:03',
-    status: 'Success',
+    level: 'Supervisor',
+    loginTime: '09:15:03',
+    activity: 'Aprovando férias de Daniel',
+    status: 'Ativo',
   },
   {
-    user: 'Bob',
-    action: 'LOGIN_ATTEMPT',
-    details: 'Failed login attempt from IP 203.0.113.45',
-    timestamp: '2023-10-27 09:20:50',
-    status: 'Failure',
+    id: 4,
+    user: 'David',
+    level: 'Operador',
+    loginTime: '09:20:50',
+    activity: 'Visualizando metas de produção',
+    status: 'Inativo',
+  },
+   {
+    id: 5,
+    user: 'Eve',
+    level: 'RH',
+    loginTime: '08:55:10',
+    activity: 'Gerando arquivo SEFIP',
+    status: 'Ativo',
   },
 ];
 
@@ -50,52 +56,69 @@ export default function UserMonitoringPage() {
 
     const filteredLogs = activityLog.filter(log =>
         log.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        log.action.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        log.details.toLowerCase().includes(searchTerm.toLowerCase())
+        log.activity.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        log.level.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    const getStatusColor = (status: string) => {
+        return status === 'Ativo' ? 'text-green-500' : 'text-yellow-500';
+    }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Monitoramento de Atividade dos Usuários</CardTitle>
+        <CardTitle>Monitoramento de Usuários Ativos</CardTitle>
         <CardDescription>
-          Acompanhe as ações e eventos importantes realizados pelos usuários no sistema.
+          Acompanhe em tempo real quem está online e o que estão fazendo no sistema.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="relative mb-4">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Filtrar por usuário, ação ou detalhes..."
-            className="w-full pl-8"
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+        <div className="flex gap-4 mb-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Filtrar por usuário, nível ou atividade..."
+              className="w-full pl-8"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+           <Select defaultValue="all">
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Filtrar por status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os Status</SelectItem>
+                <SelectItem value="ativo">Ativo</SelectItem>
+                <SelectItem value="inativo">Inativo</SelectItem>
+              </SelectContent>
+            </Select>
         </div>
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead className="w-[80px]">Status</TableHead>
               <TableHead>Usuário</TableHead>
-              <TableHead>Ação</TableHead>
-              <TableHead>Detalhes</TableHead>
-              <TableHead>Timestamp</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Nível de Acesso</TableHead>
+              <TableHead>Horário do Login</TableHead>
+              <TableHead>Atividade Atual</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredLogs.map((log, index) => (
-              <TableRow key={index}>
-                <TableCell>{log.user}</TableCell>
+            {filteredLogs.map((log) => (
+              <TableRow key={log.id}>
                 <TableCell>
-                  <Badge variant="outline">{log.action}</Badge>
+                  <div className="flex items-center gap-2">
+                    <Circle className={`h-3 w-3 fill-current ${getStatusColor(log.status)}`} />
+                    <span className="font-medium">{log.status}</span>
+                  </div>
                 </TableCell>
-                <TableCell>{log.details}</TableCell>
-                <TableCell>{log.timestamp}</TableCell>
+                <TableCell className="font-medium">{log.user}</TableCell>
                 <TableCell>
-                  <Badge variant={log.status === 'Success' ? 'default' : 'destructive'}>
-                    {log.status}
-                  </Badge>
+                  <Badge variant="outline">{log.level}</Badge>
                 </TableCell>
+                <TableCell>{log.loginTime}</TableCell>
+                <TableCell>{log.activity}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -60,7 +60,18 @@ const WordPage = lazy(() => import('./pages/word/page'));
 const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
 const PortalColaboradorPage = lazy(() => import('@/app/portal-colaborador/page'));
 const PortalCarreirasPage = lazy(() => import('./pages/portal-carreiras/page'));
-
+const GestaoPessoasPage = lazy(() => import('./pages/gestao-pessoas/page'));
+const GestaoFinanceiraPage = lazy(() => import('./pages/gestao-financeira/page'));
+const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
+const StatusServicosPage = lazy(() => import('./pages/status-servicos/page'));
+const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/page'));
+const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
+const MeusCanaisPage = lazy(() => import('./pages/meus-canais/page'));
+const RmConectorPage = lazy(() => import('./pages/rm-conector/page'));
+const ContasComunicacaoPage = lazy(() => import('./pages/contas-comunicacao/page'));
+const AplicativosExternosPage = lazy(() => import('./pages/aplicativos-externos/page'));
+const AplicativosSamlPage = lazy(() => import('./pages/aplicativos-saml/page'));
+const SistemaPage = lazy(() => import('./pages/sistema/page'));
 
 type Tab = {
   id: string;
@@ -71,43 +82,55 @@ type Tab = {
 const pagesMap: { [key: string]: React.LazyExoticComponent<any> } = {
   'dashboard-principal': InicioPage,
   'gerador-saidas': GeradorSaidasPage,
-  bi: BiPage,
+  'bi': BiPage,
   'cargos-salarios': CargosSalariosPage,
   'controle-jornada': ControleJornadaPage,
-  curriculos: CurriculosPage,
-  filiais: FiliaisPage,
+  'curriculos': CurriculosPage,
+  'filiais': FiliaisPage,
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
   'administracao-pessoal': AdministracaoPessoalPage,
   'folha-mensal': FolhaMensalPage,
-  ferias: FeriasPage,
-  rescisao: RescisaoPage,
-  encargos: EncargosPage,
-  anuais: AnuaisPage,
-  esocial: EsocialPage,
-  orcamento: OrcamentoPage,
-  configuracoes: ConfiguracoesPage,
+  'ferias': FeriasPage,
+  'rescisao': RescisaoPage,
+  'encargos': EncargosPage,
+  'anuais': AnuaisPage,
+  'esocial': EsocialPage,
+  'orcamento': OrcamentoPage,
+  'configuracoes': ConfiguracoesPage,
   'assinatura-eletronica': AssinaturaEletronicaPage,
-  customizacao: CustomizacaoPage,
-  gestao: GestaoPage,
-  ambiente: AmbientePage,
-  calculadora: CalculadoraPage,
-  agenda: AgendaPage,
-  compartilhamento: CompartilhamentoPage,
-  cubo: CuboPage,
-  planilha: PlanilhaPage,
-  formula: FormulaPage,
-  relatorios: RelatoriosPage,
+  'customizacao': CustomizacaoPage,
+  'gestao': GestaoPage,
+  'ambiente': AmbientePage,
+  'calculadora': CalculadoraPage,
+  'agenda': AgendaPage,
+  'compartilhamento': CompartilhamentoPage,
+  'cubo': CuboPage,
+  'planilha': PlanilhaPage,
+  'formula': FormulaPage,
+  'relatorios': RelatoriosPage,
   'visoes-dados': VisoesDadosPage,
-  categorias: CategoriasPage,
+  'categorias': CategoriasPage,
   'fontes-graficos': FontesGraficosPage,
   'leitor-rss': LeitorRssPage,
   'iniciar-servico-rss': IniciarServicoRssPage,
   'configuracao-rss': ConfiguracaoRssPage,
   'canais-rss': CanaisRssPage,
-  word: WordPage,
+  'word': WordPage,
   'assistente-ai': AssistenteAiPage,
   'portal-colaborador': PortalColaboradorPage,
   'portal-carreiras': PortalCarreirasPage,
+  'gestao-pessoas': GestaoPessoasPage,
+  'gestao-financeira': GestaoFinanceiraPage,
+  'gestao-producao': GestaoProducaoPage,
+  'status-servicos': StatusServicosPage,
+  'atualizacao-sistema': AtualizacaoSistemaPage,
+  'documentacao': DocumentacaoPage,
+  'meus-canais': MeusCanaisPage,
+  'rm-conector': RmConectorPage,
+  'contas-comunicacao': ContasComunicacaoPage,
+  'aplicativos-externos': AplicativosExternosPage,
+  'aplicativos-saml': AplicativosSamlPage,
+  'sistema': SistemaPage,
 };
 
 type DashboardContextType = {
@@ -118,9 +141,9 @@ const DashboardContext = createContext<DashboardContextType | null>(null);
 export const useDashboard = () => useContext(DashboardContext);
 
 export default function DashboardLayout({
-  searchParams,
+  children,
 }: {
-  searchParams?: { tab: string };
+  children: React.ReactNode;
 }) {
   const [tabs, setTabs] = useState<Tab[]>([
     {
@@ -131,12 +154,6 @@ export default function DashboardLayout({
   ]);
   const [activeTab, setActiveTab] = useState('dashboard-principal');
   const [nextTabId, setNextTabId] = useState(1);
-
-  useEffect(() => {
-    if (searchParams?.tab) {
-      openTab(searchParams.tab);
-    }
-  }, [searchParams]);
 
   const openTab = (id: string, title?: string, data: any = {}) => {
     const existingTab = tabs.find((tab) => tab.id.startsWith(id));
@@ -176,7 +193,6 @@ export default function DashboardLayout({
         const newActiveIndex = Math.max(0, tabIndex - 1);
         setActiveTab(newTabs[newActiveIndex].id);
       } else {
-        // If all tabs are closed, maybe open a default one or handle empty state
         const defaultTab = {
           id: 'dashboard-principal',
           title: 'Dashboard Principal',
@@ -195,8 +211,8 @@ export default function DashboardLayout({
   return (
     <DashboardContext.Provider value={dashboardContextValue}>
       <div className="flex flex-col h-screen bg-background text-sm">
-        <HeaderTop />
-        <HeaderPrimary />
+        <HeaderTop openTab={openTab} />
+        <HeaderPrimary openTab={openTab} />
         <Toolbar openTab={openTab} />
         <Tabs
           value={activeTab}
@@ -228,11 +244,13 @@ export default function DashboardLayout({
           </div>
           <main className="flex-1 overflow-auto bg-gray-100/50">
             <Suspense fallback={<div className="p-6"><Skeleton className="h-48 w-full" /></div>}>
-              {tabs.map((tab) => (
-                <TabsContent key={tab.id} value={tab.id} className="p-4 h-full">
-                  {tab.id === activeTab && tab.component}
-                </TabsContent>
-              ))}
+              <DashboardContext.Provider value={dashboardContextValue}>
+                {tabs.map((tab) => (
+                  <TabsContent key={tab.id} value={tab.id} className="p-4 h-full">
+                    {tab.id === activeTab && tab.component}
+                  </TabsContent>
+                ))}
+              </DashboardContext.Provider>
             </Suspense>
           </main>
         </Tabs>

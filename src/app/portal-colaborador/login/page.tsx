@@ -13,11 +13,12 @@ export default function PortalLogin() {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        router.push('/?tab=dashboard-principal');
+        router.push('/portal-colaborador');
     }
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-sm">
+    <div className="flex items-center justify-center min-h-screen bg-cover bg-center bg-[url('https://matoleitao.rs.gov.br/wp-content/uploads/2021/04/beira-1-scaled-750x450.jpg')]">
+      <div className="absolute inset-0 bg-black/50"></div>
+      <Card className="w-full max-w-sm z-10">
         <CardHeader className="text-center">
             <div className="flex justify-center mb-2">
                 <Building className="h-10 w-10 text-primary" />

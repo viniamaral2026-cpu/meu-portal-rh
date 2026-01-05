@@ -1,11 +1,21 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Users, DollarSign, Briefcase } from 'lucide-react';
+import { BarChart as BarChartIcon, Users, DollarSign, Briefcase } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const data = [
+  { name: 'TI', Headcount: 45 },
+  { name: 'Vendas', Headcount: 80 },
+  { name: 'RH', Headcount: 25 },
+  { name: 'Produção', Headcount: 350 },
+  { name: 'Logística', Headcount: 60 },
+  { name: 'Marketing', Headcount: 30 },
+];
 
 export default function BIPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Business Intelligence</h1>
+      <h1 className="text-3xl font-bold">Business Intelligence - RH</h1>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -53,7 +63,16 @@ export default function BIPage() {
             <CardTitle>Headcount por Departamento</CardTitle>
           </CardHeader>
           <CardContent>
-            <BarChart className="w-full h-80" />
+            <ResponsiveContainer width="100%" height={350}>
+                <BarChart data={data}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="Headcount" fill="hsl(var(--primary))" />
+                </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
     </div>
