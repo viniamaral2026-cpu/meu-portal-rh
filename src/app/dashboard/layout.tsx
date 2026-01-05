@@ -159,6 +159,7 @@ const toolbarItems = [
             { id: 'iniciar-servico-rss', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
             { id: 'configuracao-rss', icon: <Settings size={20} />, label: 'Configuração' },
             { id: 'canais-rss', icon: <Rss size={20} />, label: 'Canais RSS' },
+            { id: 'planilha', icon: <Sheet size={20} />, label: 'Excel' },
         ]
     },
 ];
@@ -345,7 +346,7 @@ export default function DashboardLayout({
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border overflow-x-auto">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border overflow-x-auto">
           <div className="flex h-full items-start">
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
@@ -370,7 +371,7 @@ export default function DashboardLayout({
             ))}
           </div>
 
-          <div className="flex h-full items-start">
+          <div className="flex h-full items-start ml-auto">
             <Separator orientation="vertical" className="h-4/5 my-auto" />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
