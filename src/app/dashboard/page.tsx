@@ -78,61 +78,30 @@ export default function DashboardPage() {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div className="flex flex-col gap-4">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Produção Mensal</CardTitle>
-                            <CardDescription>Unidades produzidas nos últimos 6 meses.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="h-72">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={monthlyProductionData}>
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="month" fontSize={12} tickLine={false} axisLine={false} />
-                                    <YAxis fontSize={12} tickLine={false} axisLine={false} />
-                                    <Tooltip />
-                                    <Legend />
-                                    <Bar dataKey="producao" fill="hsl(var(--chart-1))" name="Produção" />
-                                </BarChart>
-                            </ResponsiveContainer>
-                        </CardContent>
-                    </Card>
-                     <Card>
-                        <CardHeader>
-                            <CardTitle>Composição do Headcount</CardTitle>
-                            <CardDescription>Distribuição de colaboradores por setor.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="h-72 flex items-center justify-center">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={headcountData}
-                                        cx="50%"
-                                        cy="50%"
-                                        labelLine={false}
-                                        outerRadius={100}
-                                        fill="#8884d8"
-                                        dataKey="value"
-                                        nameKey="name"
-                                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                                    >
-                                        {headcountData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip formatter={(value, name) => [`${value} colaboradores`, name]} />
-                                    <Legend />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </CardContent>
-                    </Card>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Produção Mensal</CardTitle>
+                        <CardDescription>Unidades produzidas nos últimos 6 meses.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="h-80">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={monthlyProductionData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="month" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis fontSize={12} tickLine={false} axisLine={false} />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="producao" fill="hsl(var(--chart-1))" name="Produção" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </CardContent>
+                </Card>
                 <Card>
                     <CardHeader>
                         <CardTitle>Taxa de Absenteísmo</CardTitle>
                         <CardDescription>Percentual de ausências nos últimos 6 meses.</CardDescription>
                     </CardHeader>
-                    <CardContent className="h-[calc(144px+144px+1rem)]">
+                    <CardContent className="h-80">
                          <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={absenteeismData}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -142,6 +111,38 @@ export default function DashboardPage() {
                                 <Legend />
                                 <Line type="monotone" dataKey="taxa" stroke="hsl(var(--chart-2))" name="Taxa" />
                             </LineChart>
+                        </ResponsiveContainer>
+                    </CardContent>
+                </Card>
+            </div>
+
+            <div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Composição do Headcount</CardTitle>
+                        <CardDescription>Distribuição de colaboradores por setor.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="h-80 flex items-center justify-center">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={headcountData}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    outerRadius={110}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                    nameKey="name"
+                                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                >
+                                    {headcountData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip formatter={(value, name) => [`${value} colaboradores`, name]} />
+                                <Legend />
+                            </PieChart>
                         </ResponsiveContainer>
                     </CardContent>
                 </Card>
