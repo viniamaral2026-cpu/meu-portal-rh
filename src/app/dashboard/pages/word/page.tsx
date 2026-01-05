@@ -125,7 +125,7 @@ export default function WordPage() {
              <Select defaultValue='arial'>
                 <SelectTrigger className="w-32 h-8">
                     <SelectValue />
-                </Trigger>
+                </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="arial">Arial</SelectItem>
                     <SelectItem value="times">Times New Roman</SelectItem>
