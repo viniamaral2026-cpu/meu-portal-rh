@@ -24,6 +24,25 @@ import {
   HelpCircle,
   ChevronUp,
   LayoutGrid,
+  Calculator,
+  CalendarDays,
+  Share2,
+  Cuboid,
+  Sheet,
+  FunctionSquare,
+  FilePlus2,
+  Database,
+  LayoutDashboard,
+  Mail,
+  BarChart,
+  ClipboardList,
+  Rss,
+  PlayCircle,
+  Link,
+  BookUser,
+  Wrench,
+  ExternalLink,
+  Sigma,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -32,6 +51,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EmployeesPage from './employees/page';
 import DashboardPage from './page';
+import { Separator } from '@/components/ui/separator';
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -43,7 +63,6 @@ const topBarIcons = [
 const navMenuItems = [
     { label: 'Administração de Pessoal' },
     { label: 'Folha Mensal' },
-    { label: 'Folha Educacional' },
     { label: 'Férias' },
     { label: 'Rescisão' },
     { label: 'Encargos' },
@@ -61,6 +80,64 @@ const navRightIcons = [
     { icon: <FileText size={16} /> },
     { icon: <ChevronDown size={16} /> },
     { icon: <HelpCircle size={16} /> },
+];
+
+const toolbarItems = [
+    {
+        group: 'Utilitários',
+        items: [
+            { icon: <Calculator size={24} />, label: 'Calculadora' },
+            { icon: <BookUser size={24} />, label: 'Agenda' },
+            { icon: <CalendarDays size={24} />, label: 'Calendários' },
+            { icon: <Share2 size={24} />, label: 'TOTVS Compartilhamento' },
+            { icon: <Cuboid size={24} />, label: 'Cubo' },
+            { icon: <Sheet size={24} />, label: 'Planilha Net' },
+            { icon: <FunctionSquare size={24} />, label: 'Fórmula Visual' },
+        ]
+    },
+    {
+        group: 'Ferramentas de Análise',
+        items: [
+            { icon: <FileText size={24} />, label: 'RM Reports' },
+            { icon: <FilePlus2 size={24} />, label: 'Gerador de Relatórios' },
+            { icon: <Database size={24} />, label: 'Visões de Dados' },
+            { icon: <LayoutDashboard size={24} />, label: 'Painéis de Cenários' },
+        ]
+    },
+    {
+        group: 'Gráficos',
+        items: [
+            { icon: <Mail size={24} />, label: 'Gerador de Saída' },
+            { icon: <BarChart size={24} />, label: 'Gráfico' },
+            { icon: <ClipboardList size={24} />, label: 'Categorias' },
+            { icon: <Sigma size={24} />, label: 'Fontes de Gráficos' },
+        ]
+    },
+    {
+        group: 'RSS',
+        items: [
+            { icon: <Rss size={24} />, label: 'Leitor RSS' },
+            { icon: <PlayCircle size={24} />, label: 'Iniciar Serviço' },
+            { icon: <Settings size={24} />, label: 'Configuração' },
+            { icon: <Rss size={24} />, label: 'Canais RSS' },
+        ]
+    },
+    {
+        group: 'RM Conec',
+        items: [
+             { icon: <Users size={24} />, label: 'Meus Canais' },
+             { icon: <Link size={24} />, label: 'RM Conector' },
+        ]
+    },
+    {
+        group: 'Comunicação',
+        items: [
+             { icon: <Wrench size={24} />, label: 'Fontes' },
+             { icon: <Users size={24} />, label: 'Contas' },
+             { icon: <ExternalLink size={24} />, label: 'Aplicativos Externos' },
+             { icon: <ExternalLink size={24} />, label: 'Aplicativos SAML' },
+        ]
+    },
 ];
 
 export default function DashboardLayout({
@@ -121,6 +198,27 @@ export default function DashboardLayout({
                     ))}
                 </div>
             </div>
+        </div>
+         {/* Sub-header Toolbar */}
+        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border">
+          <div className="flex h-full items-start">
+            {toolbarItems.map((group, groupIndex) => (
+              <div key={group.group} className="flex h-full items-center">
+                <div className="flex flex-col items-center justify-center h-full px-2">
+                    <div className='flex items-center justify-center gap-2 h-full'>
+                    {group.items.map((item) => (
+                    <Button variant="ghost" key={item.label} className="flex flex-col items-center justify-center h-full p-1 w-20 text-xs font-normal gap-1">
+                        {item.icon}
+                        <span className='w-full text-center truncate'>{item.label}</span>
+                    </Button>
+                    ))}
+                    </div>
+                    <p className="text-xs -mt-2 mb-1">{group.group}</p>
+                </div>
+                {groupIndex < toolbarItems.length - 1 && <Separator orientation="vertical" className="h-4/5 my-auto" />}
+              </div>
+            ))}
+          </div>
         </div>
       </header>
 
