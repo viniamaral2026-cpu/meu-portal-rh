@@ -47,7 +47,7 @@ function HorizontalRuler() {
 
 function VerticalRuler() {
     return (
-        <div className="absolute left-0 h-full w-7 bg-secondary" style={{ paddingTop: 'calc(118px + 2rem + 28px + 1cm)' }}>
+        <div className="absolute left-0 top-0 h-full w-7 bg-secondary" style={{ paddingTop: 'calc(1cm)' }}>
              <div className="relative h-full w-full border-r bg-card shadow-sm">
                  {/* Ruler ticks - assuming 1cm is approx 37.8px */}
                 {Array.from({ length: 27 }).map((_, i) => (
@@ -170,9 +170,9 @@ export default function WordPage() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 bg-secondary overflow-auto">
-        <div className="w-60 bg-card p-4">
-             <div className='flex items-center justify-between'>
+      <div className="flex flex-1 bg-secondary overflow-hidden">
+        <aside className="w-60 bg-card p-4 border-r">
+            <div className='flex items-center justify-between'>
                 <Button variant="ghost" size="icon"><ArrowLeft /></Button>
                 <div className='flex-grow' />
                 <Button variant="ghost" size="icon"><Plus /></Button>
@@ -189,12 +189,12 @@ export default function WordPage() {
                 </div>
                 <p className='text-xs text-muted-foreground mt-2'>Os títulos que forem adicionados ao documento aparecerão aqui.</p>
             </div>
-        </div>
+        </aside>
 
-        <div className="flex-1 p-8 relative">
-            <VerticalRuler />
+        <div className="flex-1 overflow-auto p-8 relative">
             <HorizontalRuler />
-            <div className="bg-white text-black shadow-lg mx-auto relative" style={{width: '21cm', minHeight: '29.7cm', paddingTop: '1cm', paddingBottom: '1cm', paddingLeft: '1cm', paddingRight: '1cm' }}>
+            <div className="bg-white text-black shadow-lg mx-auto relative" style={{width: '21cm', minHeight: '29.7cm', paddingTop: '1cm', paddingBottom: '1cm', paddingLeft: 'calc(1cm + 28px)', paddingRight: '1cm' }}>
+                <VerticalRuler />
                 <Textarea
                     value={documentContent}
                     onChange={(e) => setDocumentContent(e.target.value)}
