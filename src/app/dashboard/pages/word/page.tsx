@@ -14,7 +14,7 @@ import {
 import {
   Undo, Redo, Printer, PaintRoller, Bold, Italic, Underline, CaseSensitive,
   AlignCenter, AlignLeft, AlignRight, AlignJustify,
-  File, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Link, ImageIcon, ChevronDown
+  File, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Link, ImageIcon, ChevronDown, Check, Lock,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -28,17 +28,17 @@ import {
 
 function HorizontalRuler() {
   return (
-    <div className="sticky top-0 z-10 h-7 w-full bg-secondary" style={{ paddingLeft: 'calc(50% - 10.5cm)', paddingRight: 'calc(50% - 10.5cm)' }}>
+    <div className="sticky top-0 z-10 h-7 w-full bg-secondary" style={{ paddingLeft: 'calc(1cm + 28px)', paddingRight: '1cm' }}>
       <div className="relative h-full w-full border-b border-l border-r bg-card shadow-sm pl-[1cm] pr-[1cm]">
         {/* Ruler ticks - assuming 1cm is approx 37.8px */}
         {Array.from({ length: 19 }).map((_, i) => (
-          <div key={`cm-${i}`} className="absolute top-2 h-5" style={{ left: `calc(1cm + ${i * 37.8}px)` }}>
+          <div key={`cm-${i}`} className="absolute top-2 h-5" style={{ left: `${i * 37.8}px` }}>
             <span className="absolute -translate-y-1/2 bottom-0 text-xs text-muted-foreground">{i + 1}</span>
             <div className="h-2 border-l"></div>
           </div>
         ))}
          {Array.from({ length: 19 * 4 }).map((_, i) => (
-            <div key={`mm-${i}`} className="absolute top-4 h-1 border-l" style={{ left: `calc(1cm + ${i * 9.45}px)` }}></div>
+            <div key={`mm-${i}`} className="absolute top-4 h-1 border-l" style={{ left: `${i * 9.45}px` }}></div>
         ))}
       </div>
     </div>
@@ -47,19 +47,17 @@ function HorizontalRuler() {
 
 function VerticalRuler() {
     return (
-        <div className="absolute left-0 top-0 h-full w-7 bg-secondary" style={{ paddingTop: 'calc(1cm)' }}>
-             <div className="relative h-full w-full border-r bg-card shadow-sm">
-                 {/* Ruler ticks - assuming 1cm is approx 37.8px */}
-                {Array.from({ length: 27 }).map((_, i) => (
-                <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${i * 37.8}px` }}>
-                    <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
-                    <div className="w-2 border-t"></div>
-                </div>
-                ))}
-                {Array.from({ length: 27 * 2 }).map((_, i) => (
-                    <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i) * 18.9}px` }}></div>
-                ))}
-             </div>
+        <div className="relative h-full w-7 bg-card border-r shadow-sm">
+             {/* Ruler ticks - assuming 1cm is approx 37.8px */}
+            {Array.from({ length: 27 }).map((_, i) => (
+            <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i) * 37.8}px` }}>
+                <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
+                <div className="w-2 border-t"></div>
+            </div>
+            ))}
+            {Array.from({ length: 27 * 2 }).map((_, i) => (
+                <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i) * 18.9}px` }}></div>
+            ))}
         </div>
     )
 }
@@ -128,6 +126,8 @@ export default function WordPage() {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="arial">Arial</SelectItem>
+                     <SelectItem value="times">Times New Roman</SelectItem>
+                    <SelectItem value="courier">Courier New</SelectItem>
                 </SelectContent>
             </Select>
             <Separator orientation='vertical' className='h-6 mx-1' />
@@ -170,7 +170,8 @@ export default function WordPage() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-1 bg-secondary overflow-hidden">
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar on the left */}
         <aside className="w-60 bg-card p-4 border-r">
             <div className='flex items-center justify-between'>
                 <Button variant="ghost" size="icon"><ArrowLeft /></Button>
@@ -191,16 +192,22 @@ export default function WordPage() {
             </div>
         </aside>
 
-        <div className="flex-1 overflow-auto p-8 relative">
-            <HorizontalRuler />
-            <div className="bg-white text-black shadow-lg mx-auto relative" style={{width: '21cm', minHeight: '29.7cm', paddingTop: '1cm', paddingBottom: '1cm', paddingLeft: 'calc(1cm + 28px)', paddingRight: '1cm' }}>
-                <VerticalRuler />
-                <Textarea
-                    value={documentContent}
-                    onChange={(e) => setDocumentContent(e.target.value)}
-                    className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-4"
-                    placeholder="Comece a escrever seu documento..."
-                />
+        {/* Scrollable area for rulers and paper */}
+        <div className="flex-1 overflow-auto bg-secondary p-8">
+            <div className="mx-auto" style={{ width: 'calc(21cm + 28px)' }}>
+                <HorizontalRuler />
+                <div className="flex">
+                    <VerticalRuler />
+                    <div className="bg-white text-black shadow-lg" style={{width: '21cm', minHeight: '29.7cm'}}>
+                        <Textarea
+                            value={documentContent}
+                            onChange={(e) => setDocumentContent(e.target.value)}
+                            className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-16"
+                            style={{paddingTop: '1cm', paddingBottom: '1cm', paddingLeft: '1cm', paddingRight: '1cm'}}
+                            placeholder="Comece a escrever seu documento..."
+                        />
+                    </div>
+                </div>
             </div>
         </div>
       </div>
