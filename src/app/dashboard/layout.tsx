@@ -92,6 +92,7 @@ import AplicativosExternosPage from './pages/aplicativos-externos/page';
 import AplicativosSamlPage from './pages/aplicativos-saml/page';
 import VisualizarColaboradorPage from './pages/visualizar-colaborador/page';
 import EditarColaboradorPage from './pages/editar-colaborador/page';
+import WordPage from './pages/word/page';
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -161,6 +162,7 @@ const toolbarItems = [
             { id: 'configuracao-rss', icon: <Settings size={20} />, label: 'Configuração' },
             { id: 'canais-rss', icon: <Rss size={20} />, label: 'Canais RSS' },
             { id: 'planilha', icon: <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
+            { id: 'word', icon: <Image src="https://img.icons8.com/?size=50&id=11571&format=png" width={20} height={20} alt="Word Icon" />, label: 'Word' },
         ]
     },
 ];
@@ -227,6 +229,7 @@ const pageComponents: { [key: string]: React.ComponentType<PageComponentProps> }
   'contas-comunicacao': ContasComunicacaoPage,
   'aplicativos-externos': AplicativosExternosPage,
   'aplicativos-saml': AplicativosSamlPage,
+  'word': WordPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -430,7 +433,7 @@ export default function DashboardLayout({
             </TabsList>
             <DashboardContext.Provider value={dashboardContextValue}>
                 {openTabs.map(tab => {
-                const pageId = tab.id.split('-')[0];
+                const pageId = tab.id.startsWith('visualizar-colaborador') ? 'visualizar-colaborador' : tab.id.startsWith('editar-colaborador') ? 'editar-colaborador' : tab.id;
                 const PageComponent = pageComponents[pageId as keyof typeof pageComponents];
                 
                 // Pass employee data to the correct page
