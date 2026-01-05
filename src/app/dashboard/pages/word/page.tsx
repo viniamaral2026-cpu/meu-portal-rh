@@ -14,7 +14,7 @@ import {
 import {
   Undo, Redo, Printer, PaintRoller, Bold, Italic, Underline, CaseSensitive,
   AlignCenter, AlignLeft, AlignRight, AlignJustify,
-  File, MessageSquare, Image as ImageIcon, Link, ChevronDown, Check, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser
+  File, MessageSquare, Image as ImageIcon, Link, ChevronDown, Check, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Lock,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import {
