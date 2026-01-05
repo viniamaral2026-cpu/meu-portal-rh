@@ -1,10 +1,10 @@
-import PwaLayout from "./pwa/layout";
-import PwaPage from "./pwa/page";
+import DashboardLayout from './dashboard/layout';
+import InicioPage from './dashboard/pages/inicio/page';
 
 export default function Home() {
   return (
-    <PwaLayout>
-      <PwaPage />
-    </PwaLayout>
+    <DashboardLayout>
+      <InicioPage />
+    </DashboardLayout>
   );
 }
