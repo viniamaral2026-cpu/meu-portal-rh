@@ -8,7 +8,6 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
   MenubarTrigger,
 } from '@/components/ui/menubar';
 import {
@@ -16,7 +15,7 @@ import {
   Merge, AlignLeft, AlignCenter, AlignRight, MoreVertical, Star, MessageSquare, Video,
   ArrowUp, ArrowDown, ArrowLeft, ArrowRight, CornerUpLeft, Sigma, Baseline, Braces, WrapText,
   File, Edit, Eye, Plus, Table as TableIcon, BarChart2,
-  Trash2, Copy, Scissors, Minus, ZoomIn, ZoomOut, FileUp, FileDown as FileDownIcon,
+  Trash2, Copy, Scissors, Minus, ZoomIn, ZoomOut, FileUp, FileDown as FileDownIcon, Lock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
@@ -66,7 +65,6 @@ export default function PlanilhaPage() {
             <div>
                 <div className='flex items-center gap-2'>
                     <Input defaultValue="Planilha sem título" className='border-none focus-visible:ring-1 focus-visible:ring-ring h-7 p-1 text-lg' />
-                    <Star size={18} className='cursor-pointer hover:text-yellow-500' />
                 </div>
                 <Menubar className='border-none p-0 h-auto bg-transparent'>
                     {['Arquivo', 'Editar', 'Ver', 'Inserir', 'Formatar', 'Dados', 'Ferramentas', 'Extensões', 'Ajuda'].map(item => (
@@ -83,7 +81,7 @@ export default function PlanilhaPage() {
         <div className='flex items-center gap-2'>
              <Button variant='ghost' size='icon'><MessageSquare size={20} /></Button>
              <Button variant='ghost' size='icon'><Video size={20} /></Button>
-             <Button className='bg-blue-100 text-blue-800 hover:bg-blue-200'>Compartilhar</Button>
+             <Button className='bg-blue-100 text-blue-800 hover:bg-blue-200'><Lock size={16} className='mr-2'/>Compartilhar</Button>
         </div>
       </div>
       
