@@ -85,6 +85,9 @@ export default function AssistenteAiPage() {
                    <img src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={24} height={24} alt="Gemini Icon" className='mt-1'/>
                    <div>
                     <p className='text-base/relaxed'>
+                        Olá! Sou o assistente Gemini, bem-vindo à Minha Empresa Calçados.
+                    </p>
+                    <p className='mt-4 text-base/relaxed'>
                         Esta é uma resposta de exemplo gerada pelo assistente. O conteúdo real será fornecido dinamicamente pela IA com base na sua pergunta.
                     </p>
                     <p className='mt-4 text-base/relaxed'>
