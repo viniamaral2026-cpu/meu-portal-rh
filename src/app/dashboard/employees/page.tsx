@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, FileDown, Trash2, Edit, Eye } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { useDashboard } from '../layout';
+
 
 const employees = [
   {
@@ -79,6 +81,15 @@ const documentStatus: { [key: string]: { label: string, variant: 'default' | 'se
 };
 
 export default function EmployeesPage() {
+  const { openTab } = useDashboard();
+
+  const handleViewClick = (employee: any) => {
+    // Aqui usamos um ID dinâmico para garantir que podemos abrir várias abas de visualização
+    // No futuro, podemos passar o ID real do colaborador
+    const tabId = `visualizar-colaborador-${employee.id}`;
+    openTab({ id: tabId, title: `Vis. ${employee.name}` });
+  };
+
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="border rounded-lg p-4">
@@ -141,7 +152,9 @@ export default function EmployeesPage() {
         <div className='flex justify-end items-center p-4 gap-2 border-t'>
             <Button variant="outline" size="sm"><Edit className='mr-2' />Alterar</Button>
             <Button variant="destructive" size="sm"><Trash2 className='mr-2'/>Excluir</Button>
-            <Button variant="outline" size="sm"><Eye className='mr-2'/>Visualizar</Button>
+            <Button variant="outline" size="sm" onClick={() => handleViewClick(employees[0])}>
+                <Eye className='mr-2'/>Visualizar
+            </Button>
             <Button variant="secondary" size="sm"><FileDown className='mr-2'/>Baixar Arquivo</Button>
         </div>
       </div>

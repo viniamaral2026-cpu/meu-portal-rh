@@ -44,7 +44,7 @@ import {
   ExternalLink,
   Sigma,
 } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { MeuRHLogo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -89,6 +89,7 @@ import FontesComunicacaoPage from './pages/fontes-comunicacao/page';
 import ContasComunicacaoPage from './pages/contas-comunicacao/page';
 import AplicativosExternosPage from './pages/aplicativos-externos/page';
 import AplicativosSamlPage from './pages/aplicativos-saml/page';
+import VisualizarColaboradorPage from './pages/visualizar-colaborador/page';
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -180,7 +181,7 @@ const paineisMenuItems = [
     },
 ];
 
-const pageComponents: { [key: string]: React.ComponentType } = {
+const pageComponents: { [key: string]: React.ComponentType<any> } = {
   dashboard: DashboardPage,
   employees: EmployeesPage,
   'administracao-pessoal': AdministracaoPessoalPage,
@@ -218,21 +219,40 @@ const pageComponents: { [key: string]: React.ComponentType } = {
   'contas-comunicacao': ContasComunicacaoPage,
   'aplicativos-externos': AplicativosExternosPage,
   'aplicativos-saml': AplicativosSamlPage,
+  'visualizar-colaborador': VisualizarColaboradorPage,
 };
 
+type Tab = {
+  id: string;
+  title: string;
+};
+
+type DashboardContextType = {
+  openTab: (tab: Tab) => void;
+};
+
+const DashboardContext = createContext<DashboardContextType | null>(null);
+
+export const useDashboard = () => {
+  const context = useContext(DashboardContext);
+  if (!context) {
+    throw new Error('useDashboard must be used within a DashboardProvider');
+  }
+  return context;
+};
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [openTabs, setOpenTabs] = useState([
+  const [openTabs, setOpenTabs] = useState<Tab[]>([
     { id: 'dashboard', title: 'Dashboard Principal' },
     { id: 'employees', title: 'Consulta de Colaboradores' },
   ]);
   const [activeTab, setActiveTab] = useState('dashboard');
 
-  const openTab = (tab: { id: string, title: string }) => {
+  const openTab = (tab: Tab) => {
     if (!openTabs.find(t => t.id === tab.id)) {
       setOpenTabs(prev => [...prev, tab]);
     }
@@ -251,6 +271,11 @@ export default function DashboardLayout({
       return newTabs;
     });
   };
+  
+  const dashboardContextValue = {
+    openTab,
+  };
+
 
   return (
     <div className="flex flex-col h-screen bg-secondary text-sm text-white">
@@ -385,14 +410,16 @@ export default function DashboardLayout({
                 </TabsTrigger>
               ))}
             </TabsList>
-            {openTabs.map(tab => {
-              const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
-              return (
-                <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
-                  {PageComponent ? <PageComponent /> : <div className="p-4">Conteúdo para {tab.title}</div>}
-                </TabsContent>
-              )
-            })}
+            <DashboardContext.Provider value={dashboardContextValue}>
+                {openTabs.map(tab => {
+                const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
+                return (
+                    <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
+                    {PageComponent ? <PageComponent /> : <div className="p-4">Conteúdo para {tab.title}</div>}
+                    </TabsContent>
+                )
+                })}
+            </DashboardContext.Provider>
           </Tabs>
         ) : (
           <div className="flex items-center justify-center h-full text-muted-foreground">
