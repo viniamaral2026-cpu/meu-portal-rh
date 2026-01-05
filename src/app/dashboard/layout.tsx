@@ -48,10 +48,47 @@ import React, { useState } from 'react';
 import { MeuRHLogo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import EmployeesPage from './employees/page';
-import DashboardPage from './page';
 import { Separator } from '@/components/ui/separator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+
+// Import all page components
+import DashboardPage from './page';
+import EmployeesPage from './employees/page';
+import AdministracaoPessoalPage from './pages/administracao-pessoal/page';
+import FolhaMensalPage from './pages/folha-mensal/page';
+import FeriasPage from './pages/ferias/page';
+import RescisaoPage from './pages/rescisao/page';
+import EncargosPage from './pages/encargos/page';
+import AnuaisPage from './pages/anuais/page';
+import EsocialPage from './pages/esocial/page';
+import OrcamentoPage from './pages/orcamento/page';
+import ConfiguracoesPage from './pages/configuracoes/page';
+import AssinaturaEletronicaPage from './pages/assinatura-eletronica/page';
+import CustomizacaoPage from './pages/customizacao/page';
+import CalculadoraPage from './pages/calculadora/page';
+import AgendaPage from './pages/agenda/page';
+import CalendariosPage from './pages/calendarios/page';
+import CompartilhamentoPage from './pages/compartilhamento/page';
+import CuboPage from './pages/cubo/page';
+import PlanilhaPage from './pages/planilha/page';
+import FormulaPage from './pages/formula/page';
+import RelatoriosPage from './pages/relatorios/page';
+import GeradorRelatoriosPage from './pages/gerador-relatorios/page';
+import VisoesDadosPage from './pages/visoes-dados/page';
+import GeradorSaidaPage from './pages/gerador-saida/page';
+import GraficoPage from './pages/grafico/page';
+import CategoriasPage from './pages/categorias/page';
+import FontesGraficosPage from './pages/fontes-graficos/page';
+import LeitorRssPage from './pages/leitor-rss/page';
+import IniciarServicoRssPage from './pages/iniciar-servico-rss/page';
+import ConfiguracaoRssPage from './pages/configuracao-rss/page';
+import CanaisRssPage from './pages/canais-rss/page';
+import MeusCanaisPage from './pages/meus-canais/page';
+import RmConectorPage from './pages/rm-conector/page';
+import FontesComunicacaoPage from './pages/fontes-comunicacao/page';
+import ContasComunicacaoPage from './pages/contas-comunicacao/page';
+import AplicativosExternosPage from './pages/aplicativos-externos/page';
+import AplicativosSamlPage from './pages/aplicativos-saml/page';
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -61,17 +98,17 @@ const topBarIcons = [
 ];
 
 const navMenuItems = [
-    { label: 'Administração de Pessoal' },
-    { label: 'Folha Mensal' },
-    { label: 'Férias' },
-    { label: 'Rescisão' },
-    { label: 'Encargos' },
-    { label: 'Anuais' },
-    { label: 'eSocial' },
-    { label: 'Orçamento (beta)' },
-    { label: 'Configurações' },
-    { label: 'Assinatura Eletrônica' },
-    { label: 'Customização' },
+    { id: 'administracao-pessoal', label: 'Administração de Pessoal' },
+    { id: 'folha-mensal', label: 'Folha Mensal' },
+    { id: 'ferias', label: 'Férias' },
+    { id: 'rescisao', label: 'Rescisão' },
+    { id: 'encargos', label: 'Encargos' },
+    { id: 'anuais', label: 'Anuais' },
+    { id: 'esocial', label: 'eSocial' },
+    { id: 'orcamento', label: 'Orçamento (beta)' },
+    { id: 'configuracoes', label: 'Configurações' },
+    { id: 'assinatura-eletronica', label: 'Assinatura Eletrônica' },
+    { id: 'customizacao', label: 'Customização' },
 ];
 
 const navRightIcons = [
@@ -86,12 +123,12 @@ const toolbarItems = [
     {
         group: 'Utilitários',
         items: [
-            { id: 'calculator', icon: <Calculator size={20} />, label: 'Calculadora' },
+            { id: 'calculadora', icon: <Calculator size={20} />, label: 'Calculadora' },
             { id: 'agenda', icon: <BookUser size={20} />, label: 'Agenda' },
-            { id: 'calendars', icon: <CalendarDays size={20} />, label: 'Calendários' },
-            { id: 'sharing', icon: <Share2 size={20} />, label: 'Compartilhamento' },
-            { id: 'cube', icon: <Cuboid size={20} />, label: 'Cubo' },
-            { id: 'spreadsheet', icon: <Sheet size={20} />, label: 'Planilha' },
+            { id: 'calendarios', icon: <CalendarDays size={20} />, label: 'Calendários' },
+            { id: 'compartilhamento', icon: <Share2 size={20} />, label: 'Compartilhamento' },
+            { id: 'cubo', icon: <Cuboid size={20} />, label: 'Cubo' },
+            { id: 'planilha', icon: <Sheet size={20} />, label: 'Planilha' },
             { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula' },
         ]
     },
@@ -99,27 +136,27 @@ const toolbarItems = [
         group: 'Ferramentas de Análise',
         items: [
             { id: 'employees', icon: <Users size={20} />, label: 'Colaboradores' },
-            { id: 'reports', icon: <FileText size={20} />, label: 'Relatórios' },
-            { id: 'report-generator', icon: <FilePlus2 size={20} />, label: 'Gerador' },
-            { id: 'data-views', icon: <Database size={20} />, label: 'Visões de Dados' },
+            { id: 'relatorios', icon: <FileText size={20} />, label: 'Relatórios' },
+            { id: 'gerador-relatorios', icon: <FilePlus2 size={20} />, label: 'Gerador' },
+            { id: 'visoes-dados', icon: <Database size={20} />, label: 'Visões de Dados' },
         ]
     },
     {
         group: 'Gráficos',
         items: [
-            { id: 'output-generator', icon: <Mail size={20} />, label: 'Gerador Saída' },
-            { id: 'chart', icon: <BarChart size={20} />, label: 'Gráfico' },
-            { id: 'categories', icon: <ClipboardList size={20} />, label: 'Categorias' },
-            { id: 'chart-sources', icon: <Sigma size={20} />, label: 'Fontes' },
+            { id: 'gerador-saida', icon: <Mail size={20} />, label: 'Gerador Saída' },
+            { id: 'grafico', icon: <BarChart size={20} />, label: 'Gráfico' },
+            { id: 'categorias', icon: <ClipboardList size={20} />, label: 'Categorias' },
+            { id: 'fontes-graficos', icon: <Sigma size={20} />, label: 'Fontes' },
         ]
     },
     {
         group: 'RSS',
         items: [
-            { id: 'rss-reader', icon: <Rss size={20} />, label: 'Leitor RSS' },
-            { id: 'start-service', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
-            { id: 'rss-config', icon: <Settings size={20} />, label: 'Configuração' },
-            { id: 'rss-channels', icon: <Rss size={20} />, label: 'Canais RSS' },
+            { id: 'leitor-rss', icon: <Rss size={20} />, label: 'Leitor RSS' },
+            { id: 'iniciar-servico-rss', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
+            { id: 'configuracao-rss', icon: <Settings size={20} />, label: 'Configuração' },
+            { id: 'canais-rss', icon: <Rss size={20} />, label: 'Canais RSS' },
         ]
     },
 ];
@@ -128,24 +165,59 @@ const paineisMenuItems = [
     {
         group: 'RM Conec',
         items: [
-            { id: 'my-channels', icon: <Users size={20} />, label: 'Meus Canais' },
-            { id: 'rm-connector', icon: <LinkIcon size={20} />, label: 'RM Conector' },
+            { id: 'meus-canais', icon: <Users size={20} />, label: 'Meus Canais' },
+            { id: 'rm-conector', icon: <LinkIcon size={20} />, label: 'RM Conector' },
         ]
     },
     {
         group: 'Comunicação',
         items: [
-            { id: 'comm-sources', icon: <Wrench size={20} />, label: 'Fontes' },
-            { id: 'comm-accounts', icon: <Users size={20} />, label: 'Contas' },
-            { id: 'external-apps', icon: <ExternalLink size={20} />, label: 'Aplicativos Externos' },
-            { id: 'saml-apps', icon: <ExternalLink size={20} />, label: 'Aplicativos SAML' },
+            { id: 'fontes-comunicacao', icon: <Wrench size={20} />, label: 'Fontes' },
+            { id: 'contas-comunicacao', icon: <Users size={20} />, label: 'Contas' },
+            { id: 'aplicativos-externos', icon: <ExternalLink size={20} />, label: 'Aplicativos Externos' },
+            { id: 'aplicativos-saml', icon: <ExternalLink size={20} />, label: 'Aplicativos SAML' },
         ]
     },
 ];
 
 const pageComponents: { [key: string]: React.ComponentType } = {
-  employees: EmployeesPage,
   dashboard: DashboardPage,
+  employees: EmployeesPage,
+  'administracao-pessoal': AdministracaoPessoalPage,
+  'folha-mensal': FolhaMensalPage,
+  'ferias': FeriasPage,
+  'rescisao': RescisaoPage,
+  'encargos': EncargosPage,
+  'anuais': AnuaisPage,
+  'esocial': EsocialPage,
+  'orcamento': OrcamentoPage,
+  'configuracoes': ConfiguracoesPage,
+  'assinatura-eletronica': AssinaturaEletronicaPage,
+  'customizacao': CustomizacaoPage,
+  'calculadora': CalculadoraPage,
+  'agenda': AgendaPage,
+  'calendarios': CalendariosPage,
+  'compartilhamento': CompartilhamentoPage,
+  'cubo': CuboPage,
+  'planilha': PlanilhaPage,
+  'formula': FormulaPage,
+  'relatorios': RelatoriosPage,
+  'gerador-relatorios': GeradorRelatoriosPage,
+  'visoes-dados': VisoesDadosPage,
+  'gerador-saida': GeradorSaidaPage,
+  'grafico': GraficoPage,
+  'categorias': CategoriasPage,
+  'fontes-graficos': FontesGraficosPage,
+  'leitor-rss': LeitorRssPage,
+  'iniciar-servico-rss': IniciarServicoRssPage,
+  'configuracao-rss': ConfiguracaoRssPage,
+  'canais-rss': CanaisRssPage,
+  'meus-canais': MeusCanaisPage,
+  'rm-conector': RmConectorPage,
+  'fontes-comunicacao': FontesComunicacaoPage,
+  'contas-comunicacao': ContasComunicacaoPage,
+  'aplicativos-externos': AplicativosExternosPage,
+  'aplicativos-saml': AplicativosSamlPage,
 };
 
 
@@ -174,7 +246,6 @@ export default function DashboardLayout({
       if (activeTab === tabId && newTabs.length > 0) {
         setActiveTab(newTabs[newTabs.length - 1]?.id);
       } else if (newTabs.length === 0) {
-        // If no tabs are left, maybe open a default one or set to a null state
         setActiveTab(''); 
       }
       return newTabs;
@@ -212,7 +283,7 @@ export default function DashboardLayout({
                     <LayoutGrid size={16} />
                 </Button>
                 {navMenuItems.map(item => (
-                    <Button variant='ghost' key={item.label} className='h-auto py-1 px-2 text-xs font-normal'>
+                    <Button variant='ghost' key={item.id} onClick={() => openTab({ id: item.id, title: item.label })} className='h-auto py-1 px-2 text-xs font-normal'>
                         {item.label}
                     </Button>
                 ))}
