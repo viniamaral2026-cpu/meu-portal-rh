@@ -98,6 +98,7 @@ const VisualizarColaboradorPage = lazy(() => import('./pages/visualizar-colabora
 const EditarColaboradorPage = lazy(() => import('./pages/editar-colaborador/page'));
 const WordPage = lazy(() => import('./pages/word/page'));
 const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
+const SistemaPage = lazy(() => import('./pages/sistema/page'));
 
 
 const topBarIcons = [
@@ -238,6 +239,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'aplicativos-saml': AplicativosSamlPage,
   'word': WordPage,
   'assistente-ai': AssistenteAiPage,
+  'sistema': SistemaPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -353,7 +355,7 @@ export default function DashboardLayout({
               </DropdownMenuContent>
             </DropdownMenu>
             <div className='flex items-center gap-2'>
-                <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Sistema</Button>
+                <Button variant='ghost' className='h-auto px-3 py-1 text-xs' onClick={() => openTab({ id: 'sistema', title: 'Configurações do Sistema'})}>Sistema</Button>
                 <div className='flex items-center'>
                     <Button variant='ghost' size='icon' className='h-6 w-6'><Minimize size={16}/></Button>
                     <Button variant='ghost' size='icon' className='h-6 w-6'><Maximize size={16}/></Button>
