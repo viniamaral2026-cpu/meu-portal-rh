@@ -295,9 +295,13 @@ export default function DashboardLayout({
       <main className="flex-1 p-4 overflow-auto bg-background text-foreground">
         {openTabs.length > 0 ? (
           <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
-            <TabsList>
+            <TabsList className="bg-transparent p-0 justify-start h-auto rounded-none border-b-0">
               {openTabs.map(tab => (
-                <TabsTrigger key={tab.id} value={tab.id} className="relative pr-8">
+                <TabsTrigger 
+                  key={tab.id} 
+                  value={tab.id} 
+                  className="relative pr-8 h-10 rounded-none rounded-t-md border-b-0 data-[state=inactive]:bg-muted data-[state=active]:bg-card data-[state=active]:shadow-none data-[state=inactive]:border data-[state=inactive]:border-b-0"
+                >
                   {tab.title}
                   <Button
                     variant="ghost"
@@ -313,7 +317,7 @@ export default function DashboardLayout({
             {openTabs.map(tab => {
               const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
               return (
-                <TabsContent key={tab.id} value={tab.id} className='bg-card border rounded-b-lg mt-0 flex-1'>
+                <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
                   {PageComponent ? <PageComponent /> : <div className="p-4">Conteúdo para {tab.title}</div>}
                 </TabsContent>
               )
