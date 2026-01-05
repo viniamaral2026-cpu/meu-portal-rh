@@ -234,8 +234,8 @@ export default function DashboardLayout({
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border overflow-x-hidden">
-          <div className="flex h-full items-start">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border overflow-x-auto">
+          <div className="flex h-full items-start flex-1">
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
                 <div className="flex flex-col items-center justify-center h-full px-1">
