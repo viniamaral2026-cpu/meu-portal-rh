@@ -174,7 +174,10 @@ export default function DashboardLayout({
 
     // If we're opening a new tab from an icon, don't just use page
     if (page === 'atualizacao-sistema' || page === 'documentacao' || page === 'controle-jornada' || page === 'monitoramento-usuarios' || page === 'filiais' || page === 'portal-colaborador' || page === 'portal-carreiras') {
-        window.open(`/dashboard/pages/${page}`, '_blank');
+        const newTabId = `${page}-${Date.now()}`;
+        const newTab = { id: newTabId, title: title, page: page };
+        setOpenTabs(prevTabs => [...prevTabs, newTab]);
+        setActiveTab(newTabId);
         return;
     }
 
@@ -253,6 +256,7 @@ Este é um relatório gerado automaticamente para fins de diagnóstico e monitor
 
   const contextValue = useMemo(
     () => ({ openTabs, addTab, removeTab, activeTab, setActiveTab, openModal }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [openTabs, activeTab]
   );
 
@@ -475,5 +479,3 @@ Este é um relatório gerado automaticamente para fins de diagnóstico e monitor
     </div>
   );
 }
-
-    

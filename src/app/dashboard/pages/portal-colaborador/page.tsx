@@ -189,7 +189,6 @@ export default function PortalColaboradorPage() {
                 </CardContent>
            </Card>
         </TabsContent>
-
       </Tabs>
     </div>
   );
