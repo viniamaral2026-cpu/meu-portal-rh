@@ -50,6 +50,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import Image from 'next/image';
 
 // Import all page components
 import DashboardPage from './page';
@@ -159,7 +160,7 @@ const toolbarItems = [
             { id: 'iniciar-servico-rss', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
             { id: 'configuracao-rss', icon: <Settings size={20} />, label: 'Configuração' },
             { id: 'canais-rss', icon: <Rss size={20} />, label: 'Canais RSS' },
-            { id: 'planilha', icon: <Sheet size={20} />, label: 'Excel' },
+            { id: 'planilha', icon: <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
         ]
     },
 ];
