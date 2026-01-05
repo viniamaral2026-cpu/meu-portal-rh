@@ -46,7 +46,7 @@ import {
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -54,6 +54,7 @@ import Image from 'next/image';
 import type { Employee } from './employees/page';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 // Lazy load all page components for better performance
 const DashboardPage = lazy(() => import('./page'));
@@ -458,15 +459,18 @@ export default function DashboardLayout({
                   className="relative pr-8 h-10 rounded-none rounded-t-md border-b-0 data-[state=inactive]:bg-muted data-[state=active]:bg-card data-[state=active]:shadow-none data-[state=inactive]:border data-[state=inactive]:border-b-0"
                 >
                   {tab.title}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
+                  <div
+                    role="button"
+                    aria-label="Fechar aba"
                     onClick={(e) => closeTab(e, tab.id)}
-                    disabled={tab.id === 'dashboard'}
+                    className={cn(
+                        buttonVariants({ variant: "ghost", size: "icon" }),
+                        "absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full",
+                        tab.id === 'dashboard' && 'pointer-events-none opacity-50'
+                    )}
                   >
                     <X className="h-3 w-3" />
-                  </Button>
+                  </div>
                 </TabsTrigger>
               ))}
             </TabsList>
