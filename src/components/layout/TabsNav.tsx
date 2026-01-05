@@ -8,7 +8,7 @@ const tabs = [
 
 export function TabsNav({ activeTab }: { activeTab: string }) {
   return (
-    <div className="bg-card border-b">
+    <div className="bg-muted/50 border-b">
       <nav className="-mb-px flex" aria-label="Tabs">
         {tabs.map((tab) => (
           <Link
@@ -17,8 +17,8 @@ export function TabsNav({ activeTab }: { activeTab: string }) {
             className={`
               ${
                 activeTab === tab.id
-                  ? 'border-blue-500 text-blue-600 bg-blue-50/50'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'bg-card text-foreground border-border'
+                  : 'bg-muted/50 text-muted-foreground hover:bg-muted border-transparent hover:text-foreground'
               }
               whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm transition-colors
             `}
