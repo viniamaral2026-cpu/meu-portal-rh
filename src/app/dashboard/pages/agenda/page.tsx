@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, PlusCircle, Factory, Wrench, Truck } from 'lucide-react';
+import { ChevronLeft, ChevronRight, PlusCircle, Factory, Wrench, Truck, Link } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameDay, addMonths, subMonths } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
 
 type ProductionEvent = {
   id: number;
@@ -54,6 +55,8 @@ export default function AgendaPage() {
     const [currentDate, setCurrentDate] = useState(new Date(2024, 6, 1)); // Start with July 2024
     const [events, setEvents] = useState(initialEvents);
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date(2024, 6, 10));
+    const [isGoogleCalendarConnected, setIsGoogleCalendarConnected] = useState(false);
+    const { toast } = useToast();
 
     const firstDayOfMonth = startOfMonth(currentDate);
     const lastDayOfMonth = endOfMonth(currentDate);
@@ -68,6 +71,17 @@ export default function AgendaPage() {
 
     const selectedDayEvents = selectedDate ? events.filter(e => isSameDay(e.date, selectedDate)) : [];
 
+    const handleConnectGoogleCalendar = () => {
+        // Placeholder for real Google OAuth flow
+        setIsGoogleCalendarConnected(true);
+        toast({
+            title: 'Google Agenda Conectado!',
+            description: 'A agenda agora está sincronizada. (Esta é uma simulação)',
+        });
+        // In a real scenario, you would fetch events from Google Calendar API here
+        // and merge them with the existing events.
+    };
+
     return (
         <div className="p-4 h-full flex flex-col">
             <Card className="flex-grow flex flex-col">
@@ -76,7 +90,13 @@ export default function AgendaPage() {
                         <CardTitle>Agenda de Produção</CardTitle>
                         <CardDescription>Planejamento e cronograma das ordens de produção e eventos da fábrica.</CardDescription>
                     </div>
-                    <Button><PlusCircle className="mr-2 h-4 w-4" /> Agendar Nova Ordem</Button>
+                    <div className="flex items-center gap-2">
+                         <Button variant={isGoogleCalendarConnected ? "secondary" : "default"} onClick={handleConnectGoogleCalendar} disabled={isGoogleCalendarConnected}>
+                            <Link className="mr-2 h-4 w-4" /> 
+                            {isGoogleCalendarConnected ? 'Conectado com Google' : 'Conectar com Google Agenda'}
+                        </Button>
+                        <Button><PlusCircle className="mr-2 h-4 w-4" /> Agendar Nova Ordem</Button>
+                    </div>
                 </CardHeader>
                 <CardContent className="flex-grow flex gap-4">
                     {/* Calendar View */}
