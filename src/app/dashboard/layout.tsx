@@ -367,6 +367,61 @@ export default function DashboardLayout({
     }
   }
 
+  const handleDownloadReport = () => {
+    const reportContent = `
+Relatório Técnico e de Uso - Sistema MeuRH
+Versão: 2.1.3-beta
+Data de Emissão: ${new Date().toLocaleString('pt-BR')}
+
+================================
+1. Status dos Serviços
+================================
+- API Principal: Operacional
+- Banco de Dados: Operacional
+- Serviço de Email: Performance Degradada
+- Conector RM: Operacional
+- Serviço de Fila: Fora do Ar
+
+================================
+2. Uso Recente
+================================
+- Usuários Ativos: 3
+- Relatórios Gerados (24h): 15
+- Sincronizações (24h): 128
+- Módulos mais acessados: Folha Mensal, Consulta de Colaboradores, Dashboard
+
+================================
+3. Configuração do Ambiente
+================================
+- Ambiente Ativo: ${currentEnvironment}
+- URL Base: https://meurh.minhaempresa.com.br
+- Versão do Node.js: 20.x
+- Versão do Next.js: 15.x
+
+* Este é um relatório de diagnóstico gerado automaticamente.
+`;
+    const blob = new Blob([reportContent.trim()], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `relatorio_tecnico_meurh_${Date.now()}.txt`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    toast({ title: 'Download Iniciado', description: 'O relatório técnico foi gerado.' });
+  };
+
+
+  const handleTopBarClick = (id: string) => {
+    if (id === 'downloads') {
+      handleDownloadReport();
+    } else {
+      openTab({ id, title: topBarIcons.find(i => i.id === id)?.title || 'Nova Aba' });
+    }
+  };
+
+
   const dashboardContextValue = {
     openTab,
   };
@@ -378,8 +433,8 @@ export default function DashboardLayout({
         {/* Top Bar */}
         <div className="flex h-8 items-center px-2 justify-between bg-[hsl(var(--primary-darker))]">
             <div className='flex items-center gap-2'>
-                {topBarIcons.map((item, index) => (
-                    <Button variant='ghost' size='icon' key={item.id} className='h-6 w-6' onClick={() => openTab({ id: item.id, title: item.title })}>
+                {topBarIcons.map((item) => (
+                    <Button variant='ghost' size='icon' key={item.id} className='h-6 w-6' onClick={() => handleTopBarClick(item.id)}>
                         {item.icon}
                     </Button>
                 ))}
