@@ -28,6 +28,40 @@ const MonitoramentoUsuariosPage = lazy(
   () => import('../monitoramento-usuarios/page')
 );
 
+// Import all the other pages that were created
+const AdministracaoPessoalPage = lazy(() => import('./pages/administracao-pessoal/page'));
+const FolhaMensalPage = lazy(() => import('./pages/folha-mensal/page'));
+const FeriasPage = lazy(() => import('./pages/ferias/page'));
+const RescisaoPage = lazy(() => import('./pages/rescisao/page'));
+const EncargosPage = lazy(() => import('./pages/encargos/page'));
+const AnuaisPage = lazy(() => import('./pages/anuais/page'));
+const EsocialPage = lazy(() => import('./pages/esocial/page'));
+const OrcamentoPage = lazy(() => import('./pages/orcamento/page'));
+const ConfiguracoesPage = lazy(() => import('./pages/configuracoes/page'));
+const AssinaturaEletronicaPage = lazy(() => import('./pages/assinatura-eletronica/page'));
+const CustomizacaoPage = lazy(() => import('./pages/customizacao/page'));
+const GestaoPage = lazy(() => import('./pages/gestao/page'));
+const AmbientePage = lazy(() => import('./pages/ambiente/page'));
+const CalculadoraPage = lazy(() => import('./pages/calculadora/page'));
+const AgendaPage = lazy(() => import('./pages/agenda/page'));
+const CompartilhamentoPage = lazy(() => import('./pages/compartilhamento/page'));
+const CuboPage = lazy(() => import('./pages/cubo/page'));
+const PlanilhaPage = lazy(() => import('./pages/planilha/page'));
+const FormulaPage = lazy(() => import('./pages/formula/page'));
+const RelatoriosPage = lazy(() => import('./pages/relatorios/page'));
+const VisoesDadosPage = lazy(() => import('./pages/visoes-dados/page'));
+const CategoriasPage = lazy(() => import('./pages/categorias/page'));
+const FontesGraficosPage = lazy(() => import('./pages/fontes-graficos/page'));
+const LeitorRssPage = lazy(() => import('./pages/leitor-rss/page'));
+const IniciarServicoRssPage = lazy(() => import('./pages/iniciar-servico-rss/page'));
+const ConfiguracaoRssPage = lazy(() => import('./pages/configuracao-rss/page'));
+const CanaisRssPage = lazy(() => import('./pages/canais-rss/page'));
+const WordPage = lazy(() => import('./pages/word/page'));
+const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
+const PortalColaboradorPage = lazy(() => import('@/app/portal-colaborador/page'));
+const PortalCarreirasPage = lazy(() => import('./pages/portal-carreiras/page'));
+
+
 type Tab = {
   id: string;
   title: string;
@@ -43,6 +77,37 @@ const pagesMap: { [key: string]: React.LazyExoticComponent<any> } = {
   curriculos: CurriculosPage,
   filiais: FiliaisPage,
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
+  'administracao-pessoal': AdministracaoPessoalPage,
+  'folha-mensal': FolhaMensalPage,
+  ferias: FeriasPage,
+  rescisao: RescisaoPage,
+  encargos: EncargosPage,
+  anuais: AnuaisPage,
+  esocial: EsocialPage,
+  orcamento: OrcamentoPage,
+  configuracoes: ConfiguracoesPage,
+  'assinatura-eletronica': AssinaturaEletronicaPage,
+  customizacao: CustomizacaoPage,
+  gestao: GestaoPage,
+  ambiente: AmbientePage,
+  calculadora: CalculadoraPage,
+  agenda: AgendaPage,
+  compartilhamento: CompartilhamentoPage,
+  cubo: CuboPage,
+  planilha: PlanilhaPage,
+  formula: FormulaPage,
+  relatorios: RelatoriosPage,
+  'visoes-dados': VisoesDadosPage,
+  categorias: CategoriasPage,
+  'fontes-graficos': FontesGraficosPage,
+  'leitor-rss': LeitorRssPage,
+  'iniciar-servico-rss': IniciarServicoRssPage,
+  'configuracao-rss': ConfiguracaoRssPage,
+  'canais-rss': CanaisRssPage,
+  word: WordPage,
+  'assistente-ai': AssistenteAiPage,
+  'portal-colaborador': PortalColaboradorPage,
+  'portal-carreiras': PortalCarreirasPage,
 };
 
 type DashboardContextType = {
