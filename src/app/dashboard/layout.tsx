@@ -1,16 +1,5 @@
 'use client';
 import {
-  SidebarProvider,
-  Sidebar,
-  SidebarHeader,
-  SidebarContent,
-  SidebarTrigger,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-  SidebarInset,
-} from '@/components/ui/sidebar';
-import {
   Home,
   Users,
   Clock,
@@ -27,42 +16,51 @@ import {
   FileDown,
   UserPlus,
   Settings,
+  ChevronDown,
+  Minimize,
+  Maximize,
+  X,
+  Globe,
+  HelpCircle,
+  ChevronUp,
+  LayoutGrid,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MeuRHLogo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarShortcut,
-  MenubarTrigger,
-} from '@/components/ui/menubar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EmployeesPage from './employees/page';
 import DashboardPage from './page';
 
-const menuItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: <Home /> },
-  { href: '/dashboard/employees', label: 'Colaboradores', icon: <Users /> },
-  { href: '/dashboard/production', label: 'Produção', icon: <Factory /> },
-  { href: '/dashboard/inventory', label: 'Estoque', icon: <Boxes /> },
-  { href: '/dashboard/performance', label: 'Desempenho', icon: <CheckCircle /> },
-  { href: '/dashboard/attendance', label: 'Ponto', icon: <Clock /> },
-  { href: '/dashboard/documents', label: 'Documentos', icon: <FileText /> },
-  { href: '/dashboard/notices', label: 'Avisos', icon: <Bell /> },
-  { href: '/dashboard/integration', label: 'Integração', icon: <Puzzle /> },
+const topBarIcons = [
+  { icon: <Clock size={16} /> },
+  { icon: <Users size={16} /> },
+  { icon: <FileDown size={16} /> },
+  { icon: <LayoutGrid size={16} /> },
 ];
 
-const toolbarItems = [
-  { label: 'Consultar', icon: <Search /> },
-  { label: 'Novo', icon: <UserPlus /> },
-  { label: 'Imprimir', icon: <Printer /> },
-  { label: 'Exportar', icon: <FileDown /> },
-  { label: 'Configurações', icon: <Settings /> },
+const navMenuItems = [
+    { label: 'Administração de Pessoal' },
+    { label: 'Folha Mensal' },
+    { label: 'Folha Educacional' },
+    { label: 'Férias' },
+    { label: 'Rescisão' },
+    { label: 'Encargos' },
+    { label: 'Anuais' },
+    { label: 'eSocial' },
+    { label: 'Orçamento (beta)' },
+    { label: 'Configurações' },
+    { label: 'Assinatura Eletrônica' },
+    { label: 'Customização' },
+];
+
+const navRightIcons = [
+    { icon: <ChevronUp size={16} /> },
+    { icon: <Globe size={16} /> },
+    { icon: <FileText size={16} /> },
+    { icon: <ChevronDown size={16} /> },
+    { icon: <HelpCircle size={16} /> },
 ];
 
 export default function DashboardLayout({
@@ -72,96 +70,70 @@ export default function DashboardLayout({
 }) {
   const pathname = usePathname();
 
-  const getPageTitle = () => {
-    const currentItem = menuItems.find(item => pathname.startsWith(item.href));
-    return currentItem?.label || 'Dashboard';
-  };
-
   return (
-    <div className="flex flex-col h-screen bg-secondary text-sm">
-      <header className="flex h-14 items-center gap-4 border-b bg-background px-4 lg:px-6">
-        <Link href="#" className="flex items-center gap-2 font-semibold">
-          <MeuRHLogo className="w-20" />
-        </Link>
-        <div className="flex-1">
-          <Menubar className="border-none shadow-none rounded-none">
-            <MenubarMenu>
-              <MenubarTrigger>Arquivo</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Novo Colaborador</MenubarItem>
-                <MenubarItem>Nova Produção</MenubarItem>
-                <MenubarSeparator />
-                <MenubarItem>Sair</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Editar</MenubarTrigger>
-              <MenubarContent>
-                <MenubarItem>Desfazer</MenubarItem>
-                <MenubarItem>Refazer</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Exibir</MenubarTrigger>
-               <MenubarContent>
-                <MenubarItem>Tela Cheia</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Lançamentos</MenubarTrigger>
-               <MenubarContent>
-                <MenubarItem>Ponto</MenubarItem>
-                <MenubarItem>Produção</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-             <MenubarMenu>
-              <MenubarTrigger>Relatórios</MenubarTrigger>
-               <MenubarContent>
-                <MenubarItem>Folha de Ponto</MenubarItem>
-                <MenubarItem>Produtividade</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Ferramentas</MenubarTrigger>
-               <MenubarContent>
-                <MenubarItem>Integração ERP</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-            <MenubarMenu>
-              <MenubarTrigger>Ajuda</MenubarTrigger>
-               <MenubarContent>
-                <MenubarItem>Documentação</MenubarItem>
-                <MenubarItem>Sobre</MenubarItem>
-              </MenubarContent>
-            </MenubarMenu>
-          </Menubar>
+    <div className="flex flex-col h-screen bg-secondary text-sm text-white">
+      <header className="flex flex-col bg-primary">
+        {/* Top Bar */}
+        <div className="flex h-8 items-center px-2 justify-between bg-[hsl(var(--primary-darker))]">
+            <div className='flex items-center gap-2'>
+                {topBarIcons.map((item, index) => (
+                    <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
+                        {item.icon}
+                    </Button>
+                ))}
+            </div>
+            <div className='text-xs opacity-80'>
+                TOTVS Compartilhamento - 03.9.0507 - TOTVS Linha RM - Serviços Alias: CorporeRM | 1-TOTVS SA
+            </div>
+            <div className='flex items-center gap-2'>
+                <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Sistema</Button>
+                <div className='flex items-center'>
+                    <Button variant='ghost' size='icon' className='h-6 w-6'><Minimize size={16}/></Button>
+                    <Button variant='ghost' size='icon' className='h-6 w-6'><Maximize size={16}/></Button>
+                    <Button variant='ghost' size='icon' className='h-6 w-6 hover:bg-destructive'><X size={16}/></Button>
+                </div>
+            </div>
         </div>
-        <Button asChild variant="ghost" size="icon" className="rounded-full">
-          <Link href="/">
-            <LogOut className="h-5 w-5" />
-            <span className="sr-only">Sair</span>
-          </Link>
-        </Button>
+        {/* Main Navigation Bar */}
+        <div className='flex h-10 items-center px-2 justify-between'>
+            <nav className='flex items-center gap-2'>
+                <Button variant='ghost' size='icon' className='h-7 w-7'>
+                    <LayoutGrid size={16} />
+                </Button>
+                {navMenuItems.map(item => (
+                    <Button variant='ghost' key={item.label} className='h-auto py-1 px-2 text-xs font-normal'>
+                        {item.label}
+                    </Button>
+                ))}
+            </nav>
+            <div className='flex items-center gap-2'>
+                <Tabs defaultValue="gestao" className='text-xs'>
+                    <TabsList className='bg-transparent p-0 gap-0.5'>
+                        <TabsTrigger value="gestao" className='data-[state=active]:bg-card data-[state=active]:text-card-foreground rounded-sm h-6 px-4 text-xs'>Gestão</TabsTrigger>
+                        <TabsTrigger value="ambiente" className='data-[state=active]:bg-card data-[state=active]:text-card-foreground rounded-sm h-6 px-4 text-xs'>Ambiente</TabsTrigger>
+                    </TabsList>
+                </Tabs>
+                <div className='flex items-center'>
+                     {navRightIcons.map((item, index) => (
+                        <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
+                            {item.icon}
+                        </Button>
+                    ))}
+                </div>
+            </div>
+        </div>
       </header>
-       <div className='flex items-center p-2 bg-background border-b'>
-          {toolbarItems.map((item, index) => (
-            <Button variant='ghost' size='sm' key={index} className='flex-col h-auto gap-1 px-3 py-1'>
-              {item.icon}
-              <span className='text-xs'>{item.label}</span>
-            </Button>
-          ))}
-       </div>
 
-      <main className="flex-1 p-4 overflow-auto">
-        <Tabs defaultValue="employees">
+      <main className="flex-1 p-4 overflow-auto bg-background text-foreground">
+        <Tabs defaultValue="employees" className='h-full flex flex-col'>
           <TabsList>
             <TabsTrigger value="employees">Consulta de Colaboradores</TabsTrigger>
-             <TabsTrigger value="dashboard">Dashboard Principal</TabsTrigger>
+            <TabsTrigger value="dashboard">Dashboard Principal</TabsTrigger>
           </TabsList>
-          <TabsContent value="employees" className='bg-background border rounded-b-lg mt-0'>
+          <TabsContent value="employees" className='bg-card border rounded-b-lg mt-0 flex-1'>
             <EmployeesPage />
           </TabsContent>
-           <TabsContent value="dashboard" className='bg-background border rounded-b-lg mt-0 p-4'>
+          <TabsContent value="dashboard" className='bg-card border rounded-b-lg mt-0 p-4 flex-1'>
             <DashboardPage />
           </TabsContent>
         </Tabs>
