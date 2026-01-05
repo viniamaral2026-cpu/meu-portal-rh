@@ -6,46 +6,62 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PlusCircle, Search } from 'lucide-react';
+import { Search, FileDown, Trash2, Edit, Eye } from 'lucide-react';
+import { Label } from '@/components/ui/label';
 
 const employees = [
   {
     id: 1,
+    code: '001',
     name: 'João da Silva',
-    sector: 'Corte',
+    cpf: '123.456.789-00',
+    matricula: 'MAT001',
     role: 'Cortador',
+    sector: 'Corte',
     attendance: 'present',
     documents: 'ok',
   },
   {
     id: 2,
+    code: '002',
     name: 'Maria Oliveira',
-    sector: 'Costura',
+    cpf: '234.567.890-11',
+    matricula: 'MAT002',
     role: 'Costureira',
+    sector: 'Costura',
     attendance: 'absent',
     documents: 'pending',
   },
   {
     id: 3,
+    code: '003',
     name: 'Pedro Santos',
-    sector: 'Montagem',
+    cpf: '345.678.901-22',
+    matricula: 'MAT003',
     role: 'Montador',
+    sector: 'Montagem',
     attendance: 'present',
     documents: 'ok',
   },
   {
     id: 4,
+    code: '004',
     name: 'Ana Souza',
-    sector: 'Acabamento',
+    cpf: '456.789.012-33',
+    matricula: 'MAT004',
     role: 'Acabador',
+    sector: 'Acabamento',
     attendance: 'present',
     documents: 'ok',
   },
   {
     id: 5,
+    code: '005',
     name: 'Carlos Pereira',
-    sector: 'Costura',
+    cpf: '567.890.123-44',
+    matricula: 'MAT005',
     role: 'Costureiro',
+    sector: 'Costura',
     attendance: 'late',
     documents: 'pending',
   },
@@ -64,93 +80,71 @@ const documentStatus: { [key: string]: { label: string, variant: 'default' | 'se
 
 export default function EmployeesPage() {
   return (
-    <div className="flex flex-col gap-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Buscar Colaborador</CardTitle>
-          <CardDescription>Utilize os filtros para encontrar um colaborador específico.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <Input placeholder="Buscar por nome, matrícula..." />
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Todos os Setores" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos os Setores</SelectItem>
-                <SelectItem value="corte">Corte</SelectItem>
-                <SelectItem value="costura">Costura</SelectItem>
-                <SelectItem value="montagem">Montagem</SelectItem>
-                <SelectItem value="acabamento">Acabamento</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Status Documentos" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos os Status</SelectItem>
-                <SelectItem value="ok">Em Dia</SelectItem>
-                <SelectItem value="pending">Pendente</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button className='w-full md:w-auto'>
-              <Search className="mr-2 h-4 w-4" />
-              Pesquisar
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+    <div className="flex flex-col gap-4 p-4">
+      <div className="border rounded-lg p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-4 items-end">
+            <div className='space-y-2'>
+                <Label htmlFor='cod'>Código</Label>
+                <Input id='cod' placeholder="Código..." />
+            </div>
+            <div className='space-y-2'>
+                <Label htmlFor='name'>Nome</Label>
+                <Input id='name' placeholder="Nome do colaborador..." />
+            </div>
+            <div className='space-y-2'>
+                <Label htmlFor='cpf'>CPF</Label>
+                <Input id='cpf' placeholder="CPF..." />
+            </div>
+             <div className='space-y-2'>
+                <Label htmlFor='matricula'>Matrícula</Label>
+                <Input id='matricula' placeholder="Matrícula..." />
+            </div>
+            <div className="flex gap-2">
+                <Button className='w-full'>
+                  <Search className="mr-2 h-4 w-4" />
+                  Pesquisar
+                </Button>
+                <Button className='w-full' variant='outline'>Limpar</Button>
+            </div>
+        </div>
+      </div>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle>Resultado da Busca</CardTitle>
-            <CardDescription>Lista de colaboradores encontrados.</CardDescription>
-          </div>
-          <Button>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Adicionar Colaborador
-          </Button>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nome</TableHead>
-                <TableHead>Setor</TableHead>
-                <TableHead>Cargo</TableHead>
-                <TableHead>Status Presença</TableHead>
-                <TableHead>Documentos</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
+      <div className='border rounded-lg'>
+        <div className='p-4'>
+           <h3 className="text-lg font-semibold">Resultado da Busca</h3>
+           <p className="text-sm text-muted-foreground">Lista de colaboradores encontrados.</p>
+        </div>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Código</TableHead>
+              <TableHead>Nome</TableHead>
+              <TableHead>CPF</TableHead>
+              <TableHead>Matrícula</TableHead>
+              <TableHead>Cargo</TableHead>
+              <TableHead>Setor</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {employees.map((employee) => (
+              <TableRow key={employee.id}>
+                <TableCell>{employee.code}</TableCell>
+                <TableCell className="font-medium">{employee.name}</TableCell>
+                <TableCell>{employee.cpf}</TableCell>
+                <TableCell>{employee.matricula}</TableCell>
+                <TableCell>{employee.role}</TableCell>
+                <TableCell>{employee.sector}</TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {employees.map((employee) => (
-                <TableRow key={employee.id}>
-                  <TableCell className="font-medium">{employee.name}</TableCell>
-                  <TableCell>{employee.sector}</TableCell>
-                  <TableCell>{employee.role}</TableCell>
-                  <TableCell>
-                    <Badge variant={attendanceStatus[employee.attendance].variant}>
-                      {attendanceStatus[employee.attendance].label}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={documentStatus[employee.documents].variant}>
-                      {documentStatus[employee.documents].label}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="outline" size="sm">Ver Detalhes</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+            ))}
+          </TableBody>
+        </Table>
+        <div className='flex justify-end items-center p-4 gap-2 border-t'>
+            <Button variant="outline" size="sm"><Edit className='mr-2' />Alterar</Button>
+            <Button variant="destructive" size="sm"><Trash2 className='mr-2'/>Excluir</Button>
+            <Button variant="outline" size="sm"><Eye className='mr-2'/>Visualizar</" + "button>
+            <Button variant="secondary" size="sm"><FileDown className='mr-2'/>Baixar Arquivo</Button>
+        </div>
+      </div>
     </div>
   );
 }
