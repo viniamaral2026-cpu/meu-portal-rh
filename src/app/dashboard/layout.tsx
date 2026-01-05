@@ -376,12 +376,19 @@ export default function DashboardLayout({
                 ))}
             </nav>
             <div className='flex items-center gap-2'>
-                <Tabs defaultValue="gestao" className='text-xs'>
-                    <TabsList className='bg-transparent p-0 gap-0.5'>
-                        <TabsTrigger value="gestao" className='data-[state=active]:bg-card data-[state=active]:text-card-foreground rounded-sm h-6 px-4 text-xs'>Gestão</TabsTrigger>
-                        <TabsTrigger value="ambiente" className='data-[state=active]:bg-card data-[state=active]:text-card-foreground rounded-sm h-6 px-4 text-xs'>Ambiente</TabsTrigger>
-                    </TabsList>
-                </Tabs>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant='ghost' className='h-auto px-3 py-1 text-xs data-[state=open]:bg-card data-[state=open]:text-card-foreground'>Gestão <ChevronDown className='ml-1 h-3 w-3'/></Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Painéis de Gestão</DropdownMenuLabel>
+                    <DropdownMenuSeparator/>
+                    <DropdownMenuItem>Gestão de Pessoas</DropdownMenuItem>
+                    <DropdownMenuItem>Gestão Financeira/Contábil</DropdownMenuItem>
+                    <DropdownMenuItem>Gestão de Produção</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Ambiente</Button>
                 <div className='flex items-center'>
                      {navRightIcons.map((item, index) => (
                         <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
