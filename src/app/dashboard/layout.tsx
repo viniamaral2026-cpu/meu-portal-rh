@@ -44,56 +44,59 @@ import {
   ExternalLink,
   Sigma,
 } from 'lucide-react';
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Image from 'next/image';
+import type { Employee } from './employees/page';
+import { Skeleton } from '@/components/ui/skeleton';
 
-// Import all page components
-import DashboardPage from './page';
-import EmployeesPage, { type Employee } from './employees/page';
-import AdministracaoPessoalPage from './pages/administracao-pessoal/page';
-import FolhaMensalPage from './pages/folha-mensal/page';
-import FeriasPage from './pages/ferias/page';
-import RescisaoPage from './pages/rescisao/page';
-import EncargosPage from './pages/encargos/page';
-import AnuaisPage from './pages/anuais/page';
-import EsocialPage from './pages/esocial/page';
-import OrcamentoPage from './pages/orcamento/page';
-import ConfiguracoesPage from './pages/configuracoes/page';
-import AssinaturaEletronicaPage from './pages/assinatura-eletronica/page';
-import CustomizacaoPage from './pages/customizacao/page';
-import CalculadoraPage from './pages/calculadora/page';
-import AgendaPage from './pages/agenda/page';
-import CalendariosPage from './pages/calendarios/page';
-import CompartilhamentoPage from './pages/compartilhamento/page';
-import CuboPage from './pages/cubo/page';
-import PlanilhaPage from './pages/planilha/page';
-import FormulaPage from './pages/formula/page';
-import RelatoriosPage from './pages/relatorios/page';
-import GeradorRelatoriosPage from './pages/gerador-relatorios/page';
-import VisoesDadosPage from './pages/visoes-dados/page';
-import GeradorSaidaPage from './pages/gerador-saida/page';
-import GraficoPage from './pages/grafico/page';
-import CategoriasPage from './pages/categorias/page';
-import FontesGraficosPage from './pages/fontes-graficos/page';
-import LeitorRssPage from './pages/leitor-rss/page';
-import IniciarServicoRssPage from './pages/iniciar-servico-rss/page';
-import ConfiguracaoRssPage from './pages/configuracao-rss/page';
-import CanaisRssPage from './pages/canais-rss/page';
-import MeusCanaisPage from './pages/meus-canais/page';
-import RmConectorPage from './pages/rm-conector/page';
-import FontesComunicacaoPage from './pages/fontes-comunicacao/page';
-import ContasComunicacaoPage from './pages/contas-comunicacao/page';
-import AplicativosExternosPage from './pages/aplicativos-externos/page';
-import AplicativosSamlPage from './pages/aplicativos-saml/page';
-import VisualizarColaboradorPage from './pages/visualizar-colaborador/page';
-import EditarColaboradorPage from './pages/editar-colaborador/page';
-import WordPage from './pages/word/page';
-import AssistenteAiPage from './pages/assistente-ai/page';
+// Lazy load all page components for better performance
+const DashboardPage = lazy(() => import('./page'));
+const EmployeesPage = lazy(() => import('./employees/page'));
+const AdministracaoPessoalPage = lazy(() => import('./pages/administracao-pessoal/page'));
+const FolhaMensalPage = lazy(() => import('./pages/folha-mensal/page'));
+const FeriasPage = lazy(() => import('./pages/ferias/page'));
+const RescisaoPage = lazy(() => import('./pages/rescisao/page'));
+const EncargosPage = lazy(() => import('./pages/encargos/page'));
+const AnuaisPage = lazy(() => import('./pages/anuais/page'));
+const EsocialPage = lazy(() => import('./pages/esocial/page'));
+const OrcamentoPage = lazy(() => import('./pages/orcamento/page'));
+const ConfiguracoesPage = lazy(() => import('./pages/configuracoes/page'));
+const AssinaturaEletronicaPage = lazy(() => import('./pages/assinatura-eletronica/page'));
+const CustomizacaoPage = lazy(() => import('./pages/customizacao/page'));
+const CalculadoraPage = lazy(() => import('./pages/calculadora/page'));
+const AgendaPage = lazy(() => import('./pages/agenda/page'));
+const CalendariosPage = lazy(() => import('./pages/calendarios/page'));
+const CompartilhamentoPage = lazy(() => import('./pages/compartilhamento/page'));
+const CuboPage = lazy(() => import('./pages/cubo/page'));
+const PlanilhaPage = lazy(() => import('./pages/planilha/page'));
+const FormulaPage = lazy(() => import('./pages/formula/page'));
+const RelatoriosPage = lazy(() => import('./pages/relatorios/page'));
+const GeradorRelatoriosPage = lazy(() => import('./pages/gerador-relatorios/page'));
+const VisoesDadosPage = lazy(() => import('./pages/visoes-dados/page'));
+const GeradorSaidaPage = lazy(() => import('./pages/gerador-saida/page'));
+const GraficoPage = lazy(() => import('./pages/grafico/page'));
+const CategoriasPage = lazy(() => import('./pages/categorias/page'));
+const FontesGraficosPage = lazy(() => import('./pages/fontes-graficos/page'));
+const LeitorRssPage = lazy(() => import('./pages/leitor-rss/page'));
+const IniciarServicoRssPage = lazy(() => import('./pages/iniciar-servico-rss/page'));
+const ConfiguracaoRssPage = lazy(() => import('./pages/configuracao-rss/page'));
+const CanaisRssPage = lazy(() => import('./pages/canais-rss/page'));
+const MeusCanaisPage = lazy(() => import('./pages/meus-canais/page'));
+const RmConectorPage = lazy(() => import('./pages/rm-conector/page'));
+const FontesComunicacaoPage = lazy(() => import('./pages/fontes-comunicacao/page'));
+const ContasComunicacaoPage = lazy(() => import('./pages/contas-comunicacao/page'));
+const AplicativosExternosPage = lazy(() => import('./pages/aplicativos-externos/page'));
+const AplicativosSamlPage = lazy(() => import('./pages/aplicativos-saml/page'));
+const VisualizarColaboradorPage = lazy(() => import('./pages/visualizar-colaborador/page'));
+const EditarColaboradorPage = lazy(() => import('./pages/editar-colaborador/page'));
+const WordPage = lazy(() => import('./pages/word/page'));
+const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
+
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -193,7 +196,7 @@ type PageComponentProps = {
     employee?: Employee;
 };
 
-const pageComponents: { [key: string]: React.ComponentType<PageComponentProps> } = {
+const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   dashboard: DashboardPage,
   employees: EmployeesPage,
   'administracao-pessoal': AdministracaoPessoalPage,
@@ -257,6 +260,19 @@ export const useDashboard = () => {
   }
   return context;
 };
+
+function PageSkeleton() {
+  return (
+    <div className="p-4 space-y-4">
+      <Skeleton className="h-32 w-full" />
+      <div className="grid grid-cols-2 gap-4">
+        <Skeleton className="h-48 w-full" />
+        <Skeleton className="h-48 w-full" />
+      </div>
+    </div>
+  );
+}
+
 
 export default function DashboardLayout({
   children,
@@ -439,7 +455,6 @@ export default function DashboardLayout({
                 const pageId = tab.id.startsWith('visualizar-colaborador') ? 'visualizar-colaborador' : tab.id.startsWith('editar-colaborador') ? 'editar-colaborador' : tab.id;
                 const PageComponent = pageComponents[pageId as keyof typeof pageComponents];
                 
-                // Pass employee data to the correct page
                 const props: PageComponentProps = { tab };
                 if ((pageId === 'visualizar-colaborador' || pageId === 'editar-colaborador') && tab.data) {
                     props.employee = tab.data as Employee;
@@ -447,7 +462,9 @@ export default function DashboardLayout({
 
                 return (
                     <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
-                    {PageComponent ? <PageComponent {...props} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
+                      <Suspense fallback={<PageSkeleton />}>
+                        {PageComponent ? <PageComponent {...props} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
+                      </Suspense>
                     </TabsContent>
                 )
                 })}
@@ -462,3 +479,5 @@ export default function DashboardLayout({
     </div>
   );
 }
+
+    
