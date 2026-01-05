@@ -117,7 +117,7 @@ const ControleJornadaPage = lazy(() => import('./pages/controle-jornada/page'));
 const MonitoramentoUsuariosPage = lazy(() => import('./pages/monitoramento-usuarios/page'));
 const FiliaisPage = lazy(() => import('./pages/filiais/page'));
 const PortalColaboradorPage = lazy(() => import('./pages/portal-colaborador/page'));
-const PortalCarreirasPage = lazy(() => import('../portal-carreiras/page'));
+const PortalCarreirasPage = lazy(() => import('./portal-carreiras/page'));
 
 
 const topBarIcons = [
