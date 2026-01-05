@@ -6,10 +6,23 @@ import { TabsNav } from '@/components/layout/TabsNav';
 
 const InicioPage = lazy(() => import('../dashboard-principal/page'));
 const GeradorSaidasPage = lazy(() => import('../gerador-saidas/page'));
+const BiPage = lazy(() => import('../bi/page'));
+const CargosSalariosPage = lazy(() => import('../cargos-salarios/page'));
+const ControleJornadaPage = lazy(() => import('../controle-jornada/page'));
+const CurriculosPage = lazy(() => import('../curriculos/page'));
+const FiliaisPage = lazy(() => import('../filiais/page'));
+const MonitoramentoUsuariosPage = lazy(() => import('../monitoramento-usuarios/page'));
+
 
 const pages = {
   'dashboard-principal': <InicioPage />,
   'gerador-saidas': <GeradorSaidasPage />,
+  'bi': <BiPage />,
+  'cargos-salarios': <CargosSalariosPage />,
+  'controle-jornada': <ControleJornadaPage />,
+  'curriculos': <CurriculosPage />,
+  'filiais': <FiliaisPage />,
+  'monitoramento-usuarios': <MonitoramentoUsuariosPage />,
 };
 
 export default function DashboardLayout({

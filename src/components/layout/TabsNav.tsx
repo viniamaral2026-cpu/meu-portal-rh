@@ -2,8 +2,14 @@ import Link from 'next/link';
 
 const tabs = [
   { id: 'dashboard-principal', name: 'Dashboard Principal' },
-  { id: 'consulta-colaboradores', name: 'Consulta de Colaboradores' },
+  { id: 'bi', name: 'BI' },
+  { id: 'cargos-salarios', name: 'Cargos e Salários' },
+  { id: 'controle-jornada', name: 'Controle de Jornada' },
+  { id: 'curriculos', name: 'Gestão de Currículos' },
+  { id: 'monitoramento-usuarios', name: 'Monitoramento' },
+  { id: 'filiais', name: 'Filiais' },
   { id: 'gerador-saidas', name: 'Gerador Saída' },
+  { id: 'portal-colaborador/login', name: 'Portal do Colaborador' },
 ];
 
 export function TabsNav({ activeTab }: { activeTab: string }) {
