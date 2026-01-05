@@ -43,13 +43,15 @@ import {
   Wrench,
   ExternalLink,
   Sigma,
+  Server,
+  Cloud,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu';
 import Image from 'next/image';
 import type { Employee } from './employees/page';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -289,6 +291,7 @@ export default function DashboardLayout({
     { id: 'employees', title: 'Consulta de Colaboradores' },
   ]);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [currentEnvironment, setCurrentEnvironment] = useState('production');
 
   const openTab = (tab: Tab) => {
     if (!openTabs.find(t => t.id === tab.id)) {
@@ -388,7 +391,32 @@ export default function DashboardLayout({
                     <DropdownMenuItem>Gestão de Produção</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Ambiente</Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant='ghost' className='h-auto px-3 py-1 text-xs data-[state=open]:bg-card data-[state=open]:text-card-foreground'>
+                            Ambiente
+                            <ChevronDown className='ml-1 h-3 w-3'/>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel>Selecionar Ambiente</DropdownMenuLabel>
+                        <DropdownMenuRadioGroup value={currentEnvironment} onValueChange={setCurrentEnvironment}>
+                            <DropdownMenuRadioItem value="production">
+                                <Server className="mr-2" /> Produção
+                            </DropdownMenuRadioItem>
+                            <DropdownMenuRadioItem value="staging">
+                                <Cloud className="mr-2" /> Homologação
+                            </DropdownMenuRadioItem>
+                        </DropdownMenuRadioGroup>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                            <Settings className="mr-2" /> Status dos Serviços
+                        </DropdownMenuItem>
+                         <DropdownMenuItem>
+                            <ExternalLink className="mr-2" /> Limpar Cache do Ambiente
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
                 <div className='flex items-center'>
                      {navRightIcons.map((item, index) => (
                         <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
