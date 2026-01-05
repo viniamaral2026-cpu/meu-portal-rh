@@ -20,11 +20,15 @@ function SoundWaveIcon(props: React.SVGProps<SVGSVGElement>) {
 export default function AssistenteAiPage() {
   const [prompt, setPrompt] = useState('');
   const [isAnswering, setIsAnswering] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState('');
   
   const handleAsk = (e: React.FormEvent) => {
     e.preventDefault();
     if(prompt.trim() !== '') {
+        setCurrentQuestion(prompt);
         setIsAnswering(true);
+        // We can clear the prompt after submission if desired
+        // setPrompt(''); 
     }
   }
 
@@ -75,19 +79,16 @@ export default function AssistenteAiPage() {
                   <Avatar className='h-8 w-8'>
                     <AvatarFallback>DP</AvatarFallback>
                   </Avatar>
-                  <p className='font-medium'>{prompt}</p>
+                  <p className='font-medium'>{currentQuestion}</p>
                 </div>
                 <div className='flex gap-2 items-start'>
                    <img src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={24} height={24} alt="Gemini Icon" className='mt-1'/>
                    <div>
                     <p className='text-base/relaxed'>
-                        RH, ou Recursos Humanos, é a área de uma organização responsável pela gestão de pessoas, abrangendo todos os processos que envolvem o ciclo de vida do colaborador dentro da empresa. Isso inclui desde a recrutamento e seleção, admissão, treinamento e desenvolvimento, gestão de desempenho, remuneração e benefícios, até desligamento e bem-estar organizacional.
+                        Esta é uma resposta de exemplo gerada pelo assistente. O conteúdo real será fornecido dinamicamente pela IA com base na sua pergunta.
                     </p>
                     <p className='mt-4 text-base/relaxed'>
-                        O objetivo do RH é alinhamento entre as necessidades da empresa e o potencial dos colaboradores, promovendo produtividade, engajamento e satisfação, além de garantir conformidade legal e cuidar da cultura organizacional.
-                    </p>
-                    <p className='mt-4 text-base/relaxed'>
-                        Se quiser, posso detalhar também as principais funções e departamentos dentro do RH com exemplos práticos para empresas de médio porte. Quer que eu faça isso?
+                        Você pode pedir para detalhar, continuar a conversa ou fazer uma nova pergunta usando a caixa de entrada abaixo.
                     </p>
                     <div className='flex gap-2 mt-4'>
                         <Button variant='ghost' size='icon'><Copy className='w-5 h-5 text-muted-foreground' /></Button>
