@@ -51,6 +51,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EmployeesPage from './employees/page';
 import DashboardPage from './page';
 import { Separator } from '@/components/ui/separator';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -101,7 +102,6 @@ const toolbarItems = [
             { id: 'reports', icon: <FileText size={20} />, label: 'Relatórios' },
             { id: 'report-generator', icon: <FilePlus2 size={20} />, label: 'Gerador' },
             { id: 'data-views', icon: <Database size={20} />, label: 'Visões de Dados' },
-            { id: 'dashboards', icon: <LayoutDashboard size={20} />, label: 'Painéis' },
         ]
     },
     {
@@ -122,20 +122,23 @@ const toolbarItems = [
             { id: 'rss-channels', icon: <Rss size={20} />, label: 'Canais RSS' },
         ]
     },
+];
+
+const paineisMenuItems = [
     {
         group: 'RM Conec',
         items: [
-             { id: 'my-channels', icon: <Users size={20} />, label: 'Meus Canais' },
-             { id: 'rm-connector', icon: <LinkIcon size={20} />, label: 'Conector' },
+            { id: 'my-channels', icon: <Users size={20} />, label: 'Meus Canais' },
+            { id: 'rm-connector', icon: <LinkIcon size={20} />, label: 'RM Conector' },
         ]
     },
     {
         group: 'Comunicação',
         items: [
-             { id: 'comm-sources', icon: <Wrench size={20} />, label: 'Fontes' },
-             { id: 'comm-accounts', icon: <Users size={20} />, label: 'Contas' },
-             { id: 'external-apps', icon: <ExternalLink size={20} />, label: 'Apps Externos' },
-             { id: 'saml-apps', icon: <ExternalLink size={20} />, label: 'Apps SAML' },
+            { id: 'comm-sources', icon: <Wrench size={20} />, label: 'Fontes' },
+            { id: 'comm-accounts', icon: <Users size={20} />, label: 'Contas' },
+            { id: 'external-apps', icon: <ExternalLink size={20} />, label: 'Aplicativos Externos' },
+            { id: 'saml-apps', icon: <ExternalLink size={20} />, label: 'Aplicativos SAML' },
         ]
     },
 ];
@@ -152,10 +155,10 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [openTabs, setOpenTabs] = useState([
-    { id: 'employees', title: 'Consulta de Colaboradores' },
     { id: 'dashboard', title: 'Dashboard Principal' },
+    { id: 'employees', title: 'Consulta de Colaboradores' },
   ]);
-  const [activeTab, setActiveTab] = useState('employees');
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const openTab = (tab: { id: string, title: string }) => {
     if (!openTabs.find(t => t.id === tab.id)) {
@@ -168,8 +171,11 @@ export default function DashboardLayout({
     e.stopPropagation();
     setOpenTabs(prev => {
       const newTabs = prev.filter(t => t.id !== tabId);
-      if (activeTab === tabId) {
-        setActiveTab(newTabs[newTabs.length - 1]?.id || '');
+      if (activeTab === tabId && newTabs.length > 0) {
+        setActiveTab(newTabs[newTabs.length - 1]?.id);
+      } else if (newTabs.length === 0) {
+        // If no tabs are left, maybe open a default one or set to a null state
+        setActiveTab(''); 
       }
       return newTabs;
     });
@@ -228,8 +234,37 @@ export default function DashboardLayout({
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border overflow-x-auto">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border overflow-x-hidden">
           <div className="flex h-full items-start">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <div className='flex flex-col items-center justify-center h-full px-1 cursor-pointer'>
+                         <div className='flex items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1 flex-col'>
+                            <LayoutDashboard size={20} />
+                            <span className='w-full text-center truncate'>Painéis</span>
+                        </div>
+                        <p className="text-xs -mt-8 mb-1 invisible">Painéis</p>
+                    </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                    {paineisMenuItems.map(group => (
+                        <React.Fragment key={group.group}>
+                            <DropdownMenuLabel>{group.group}</DropdownMenuLabel>
+                            <DropdownMenuGroup>
+                            {group.items.map(item => (
+                                <DropdownMenuItem key={item.id} onClick={() => openTab({ id: item.id, title: item.label })}>
+                                {item.icon}
+                                <span>{item.label}</span>
+                                </DropdownMenuItem>
+                            ))}
+                            </DropdownMenuGroup>
+                            <DropdownMenuSeparator />
+                        </React.Fragment>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
+            <Separator orientation="vertical" className="h-4/5 my-auto" />
+            
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
                 <div className="flex flex-col items-center justify-center h-full px-1">
@@ -256,31 +291,37 @@ export default function DashboardLayout({
       </header>
 
       <main className="flex-1 p-4 overflow-auto bg-background text-foreground">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
-          <TabsList>
-            {openTabs.map(tab => (
-              <TabsTrigger key={tab.id} value={tab.id} className="relative pr-8">
-                {tab.title}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
-                  onClick={(e) => closeTab(e, tab.id)}
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              </TabsTrigger>
-            ))}
-          </TabsList>
-          {openTabs.map(tab => {
-            const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
-            return (
-              <TabsContent key={tab.id} value={tab.id} className='bg-card border rounded-b-lg mt-0 flex-1'>
-                {PageComponent ? <PageComponent /> : <div className="p-4">Conteúdo para {tab.title}</div>}
-              </TabsContent>
-            )
-          })}
-        </Tabs>
+        {openTabs.length > 0 ? (
+          <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
+            <TabsList>
+              {openTabs.map(tab => (
+                <TabsTrigger key={tab.id} value={tab.id} className="relative pr-8">
+                  {tab.title}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
+                    onClick={(e) => closeTab(e, tab.id)}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            {openTabs.map(tab => {
+              const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
+              return (
+                <TabsContent key={tab.id} value={tab.id} className='bg-card border rounded-b-lg mt-0 flex-1'>
+                  {PageComponent ? <PageComponent /> : <div className="p-4">Conteúdo para {tab.title}</div>}
+                </TabsContent>
+              )
+            })}
+          </Tabs>
+        ) : (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Selecione um item no menu para começar.
+          </div>
+        )}
       </main>
     </div>
   );
