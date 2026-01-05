@@ -53,7 +53,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 
 // Import all page components
 import DashboardPage from './page';
-import EmployeesPage from './employees/page';
+import EmployeesPage, { type Employee } from './employees/page';
 import AdministracaoPessoalPage from './pages/administracao-pessoal/page';
 import FolhaMensalPage from './pages/folha-mensal/page';
 import FeriasPage from './pages/ferias/page';
@@ -182,7 +182,12 @@ const paineisMenuItems = [
     },
 ];
 
-const pageComponents: { [key: string]: React.ComponentType<any> } = {
+type PageComponentProps = {
+    tab: Tab;
+    employee?: Employee;
+};
+
+const pageComponents: { [key: string]: React.ComponentType<PageComponentProps> } = {
   dashboard: DashboardPage,
   employees: EmployeesPage,
   'administracao-pessoal': AdministracaoPessoalPage,
@@ -228,6 +233,7 @@ const pageComponents: { [key: string]: React.ComponentType<any> } = {
 type Tab = {
   id: string;
   title: string;
+  data?: any;
 };
 
 type DashboardContextType = {
@@ -424,9 +430,16 @@ export default function DashboardLayout({
                 {openTabs.map(tab => {
                 const pageId = tab.id.split('-')[0];
                 const PageComponent = pageComponents[pageId as keyof typeof pageComponents];
+                
+                // Pass employee data to the correct page
+                const props: PageComponentProps = { tab };
+                if ((pageId === 'visualizar-colaborador' || pageId === 'editar-colaborador') && tab.data) {
+                    props.employee = tab.data as Employee;
+                }
+
                 return (
                     <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
-                    {PageComponent ? <PageComponent tab={tab}/> : <div className="p-4">Conteúdo para {tab.title}</div>}
+                    {PageComponent ? <PageComponent {...props} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
                     </TabsContent>
                 )
                 })}
