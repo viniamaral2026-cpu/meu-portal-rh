@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, FileDown, Calculator, Printer } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
 const payrollData = [
   {
@@ -62,6 +63,23 @@ const payrollData = [
 ];
 
 export default function FolhaMensalPage() {
+  const { toast } = useToast();
+
+  const handleActionClick = (action: 'calculate' | 'export' | 'print') => {
+    switch (action) {
+      case 'calculate':
+        toast({ title: 'Cálculo da Folha', description: 'O cálculo da folha para a competência selecionada foi iniciado.' });
+        break;
+      case 'export':
+        toast({ title: 'Exportação de PDF', description: 'A geração do PDF da folha de pagamento foi iniciada.' });
+        break;
+      case 'print':
+        toast({ title: 'Impressão de Holerites', description: 'Os holerites estão sendo preparados para impressão.' });
+        break;
+    }
+  };
+
+
   return (
     <div className="flex flex-col gap-4 p-4">
        <Card>
@@ -151,9 +169,9 @@ export default function FolhaMensalPage() {
           </TableBody>
         </Table>
         <div className='flex justify-end items-center p-4 gap-2 border-t'>
-            <Button variant="outline" size="sm"><Calculator className='mr-2' />Calcular Folha</Button>
-            <Button variant="secondary" size="sm"><FileDown className='mr-2'/>Exportar PDF</Button>
-            <Button variant="default" size="sm"><Printer className='mr-2'/>Imprimir Holerites</Button>
+            <Button variant="outline" size="sm" onClick={() => handleActionClick('calculate')}><Calculator className='mr-2' />Calcular Folha</Button>
+            <Button variant="secondary" size="sm" onClick={() => handleActionClick('export')}><FileDown className='mr-2'/>Exportar PDF</Button>
+            <Button variant="default" size="sm" onClick={() => handleActionClick('print')}><Printer className='mr-2'/>Imprimir Holerites</Button>
         </div>
       </div>
     </div>

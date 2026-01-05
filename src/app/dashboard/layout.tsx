@@ -90,6 +90,7 @@ import ContasComunicacaoPage from './pages/contas-comunicacao/page';
 import AplicativosExternosPage from './pages/aplicativos-externos/page';
 import AplicativosSamlPage from './pages/aplicativos-saml/page';
 import VisualizarColaboradorPage from './pages/visualizar-colaborador/page';
+import EditarColaboradorPage from './pages/editar-colaborador/page';
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -219,7 +220,9 @@ const pageComponents: { [key: string]: React.ComponentType<any> } = {
   'contas-comunicacao': ContasComunicacaoPage,
   'aplicativos-externos': AplicativosExternosPage,
   'aplicativos-saml': AplicativosSamlPage,
+  // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
+  'editar-colaborador': EditarColaboradorPage,
 };
 
 type Tab = {
@@ -261,12 +264,18 @@ export default function DashboardLayout({
 
   const closeTab = (e: React.MouseEvent, tabId: string) => {
     e.stopPropagation();
+    // Prevent closing the main dashboard tab
+    if (tabId === 'dashboard') return;
+
     setOpenTabs(prev => {
       const newTabs = prev.filter(t => t.id !== tabId);
       if (activeTab === tabId && newTabs.length > 0) {
         setActiveTab(newTabs[newTabs.length - 1]?.id);
       } else if (newTabs.length === 0) {
-        setActiveTab(''); 
+         // If all tabs are closed, open the default dashboard
+         setOpenTabs([{ id: 'dashboard', title: 'Dashboard Principal' }]);
+         setActiveTab('dashboard');
+         return [];
       }
       return newTabs;
     });
@@ -404,6 +413,7 @@ export default function DashboardLayout({
                     size="icon"
                     className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
                     onClick={(e) => closeTab(e, tab.id)}
+                    disabled={tab.id === 'dashboard'}
                   >
                     <X className="h-3 w-3" />
                   </Button>
@@ -412,10 +422,11 @@ export default function DashboardLayout({
             </TabsList>
             <DashboardContext.Provider value={dashboardContextValue}>
                 {openTabs.map(tab => {
-                const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
+                const pageId = tab.id.split('-')[0];
+                const PageComponent = pageComponents[pageId as keyof typeof pageComponents];
                 return (
                     <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
-                    {PageComponent ? <PageComponent /> : <div className="p-4">Conteúdo para {tab.title}</div>}
+                    {PageComponent ? <PageComponent tab={tab}/> : <div className="p-4">Conteúdo para {tab.title}</div>}
                     </TabsContent>
                 )
                 })}
