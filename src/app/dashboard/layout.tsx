@@ -113,11 +113,12 @@ const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
 const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/page'));
 const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
 const ControleJornadaPage = lazy(() => import('./pages/controle-jornada/page'));
+const MonitoramentoUsuariosPage = lazy(() => import('./pages/monitoramento-usuarios/page'));
 
 
 const topBarIcons = [
   { id: 'controle-jornada', title: 'Controle de Jornada', icon: <Clock size={16} /> },
-  { id: 'users', title: 'Usuários', icon: <Users size={16} /> },
+  { id: 'monitoramento-usuarios', title: 'Monitoramento de Usuários', icon: <Users size={16} /> },
   { id: 'downloads', title: 'Downloads', icon: <FileDown size={16} /> },
   { id: 'apps', title: 'Aplicativos', icon: <LayoutGrid size={16} /> },
 ];
@@ -261,6 +262,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'atualizacao-sistema': AtualizacaoSistemaPage,
   'documentacao': DocumentacaoPage,
   'controle-jornada': ControleJornadaPage,
+  'monitoramento-usuarios': MonitoramentoUsuariosPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -575,7 +577,7 @@ export default function DashboardLayout({
                     <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
                       <Suspense fallback={<PageSkeleton />}>
                         {PageComponent ? <PageComponent {...props} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
-                      </Suspense>
+                      </Susp-Suspense>
                     </TabsContent>
                 )
                 })}
