@@ -33,7 +33,7 @@ export function HeaderTop() {
         </button>
       </div>
 
-      <div className="flex items-center gap-2 text-muted-foreground">
+      <div className="flex-1 flex justify-center items-center gap-2 text-muted-foreground">
         <span>Minha Empresa Calçados | Unidade Matriz | Usuário: Admin</span>
         <ChevronDown className="h-3 w-3 cursor-pointer" />
       </div>
