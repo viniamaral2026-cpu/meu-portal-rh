@@ -20,6 +20,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { Share2, PlusCircle, Search, Trash2, FileText, BarChart, Users, Link } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 
 type SharedItemType = 'report' | 'dashboard' | 'view';
 type PermissionLevel = 'view' | 'edit' | 'full';
