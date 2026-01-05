@@ -114,13 +114,14 @@ const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/pa
 const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
 const ControleJornadaPage = lazy(() => import('./pages/controle-jornada/page'));
 const MonitoramentoUsuariosPage = lazy(() => import('./pages/monitoramento-usuarios/page'));
+const FiliaisPage = lazy(() => import('./pages/filiais/page'));
 
 
 const topBarIcons = [
   { id: 'controle-jornada', title: 'Controle de Jornada', icon: <Clock size={16} /> },
   { id: 'monitoramento-usuarios', title: 'Monitoramento de Usuários', icon: <Users size={16} /> },
   { id: 'downloads', title: 'Downloads', icon: <FileDown size={16} /> },
-  { id: 'apps', title: 'Aplicativos', icon: <LayoutGrid size={16} /> },
+  { id: 'filiais', title: 'Gestão de Filiais', icon: <Factory size={16} /> },
 ];
 
 const navMenuItems = [
@@ -263,6 +264,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'documentacao': DocumentacaoPage,
   'controle-jornada': ControleJornadaPage,
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
+  'filiais': FiliaisPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
