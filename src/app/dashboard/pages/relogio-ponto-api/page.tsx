@@ -5,43 +5,46 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Clock, HardDrive, CheckCircle, AlertTriangle, RefreshCw, Terminal } from 'lucide-react';
+import { Clock, HardDrive, CheckCircle, AlertTriangle, RefreshCw, Terminal, Users, ListFilter } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
-type PunchLog = {
+type RawPunch = {
+  nsr: string; // Número Sequencial de Registro (do AFD)
   timestamp: string;
-  employeeId: string;
-  employeeName: string;
+  pis_cpf: string;
   deviceId: string;
 };
 
-const initialPunches: PunchLog[] = [
-  { timestamp: '08:02:15', employeeId: '001', employeeName: 'Ana Silva', deviceId: 'TERM-01' },
-  { timestamp: '08:01:58', employeeId: '004', employeeName: 'Daniela Souza', deviceId: 'TERM-02' },
-  { timestamp: '07:59:45', employeeId: '005', employeeName: 'Eduardo Lima', deviceId: 'TERM-01' },
+const initialPunches: RawPunch[] = [
+  { nsr: '000158974', timestamp: '10/07/2024 08:02:15', pis_cpf: '123.456.789-00', deviceId: 'TERM-01' },
+  { nsr: '000158973', timestamp: '10/07/2024 08:01:58', pis_cpf: '456.789.012-33', deviceId: 'TERM-02' },
+  { nsr: '000158972', timestamp: '10/07/2024 07:59:45', pis_cpf: '567.890.123-44', deviceId: 'TERM-01' },
 ];
 
-
 export default function RelogioPontoApiPage() {
-    const [punches, setPunches] = useState<PunchLog[]>(initialPunches);
-    const [logs, setLogs] = useState<string[]>(['[INFO] Conexão com API do terminal de ponto estabelecida.']);
+    const [punches, setPunches] = useState<RawPunch[]>(initialPunches);
+    const [logs, setLogs] = useState<string[]>([
+        `[INFO] Worker Service de ponto iniciado. Aguardando eventos...`,
+        `[SYNC] Enviando 1 novo colaborador para o terminal TERM-01...`,
+        `[API] Conexão com API do terminal de ponto estabelecida.`,
+    ]);
     const { toast } = useToast();
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const newLog = `[PONTO] Novo registro recebido do TERM-01 - Matrícula: 00${Math.floor(Math.random() * 5) + 1}`;
+            const newLog = `[PONTO] Novo registro (NSR: 0001589${Math.floor(Math.random() * 900) + 100}) recebido do TERM-01.`;
             setLogs(prev => [newLog, ...prev.slice(0, 100)]);
-        }, 8000); // Adiciona um novo log a cada 8 segundos para simular a API
+        }, 12000); 
         return () => clearInterval(interval);
     }, []);
     
     const handleSync = () => {
         toast({
             title: "Sincronização Manual Iniciada",
-            description: "Forçando a busca por novos registros nos terminais."
+            description: "Forçando a busca por novos registros no arquivo AFD dos terminais."
         });
-        const newLog = `[SYNC] Sincronização manual iniciada pelo usuário.`;
+        const newLog = `[SYNC] Sincronização manual (leitura de AFD) iniciada pelo usuário.`;
         setLogs(prev => [newLog, ...prev]);
     }
 
@@ -49,43 +52,43 @@ export default function RelogioPontoApiPage() {
         <div className="p-4 space-y-4">
             <Card>
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <Clock /> Integração com Relógio de Ponto (API)
+                    <CardTitle className="flex items-center gap-3">
+                        <Clock className="h-6 w-6"/> Integração com Relógio de Ponto (REP-P)
                     </CardTitle>
                     <CardDescription>
-                        Monitore a comunicação e os registros recebidos dos terminais de ponto físicos.
+                        Monitore a comunicação com os terminais de ponto, o recebimento de batidas (via API e leitura de AFD) e o status do Worker Service de tratamento, conforme Portaria 671 do MTE.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Status da Conexão</CardTitle>
+                                <CardTitle className="text-sm font-medium">Terminais Online</CardTitle>
                                 <CheckCircle className="h-4 w-4 text-green-500" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-xl font-bold text-green-600">Conectado</div>
-                                <p className="text-xs text-muted-foreground">2 terminais online</p>
+                                <div className="text-2xl font-bold text-green-600">2 / 2</div>
+                                <p className="text-xs text-muted-foreground">TERM-01, TERM-02</p>
                             </CardContent>
                         </Card>
                          <Card>
                             <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Última Sincronização</CardTitle>
-                                <RefreshCw className="h-4 w-4 text-muted-foreground" />
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-xl font-bold">1 minuto atrás</div>
-                                <p className="text-xs text-muted-foreground">Sincronização automática</p>
-                            </CardContent>
-                        </Card>
-                         <Card>
-                            <CardHeader className="flex flex-row items-center justify-between pb-2">
-                                <CardTitle className="text-sm font-medium">Registros Hoje</CardTitle>
+                                <CardTitle className="text-sm font-medium">Batidas Brutas na Fila</CardTitle>
                                 <HardDrive className="h-4 w-4 text-muted-foreground" />
                             </CardHeader>
                             <CardContent>
-                                <div className="text-xl font-bold">342 Registros</div>
-                                <p className="text-xs text-muted-foreground">3 com erro de leitura</p>
+                                <div className="text-2xl font-bold">18</div>
+                                <p className="text-xs text-muted-foreground">Aguardando processamento pelo motor de cálculo.</p>
+                            </CardContent>
+                        </Card>
+                         <Card>
+                            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                                <CardTitle className="text-sm font-medium">Erros de Sincronização (24h)</CardTitle>
+                                <AlertTriangle className="h-4 w-4 text-destructive" />
+                            </CardHeader>
+                             <CardContent>
+                                <div className="text-2xl font-bold text-red-600">1</div>
+                                <p className="text-xs text-muted-foreground">CPF não encontrado no cadastro.</p>
                             </CardContent>
                         </Card>
                     </div>
@@ -94,25 +97,31 @@ export default function RelogioPontoApiPage() {
 
              <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                 <Card className="lg:col-span-3">
-                    <CardHeader>
-                        <CardTitle>Registros de Ponto Recentes</CardTitle>
+                    <CardHeader className='flex-row items-center justify-between'>
+                         <div>
+                            <CardTitle>Batidas Brutas Recebidas</CardTitle>
+                            <CardDescription>Registros exatamente como vieram do relógio, antes do tratamento.</CardDescription>
+                         </div>
+                         <div className="flex items-center gap-2">
+                            <Button variant="outline" size="sm" onClick={handleSync}><RefreshCw className="mr-2 h-4 w-4"/> Ler Arquivo AFD</Button>
+                         </div>
                     </CardHeader>
                     <CardContent>
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead>Horário</TableHead>
-                                    <TableHead>Matrícula</TableHead>
-                                    <TableHead>Colaborador</TableHead>
+                                    <TableHead>NSR</TableHead>
+                                    <TableHead>Data/Hora</TableHead>
+                                    <TableHead>CPF / PIS</TableHead>
                                     <TableHead>Terminal</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 {punches.map((p, i) => (
                                     <TableRow key={i}>
+                                        <TableCell className="font-mono text-xs">{p.nsr}</TableCell>
                                         <TableCell>{p.timestamp}</TableCell>
-                                        <TableCell>{p.employeeId}</TableCell>
-                                        <TableCell className="font-medium">{p.employeeName}</TableCell>
+                                        <TableCell className="font-medium">{p.pis_cpf}</TableCell>
                                         <TableCell><Badge variant="outline">{p.deviceId}</Badge></TableCell>
                                     </TableRow>
                                 ))}
@@ -122,16 +131,21 @@ export default function RelogioPontoApiPage() {
                 </Card>
                  <Card className="lg:col-span-2 flex flex-col">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><Terminal /> Log da API</CardTitle>
+                        <CardTitle className="flex items-center gap-2"><Terminal /> Log do Worker Service</CardTitle>
+                        <CardDescription>Atividades do serviço de backend que processa os pontos.</CardDescription>
                     </CardHeader>
-                    <CardContent className="flex-grow">
-                        <ScrollArea className="h-64 w-full rounded-md border bg-muted/30 p-4">
+                    <CardContent className="flex-grow flex flex-col">
+                        <ScrollArea className="h-64 w-full rounded-md border bg-black p-4 text-green-400">
                             <div className="font-mono text-xs space-y-2">
                                 {logs.map((log, index) => (
                                     <p key={index}>{log}</p>
                                 ))}
                             </div>
                         </ScrollArea>
+                         <div className="flex gap-2 mt-4">
+                             <Button variant="outline" size="sm" className='w-full'><Users className='mr-2 h-4 w-4'/> Sincronizar Colaboradores</Button>
+                             <Button variant="outline" size="sm" className='w-full'><ListFilter className='mr-2 h-4 w-4'/> Ver Regras de Cálculo</Button>
+                         </div>
                     </CardContent>
                 </Card>
             </div>
