@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Clock, HardDrive, CheckCircle, AlertTriangle, RefreshCw, Terminal, Users, ListFilter, FileDown } from 'lucide-react';
+import { Clock, HardDrive, CheckCircle, AlertTriangle, RefreshCw, Terminal, Users, ListFilter, FileDown, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -56,6 +56,15 @@ export default function RelogioPontoApiPage() {
         const newLog = `[LEGAL] Geração do Arquivo Eletrônico de Jornada (AEJ) solicitada pelo usuário.`;
         setLogs(prev => [newLog, ...prev]);
     }
+    
+    const handleGenerateAtestado = () => {
+        toast({
+            title: "Atestado Técnico Gerado",
+            description: "O atestado de conformidade com a Portaria 671 foi gerado e enviado ao seu e-mail.",
+        });
+        const newLog = `[LEGAL] Geração do Atestado Técnico (Art. 89, Portaria 671) solicitada pelo usuário.`;
+        setLogs(prev => [newLog, ...prev]);
+    }
 
     return (
         <div className="p-4 space-y-4">
@@ -65,7 +74,7 @@ export default function RelogioPontoApiPage() {
                         <Clock className="h-6 w-6"/> Integração com Relógio de Ponto (REP-P)
                     </CardTitle>
                     <CardDescription>
-                        Monitore a comunicação com os terminais de ponto, o recebimento de batidas (via API e leitura de AFD) e o status do Worker Service de tratamento, conforme Portaria 671 do MTE.
+                        Monitore a comunicação com os terminais, o recebimento de batidas e o status do Programa de Tratamento de Registro de Ponto (PTRP), conforme Portaria 671 do MTE.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -108,7 +117,7 @@ export default function RelogioPontoApiPage() {
                 <Card className="lg:col-span-3">
                     <CardHeader className='flex-row items-center justify-between'>
                          <div>
-                            <CardTitle>Batidas Brutas Recebidas (AFD)</CardTitle>
+                            <CardTitle>Batidas Brutas Recebidas (Arquivo Fonte de Dados - AFD)</CardTitle>
                             <CardDescription>Registros como vieram do relógio, antes do tratamento.</CardDescription>
                          </div>
                          <div className="flex items-center gap-2">
@@ -151,9 +160,10 @@ export default function RelogioPontoApiPage() {
                                 ))}
                             </div>
                         </ScrollArea>
-                         <div className="flex gap-2 mt-4">
+                         <div className="grid grid-cols-2 gap-2 mt-4">
                              <Button variant="outline" size="sm" className='w-full'><Users className='mr-2 h-4 w-4'/> Sinc. Colaboradores</Button>
                              <Button variant="outline" size="sm" className='w-full' onClick={handleGenerateAEJ}><FileDown className='mr-2 h-4 w-4'/> Gerar Arquivo de Jornada (AEJ)</Button>
+                             <Button variant="secondary" size="sm" className='w-full col-span-2' onClick={handleGenerateAtestado}><FileText className='mr-2 h-4 w-4'/> Gerar Atestado Técnico (Art. 89)</Button>
                          </div>
                     </CardContent>
                 </Card>
