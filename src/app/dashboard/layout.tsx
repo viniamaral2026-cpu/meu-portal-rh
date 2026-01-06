@@ -90,10 +90,10 @@ const GeradorSaidasPage = React.lazy(() => import('../gerador-saidas/page'));
 
 
 const topBarIcons = [
-  { icon: <Clock size={16} /> },
-  { icon: <Users size={16} /> },
-  { icon: <FileDown size={16} /> },
-  { icon: <LayoutGrid size={16} /> },
+  { icon: Clock },
+  { icon: Users },
+  { icon: FileDown },
+  { icon: LayoutGrid },
 ];
 
 const navMenuItems = [
@@ -111,11 +111,11 @@ const navMenuItems = [
 ];
 
 const navRightIcons = [
-    { icon: <ChevronUp size={16} /> },
-    { icon: <Globe size={16} /> },
-    { icon: <FileText size={16} /> },
-    { icon: <ChevronDown size={16} /> },
-    { icon: <HelpCircle size={16} /> },
+    { icon: ChevronUp },
+    { icon: Globe },
+    { icon: FileText },
+    { icon: ChevronDown },
+    { icon: HelpCircle },
 ];
 
 const toolbarItems = [
@@ -252,9 +252,9 @@ export default function DashboardLayout({
         {/* Top Bar */}
         <div className="flex h-8 items-center px-2 justify-between bg-[hsl(var(--primary-darker))]">
             <div className='flex items-center gap-2'>
-                {topBarIcons.map((item, index) => (
+                {topBarIcons.map((Item, index) => (
                     <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
-                        {item.icon}
+                        <Item.icon size={16} />
                     </Button>
                 ))}
             </div>
@@ -290,46 +290,17 @@ export default function DashboardLayout({
                     </TabsList>
                 </Tabs>
                 <div className='flex items-center'>
-                     {navRightIcons.map((item, index) => (
+                     {navRightIcons.map((Item, index) => (
                         <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
-                            {item.icon}
+                            <Item.icon size={16} />
                         </Button>
                     ))}
                 </div>
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border overflow-x-hidden">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border overflow-x-hidden">
           <div className="flex h-full items-start">
-            <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <div className='flex flex-col items-center justify-center h-full px-1 cursor-pointer'>
-                         <div className='flex items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1 flex-col'>
-                            <LayoutDashboard size={20} />
-                            <span className='w-full text-center truncate'>Painéis</span>
-                        </div>
-                        <p className="text-xs -mt-8 mb-1 invisible">Painéis</p>
-                    </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
-                    {paineisMenuItems.map(group => (
-                        <React.Fragment key={group.group}>
-                            <DropdownMenuLabel>{group.group}</DropdownMenuLabel>
-                            <DropdownMenuGroup>
-                            {group.items.map(item => (
-                                <DropdownMenuItem key={item.id} onClick={() => openTab({ id: item.id, title: item.label })}>
-                                <item.icon className="mr-2 h-4 w-4" />
-                                <span>{item.label}</span>
-                                </DropdownMenuItem>
-                            ))}
-                            </DropdownMenuGroup>
-                            <DropdownMenuSeparator />
-                        </React.Fragment>
-                    ))}
-                </DropdownMenuContent>
-            </DropdownMenu>
-            <Separator orientation="vertical" className="h-4/5 my-auto" />
-            
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
                 <div className="flex flex-col items-center justify-center h-full px-1">
@@ -341,7 +312,7 @@ export default function DashboardLayout({
                       onClick={() => openTab({ id: item.id, title: item.label })}
                       className="flex flex-col items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1"
                     >
-                        <item.icon />
+                        <item.icon size={20} />
                         <span className='w-full text-center truncate'>{item.label}</span>
                     </Button>
                     ))}
@@ -351,6 +322,37 @@ export default function DashboardLayout({
                 {groupIndex < toolbarItems.length - 1 && <Separator orientation="vertical" className="h-4/5 my-auto" />}
               </div>
             ))}
+          </div>
+
+          <div className="flex h-full items-start">
+            <Separator orientation="vertical" className="h-4/5 my-auto" />
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <div className='flex flex-col items-center justify-center h-full px-1 cursor-pointer'>
+                         <div className='flex items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1 flex-col'>
+                            <LayoutDashboard size={20} />
+                            <span className='w-full text-center truncate'>Painéis</span>
+                        </div>
+                        <p className="text-xs -mt-8 mb-1 invisible">Painéis</p>
+                    </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                    {paineisMenuItems.map((group, index) => (
+                        <React.Fragment key={group.group}>
+                            <DropdownMenuLabel>{group.group}</DropdownMenuLabel>
+                            <DropdownMenuGroup>
+                            {group.items.map(item => (
+                                <DropdownMenuItem key={item.id} onClick={() => openTab({ id: item.id, title: item.label })}>
+                                <item.icon className="mr-2 h-4 w-4" />
+                                <span>{item.label}</span>
+                                </DropdownMenuItem>
+                            ))}
+                            </DropdownMenuGroup>
+                            {index < paineisMenuItems.length - 1 && <DropdownMenuSeparator />}
+                        </React.Fragment>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>
