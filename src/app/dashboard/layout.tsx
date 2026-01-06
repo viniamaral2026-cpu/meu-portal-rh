@@ -1,20 +1,8 @@
 'use client';
 import {
-  Home,
   Users,
   Clock,
-  Puzzle,
-  LogOut,
-  Boxes,
-  Factory,
-  CheckCircle,
-  FileText,
-  Bell,
-  PanelLeft,
-  Search,
-  Printer,
   FileDown,
-  UserPlus,
   Settings,
   ChevronDown,
   Minimize,
@@ -43,6 +31,7 @@ import {
   Wrench,
   ExternalLink,
   Sigma,
+  FileText,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -97,17 +86,17 @@ const topBarIcons = [
 ];
 
 const navMenuItems = [
-    { label: 'Administração de Pessoal' },
-    { label: 'Folha Mensal' },
-    { label: 'Férias' },
-    { label: 'Rescisão' },
-    { label: 'Encargos' },
-    { label: 'Anuais' },
-    { label: 'eSocial' },
-    { label: 'Orçamento (beta)' },
-    { label: 'Configurações' },
-    { label: 'Assinatura Eletrônica' },
-    { label: 'Customização' },
+    { id: 'administracao-pessoal', label: 'Administração de Pessoal' },
+    { id: 'folha-mensal', label: 'Folha Mensal' },
+    { id: 'ferias', label: 'Férias' },
+    { id: 'rescisao', label: 'Rescisão' },
+    { id: 'encargos', label: 'Encargos' },
+    { id: 'anuais', label: 'Anuais' },
+    { id: 'esocial', label: 'eSocial' },
+    { id: 'orcamento', label: 'Orçamento (beta)' },
+    { id: 'configuracoes', label: 'Configurações' },
+    { id: 'assinatura-eletronica', label: 'Assinatura Eletrônica' },
+    { id: 'customizacao', label: 'Customização' },
 ];
 
 const navRightIcons = [
@@ -180,34 +169,50 @@ const paineisMenuItems = [
 ];
 
 const pageComponents: { [key: string]: React.ComponentType<any> } = {
-  employees: AdministracaoPessoalPage,
-  dashboard: DashboardPage,
-  calculator: CalculadoraPage,
-  agenda: AgendaPage,
-  sharing: CompartilhamentoPage,
-  cube: CuboPage,
-  spreadsheet: PlanilhaPage,
-  formula: FormulaPage,
-  reports: RelatoriosPage,
+  'administracao-pessoal': AdministracaoPessoalPage,
+  'folha-mensal': FolhaMensalPage,
+  'ferias': FeriasPage,
+  'rescisao': RescisaoPage,
+  'encargos': EncargosPage,
+  'anuais': AnuaisPage,
+  'esocial': EsocialPage,
+  'orcamento': OrcamentoPage,
+  'configuracoes': ConfiguracoesPage,
+  'assinatura-eletronica': AssinaturaEletronicaPage,
+  'customizacao': CustomizacaoPage,
+  'gestao': GestaoPage,
+  'ambiente': AmbientePage,
+  'calculator': CalculadoraPage,
+  'agenda': AgendaPage,
+  'sharing': CompartilhamentoPage,
+  'cube': CuboPage,
+  'spreadsheet': PlanilhaPage,
+  'formula': FormulaPage,
+  'reports': RelatoriosPage,
   'report-generator': GeradorSaidasPage,
   'data-views': VisoesDadosPage,
-  dashboards: DashboardPage,
+  'dashboards': DashboardPage,
   'output-generator': GeradorSaidasPage,
-  chart: () => <div>Gráfico</div>,
-  categories: CategoriasPage,
+  'chart': () => <div>Gráfico</div>,
+  'categories': CategoriasPage,
   'chart-sources': FontesGraficosPage,
   'rss-reader': LeitorRssPage,
   'start-service': IniciarServicoRssPage,
   'rss-config': ConfiguracaoRssPage,
   'rss-channels': CanaisRssPage,
+  'word': WordPage,
+  'assistente-ai': AssistenteAiPage,
   'my-channels': MeusCanaisPage,
   'rm-connector': RmConectorPage,
   'comm-sources': () => <div>Fontes de Comunicação</div>,
   'comm-accounts': ContasComunicacaoPage,
   'external-apps': AplicativosExternosPage,
   'saml-apps': AplicativosSamlPage,
-  calendars: () => <div>Calendários</div>,
+  'calendars': () => <div>Calendários</div>,
+  'employees': AdministracaoPessoalPage,
+  'dashboard': DashboardPage,
 };
+
 
 export default function DashboardLayout({
   children,
@@ -277,7 +282,7 @@ export default function DashboardLayout({
                     <LayoutGrid size={16} />
                 </Button>
                 {navMenuItems.map(item => (
-                    <Button variant='ghost' key={item.label} className='h-auto py-1 px-2 text-xs font-normal'>
+                    <Button variant='ghost' key={item.label} className='h-auto py-1 px-2 text-xs font-normal' onClick={() => openTab({ id: item.id, title: item.label })}>
                         {item.label}
                     </Button>
                 ))}
@@ -299,7 +304,7 @@ export default function DashboardLayout({
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border overflow-x-hidden">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border">
           <div className="flex h-full items-start flex-1">
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
