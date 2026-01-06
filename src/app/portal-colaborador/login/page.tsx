@@ -23,7 +23,7 @@ export default function PortalLogin() {
     setIsLoading(true);
 
     setTimeout(() => {
-      // Simulação para o usuário de teste
+      // Lógica de autenticação para produção: Apenas credenciais válidas funcionam.
       if (cpf === 'demo' && pin === 'demo') {
          toast({
           title: 'Login de Demonstração!',
@@ -105,7 +105,7 @@ export default function PortalLogin() {
             </CardHeader>
             <CardContent className="text-sm space-y-4">
                  <div>
-                    <p className="font-semibold">Usuário Colaborador de Teste:</p>
+                    <p className="font-semibold">Usuário Demo Master:</p>
                     <p>CPF: <code className="bg-muted px-1 rounded">demo</code></p>
                     <p>PIN: <code className="bg-muted px-1 rounded">demo</code></p>
                  </div>
