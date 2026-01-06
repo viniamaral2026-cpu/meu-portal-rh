@@ -1,69 +1,14 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlayCircle, PauseCircle, AlertTriangle, ListCollapse } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
-
-type LogEntry = {
-    timestamp: Date;
-    action: 'start' | 'stop';
-};
+import { useDashboard } from '../dashboard/layout';
 
 export default function ControleJornadaPage() {
-    const [isRunning, setIsRunning] = useState(false);
-    const [startTime, setStartTime] = useState<Date | null>(null);
-    const [elapsedTime, setElapsedTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-    const [log, setLog] = useState<LogEntry[]>([]);
-    const { toast } = useToast();
-
-    useEffect(() => {
-        let interval: NodeJS.Timeout | null = null;
-        if (isRunning && startTime) {
-            interval = setInterval(() => {
-                const now = new Date();
-                const diff = now.getTime() - startTime.getTime();
-
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-                const minutes = Math.floor((diff / 1000 / 60) % 60);
-                const seconds = Math.floor((diff / 1000) % 60);
-
-                setElapsedTime({ days, hours, minutes, seconds });
-            }, 1000);
-        } else {
-            if (interval) clearInterval(interval);
-        }
-        return () => {
-            if (interval) clearInterval(interval);
-        };
-    }, [isRunning, startTime]);
-
-    const handleStart = () => {
-        const now = new Date();
-        setIsRunning(true);
-        setStartTime(now);
-        setLog(prev => [{ timestamp: now, action: 'start' }, ...prev]);
-        toast({
-            title: "Jornada Iniciada!",
-            description: `Sua jornada de trabalho foi registrada às ${now.toLocaleTimeString()}.`,
-        });
-    };
-
-    const handleStop = () => {
-        const now = new Date();
-        setIsRunning(false);
-        setStartTime(null);
-        setElapsedTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        setLog(prev => [{ timestamp: now, action: 'stop' }, ...prev]);
-        toast({
-            title: "Jornada Finalizada",
-            description: "Bom descanso! Sua jornada foi encerrada.",
-            variant: "destructive"
-        });
-    };
+    const { jornada } = useDashboard();
+    const { isRunning, elapsedTime, log, handleStart, handleStop } = jornada;
 
     return (
         <div className="p-4 flex justify-center items-center h-full">

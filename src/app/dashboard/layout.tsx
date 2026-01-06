@@ -53,7 +53,7 @@ import {
   UserSquare,
   MessageSquare,
 } from 'lucide-react';
-import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
+import React, { useState, createContext, useContext, lazy, Suspense, ComponentType, useEffect } from 'react';
 import { MeuRHLogo } from '@/components/icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -194,10 +194,10 @@ const toolbarItems = [
             { id: 'iniciar-servico-rss', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
             { id: 'configuracao-rss', icon: <Settings size={20} />, label: 'Configuração' },
             { id: 'canais-rss', icon: <Rss size={20} />, label: 'Canais RSS' },
-            { id: 'planilha', icon: <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
-            { id: 'word', icon: <Image src="https://img.icons8.com/?size=50&id=11571&format=png" width={20} height={20} alt="Word Icon" />, label: 'Word' },
-            { id: 'assistente-ai', icon: <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Gemini' },
-            { id: 'gemini-api', icon: <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Config. Gemini' },
+            { id: 'planilha', icon: () => <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
+            { id: 'word', icon: () => <Image src="https://img.icons8.com/?size=50&id=11571&format=png" width={20} height={20} alt="Word Icon" />, label: 'Word' },
+            { id: 'assistente-ai', icon: () => <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Gemini' },
+            { id: 'gemini-api', icon: () => <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Config. Gemini' },
         ]
     },
 ];
@@ -226,7 +226,7 @@ type PageComponentProps = {
     employee?: Employee;
 };
 
-const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
+const pageComponents: { [key: string]: ComponentType<any> } = {
   dashboard: DashboardPage,
   employees: EmployeesPage,
   'administracao-pessoal': AdministracaoPessoalPage,
@@ -293,8 +293,20 @@ type Tab = {
   data?: any;
 };
 
+type LogEntry = {
+    timestamp: Date;
+    action: 'start' | 'stop';
+};
+
 type DashboardContextType = {
   openTab: (tab: Tab) => void;
+  jornada: {
+    isRunning: boolean;
+    elapsedTime: { days: number; hours: number; minutes: number; seconds: number };
+    log: LogEntry[];
+    handleStart: () => void;
+    handleStop: () => void;
+  }
 };
 
 const DashboardContext = createContext<DashboardContextType | null>(null);
@@ -333,6 +345,60 @@ export default function DashboardLayout({
   ]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [currentEnvironment, setCurrentEnvironment] = useState('production');
+
+  // State for Controle de Jornada
+  const [jornadaIsRunning, setJornadaIsRunning] = useState(false);
+  const [jornadaStartTime, setJornadaStartTime] = useState<Date | null>(null);
+  const [jornadaElapsedTime, setJornadaElapsedTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [jornadaLog, setJornadaLog] = useState<LogEntry[]>([]);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    if (jornadaIsRunning && jornadaStartTime) {
+        interval = setInterval(() => {
+            const now = new Date();
+            const diff = now.getTime() - jornadaStartTime.getTime();
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            setJornadaElapsedTime({ days, hours, minutes, seconds });
+        }, 1000);
+    } else {
+        if (interval) clearInterval(interval);
+    }
+    return () => {
+        if (interval) clearInterval(interval);
+    };
+}, [jornadaIsRunning, jornadaStartTime]);
+
+const handleJornadaStart = () => {
+    const now = new Date();
+    setJornadaIsRunning(true);
+    setJornadaStartTime(now);
+    setJornadaLog(prev => [{ timestamp: now, action: 'start' }, ...prev]);
+    toast({
+        title: "Jornada Iniciada!",
+        description: `Sua jornada de trabalho foi registrada às ${now.toLocaleTimeString()}.`,
+    });
+};
+
+const handleJornadaStop = () => {
+    const now = new Date();
+    setJornadaIsRunning(false);
+    // Don't reset start time immediately to show final duration if needed
+    // setJornadaStartTime(null);
+    // setJornadaElapsedTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    setJornadaLog(prev => [{ timestamp: now, action: 'stop' }, ...prev]);
+    toast({
+        title: "Jornada Finalizada",
+        description: "Bom descanso! Sua jornada foi encerrada.",
+        variant: "destructive"
+    });
+};
+
 
   const openTab = (tab: Tab) => {
     if (!openTabs.find(t => t.id === tab.id)) {
@@ -392,8 +458,15 @@ export default function DashboardLayout({
   };
 
 
-  const dashboardContextValue = {
+  const dashboardContextValue: DashboardContextType = {
     openTab,
+    jornada: {
+      isRunning: jornadaIsRunning,
+      elapsedTime: jornadaElapsedTime,
+      log: jornadaLog,
+      handleStart: handleJornadaStart,
+      handleStop: handleJornadaStop,
+    }
   };
 
 
@@ -520,7 +593,7 @@ export default function DashboardLayout({
                       onClick={() => openTab({ id: item.id, title: item.label })}
                       className="flex flex-col items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1"
                     >
-                        {item.icon}
+                        {typeof item.icon === 'function' ? item.icon({}) : item.icon}
                         <span className='w-full text-center truncate'>{item.label}</span>
                     </Button>
                     ))}
@@ -598,7 +671,7 @@ export default function DashboardLayout({
                 
                 const props: PageComponentProps = { tab };
                 if ((pageId === 'visualizar-colaborador' || pageId === 'editar-colaborador') && tab.data) {
-                    props.employee = tab.data as Employee;
+                    props.employee = tab.data.employee as Employee;
                 }
 
                 return (
