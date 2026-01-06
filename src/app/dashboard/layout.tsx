@@ -77,7 +77,6 @@ const AplicativosSamlPage = React.lazy(() => import('./pages/aplicativos-saml/pa
 const DashboardPage = React.lazy(() => import('./dashboard/page'));
 const GeradorSaidasPage = React.lazy(() => import('../gerador-saidas/page'));
 
-
 const topBarIcons = [
   { icon: Clock },
   { icon: Users },
@@ -282,7 +281,7 @@ export default function DashboardLayout({
                     <LayoutGrid size={16} />
                 </Button>
                 {navMenuItems.map(item => (
-                    <Button variant='ghost' key={item.label} className='h-auto py-1 px-2 text-xs font-normal' onClick={() => openTab({ id: item.id, title: item.label })}>
+                    <Button variant='ghost' key={item.id} className='h-auto py-1 px-2 text-xs font-normal' onClick={() => openTab({ id: item.id, title: item.label })}>
                         {item.label}
                     </Button>
                 ))}
@@ -304,8 +303,8 @@ export default function DashboardLayout({
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border">
-          <div className="flex h-full items-start flex-1">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border overflow-x-auto">
+          <div className="flex h-full items-start">
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
                 <div className="flex flex-col items-center justify-center h-full px-1">
@@ -366,9 +365,13 @@ export default function DashboardLayout({
         {openTabs.length > 0 ? (
           <React.Suspense fallback={<div className="p-4">Carregando...</div>}>
           <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
-            <TabsList>
+            <TabsList className="bg-transparent p-0 justify-start h-auto rounded-none border-b-0">
               {openTabs.map(tab => (
-                <TabsTrigger key={tab.id} value={tab.id} className="relative pr-8">
+                <TabsTrigger 
+                  key={tab.id} 
+                  value={tab.id} 
+                  className="relative pr-8 h-10 rounded-none rounded-t-md border-b-0 data-[state=inactive]:bg-muted data-[state=active]:bg-card data-[state=active]:shadow-none data-[state=inactive]:border data-[state=inactive]:border-b-0"
+                >
                   {tab.title}
                   <Button
                     variant="ghost"
@@ -384,7 +387,7 @@ export default function DashboardLayout({
             {openTabs.map(tab => {
               const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
               return (
-                <TabsContent key={tab.id} value={tab.id} className='bg-card border rounded-b-lg mt-0 flex-1 p-4'>
+                <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1 p-4'>
                   {activeTab === tab.id && PageComponent ? <PageComponent /> : null}
                 </TabsContent>
               )
