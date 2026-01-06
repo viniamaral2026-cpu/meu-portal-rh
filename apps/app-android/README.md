@@ -59,7 +59,7 @@ A interface será limpa, intuitiva e otimizada para acesso rápido às informaç
     *   **Seção "Acesso Rápido"**: Ícones para as 2-3 ações mais comuns (ex: "Meu Último Holerite", "Solicitar Férias").
     *   **Seção "Últimos Comunicados"**: Um carrossel horizontal com os 3 comunicados mais recentes da empresa, indicando quais ainda não foram lidos.
 
-#### 2.2.2. Aba "Ponto" (Espelho de Ponto)
+#### 2-2.2. Aba "Ponto" (Espelho de Ponto)
 
 *   **Componentes:**
     *   **Seletores de Mês/Ano**: Permitem ao usuário filtrar o período desejado.
