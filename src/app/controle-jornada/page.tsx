@@ -1,115 +1,122 @@
-
 'use client';
+
+import { useState, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Search, FileDown, Calendar, AlertCircle } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { useState } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Calendar as CalendarIcon } from '@/components/ui/calendar';
-import { format } from 'date-fns';
+import { PlayCircle, PauseCircle, AlertTriangle, ListCollapse } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { Separator } from '@/components/ui/separator';
 
-const registros = [
-    { id: 1, nome: 'Ana Silva', data: '2024-07-26', entrada: '09:02', saidaAlmoco: '12:30', retornoAlmoco: '13:35', saida: '18:05', status: 'Presente', horas: '08:08' },
-    { id: 2, nome: 'Carlos Souza', data: '2024-07-26', entrada: '-', saidaAlmoco: '-', retornoAlmoco: '-', saida: '-', status: 'Falta', horas: '00:00' },
-    { id: 3, nome: 'Beatriz Costa', data: '2024-07-26', entrada: '08:55', saidaAlmoco: '12:00', retornoAlmoco: '13:00', saida: '17:30', status: 'Presente', horas: '07:35' },
-    { id: 4, nome: 'Daniel Almeida', data: '2024-07-26', entrada: '10:00', saidaAlmoco: '13:00', retornoAlmoco: '14:00', saida: '19:00', status: 'Atraso', horas: '08:00' },
-    { id: 5, nome: 'Fernanda Lima', data: '2024-07-26', entrada: '09:00', saidaAlmoco: '12:00', retornoAlmoco: '-', saida: '-', status: 'Incompleto', horas: '03:00' },
-
-]
-
-const getStatusVariant = (status: string) => {
-    switch (status) {
-        case 'Presente': return 'default';
-        case 'Falta': return 'destructive';
-        case 'Atraso': return 'secondary';
-        case 'Incompleto': return 'outline';
-        default: return 'outline';
-    }
-}
-
+type LogEntry = {
+    timestamp: Date;
+    action: 'start' | 'stop';
+};
 
 export default function ControleJornadaPage() {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+    const [isRunning, setIsRunning] = useState(false);
+    const [startTime, setStartTime] = useState<Date | null>(null);
+    const [elapsedTime, setElapsedTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+    const [log, setLog] = useState<LogEntry[]>([]);
+    const { toast } = useToast();
 
-  return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <div>
-            <CardTitle>Controle de Jornada</CardTitle>
-            <CardDescription>Visualize e gerencie os registros de ponto dos colaboradores.</CardDescription>
-          </div>
-          <div className='flex gap-2'>
-            <Button variant="outline">
-              <AlertCircle className="mr-2 h-4 w-4" />
-              Justificar Ausência
-            </Button>
-            <Button>
-              <FileDown className="mr-2 h-4 w-4" />
-              Exportar Registros
-            </Button>
-          </div>
+    useEffect(() => {
+        let interval: NodeJS.Timeout | null = null;
+        if (isRunning && startTime) {
+            interval = setInterval(() => {
+                const now = new Date();
+                const diff = now.getTime() - startTime.getTime();
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / 1000 / 60) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                setElapsedTime({ days, hours, minutes, seconds });
+            }, 1000);
+        } else {
+            if (interval) clearInterval(interval);
+        }
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [isRunning, startTime]);
+
+    const handleStart = () => {
+        const now = new Date();
+        setIsRunning(true);
+        setStartTime(now);
+        setLog(prev => [{ timestamp: now, action: 'start' }, ...prev]);
+        toast({
+            title: "Jornada Iniciada!",
+            description: `Sua jornada de trabalho foi registrada às ${now.toLocaleTimeString()}.`,
+        });
+    };
+
+    const handleStop = () => {
+        const now = new Date();
+        setIsRunning(false);
+        setStartTime(null);
+        setElapsedTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setLog(prev => [{ timestamp: now, action: 'stop' }, ...prev]);
+        toast({
+            title: "Jornada Finalizada",
+            description: "Bom descanso! Sua jornada foi encerrada.",
+            variant: "destructive"
+        });
+    };
+
+    return (
+        <div className="p-4 flex justify-center items-center h-full">
+            <Card className="w-full max-w-2xl text-center">
+                <CardHeader>
+                    <CardTitle className="text-3xl">Controle de Jornada de Trabalho</CardTitle>
+                    <CardDescription>Use os botões abaixo para registrar o início e o fim do seu expediente.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-8">
+                    <div className="bg-muted p-8 rounded-lg">
+                        <h3 className="text-lg font-semibold text-muted-foreground">TEMPO ATIVO</h3>
+                        <div className="font-mono text-6xl font-bold tracking-tighter my-4">
+                            <span>{String(elapsedTime.days).padStart(2, '0')}d </span>
+                            <span>{String(elapsedTime.hours).padStart(2, '0')}h </span>
+                            <span>{String(elapsedTime.minutes).padStart(2, '0')}m </span>
+                            <span>{String(elapsedTime.seconds).padStart(2, '0')}s</span>
+                        </div>
+                    </div>
+                    <div className="flex justify-center gap-4">
+                        {!isRunning ? (
+                            <Button size="lg" className="w-64 h-16 text-xl bg-green-600 hover:bg-green-700" onClick={handleStart}>
+                                <PlayCircle className="mr-3 h-8 w-8" /> Iniciar Jornada
+                            </Button>
+                        ) : (
+                            <Button size="lg" variant="destructive" className="w-64 h-16 text-xl" onClick={handleStop}>
+                                <PauseCircle className="mr-3 h-8 w-8" /> Parar Jornada
+                            </Button>
+                        )}
+                    </div>
+                    <div className="p-4 border border-yellow-300 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg flex items-center gap-3 text-yellow-700 dark:text-yellow-300">
+                        <AlertTriangle className="h-6 w-6 flex-shrink-0" />
+                        <p className="text-sm text-left">
+                            É imprescindível que você registre o início e o fim de sua jornada para que o sistema possa realizar o auto-salvamento e sincronização de suas atividades corretamente.
+                        </p>
+                    </div>
+
+                    <Separator />
+                    
+                    <div>
+                        <h3 className="text-lg font-semibold flex items-center justify-center gap-2 mb-4"><ListCollapse /> Histórico Recente</h3>
+                         <div className="text-sm text-muted-foreground max-h-40 overflow-y-auto space-y-2 text-left p-4 bg-muted/50 rounded-md">
+                            {log.length > 0 ? log.map((entry, index) => (
+                                <p key={index}>
+                                    <span className={entry.action === 'start' ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'}>
+                                        {entry.action === 'start' ? '[INÍCIO] ' : '[FIM]    '}
+                                    </span>
+                                    - {entry.timestamp.toLocaleString('pt-BR')}
+                                </p>
+                            )) : <p className='text-center'>Nenhum registro hoje.</p>}
+                         </div>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center pb-4 gap-4">
-            <div className="relative w-1/2">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Buscar por nome do colaborador..." className="pl-8" />
-            </div>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant={"outline"} className="w-[240px] justify-start text-left font-normal">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  {date ? format(date, "PPP") : <span>Escolha uma data</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <CalendarIcon
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-        </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Colaborador</TableHead>
-              <TableHead>Data</TableHead>
-              <TableHead>Entrada</TableHead>
-              <TableHead>Início Intervalo</TableHead>
-              <TableHead>Fim Intervalo</TableHead>
-              <TableHead>Saída</TableHead>
-              <TableHead>Horas Trabalhadas</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Ações</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {registros.map(r => (
-                <TableRow key={r.id}>
-                    <TableCell className="font-medium">{r.nome}</TableCell>
-                    <TableCell>{format(new Date(r.data), "dd/MM/yyyy")}</TableCell>
-                    <TableCell>{r.entrada}</TableCell>
-                    <TableCell>{r.saidaAlmoco}</TableCell>
-                    <TableCell>{r.retornoAlmoco}</TableCell>
-                    <TableCell>{r.saida}</TableCell>
-                    <TableCell className="font-medium">{r.horas}</TableCell>
-                    <TableCell><Badge variant={getStatusVariant(r.status) as any}>{r.status}</Badge></TableCell>
-                    <TableCell>
-                      <Button variant="outline" size="sm">Ajustar</Button>
-                    </TableCell>
-                </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </CardContent>
-    </Card>
-  )
+    );
 }
