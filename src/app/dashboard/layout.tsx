@@ -112,6 +112,7 @@ const GestaoFinanceiraPage = lazy(() => import('./pages/gestao-financeira/page')
 const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
 const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/page'));
 const PortalCarreirasPage = lazy(() => import('./pages/portal-carreiras/page'));
+const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
 
 
 const topBarIcons = [
@@ -259,6 +260,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'gestao-producao': GestaoProducaoPage,
   'atualizacao-sistema': AtualizacaoSistemaPage,
   'portal-carreiras': PortalCarreirasPage,
+  'documentacao': DocumentacaoPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -355,8 +357,9 @@ export default function DashboardLayout({
             openTab({ id: 'atualizacao-sistema', title: 'Atualização do Sistema' });
             break;
         case 'documentacao':
-            openTab({ id: 'documentacao', title: 'Documentação' });
+            openTab({ id: 'documentacao', title: 'Documentação do Sistema' });
             break;
+        // Add other cases for other icons if needed
         default:
             break;
     }
