@@ -209,49 +209,56 @@ export function DashboardClientLayout({
 
   return (
     <DashboardContext.Provider value={dashboardContextValue}>
+      <div className="flex flex-col h-screen">
         <HeaderTop />
         <HeaderPrimary openTab={openTab} />
         <Toolbar openTab={openTab} />
-        <Tabs
-          value={activeTab}
-          onValueChange={setActiveTab}
-          className="flex-1 flex flex-col"
-        >
-          <div className="bg-muted/50 border-b">
-            <TabsList className="justify-start -mb-px rounded-none bg-transparent border-b p-0 h-auto">
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.id}
-                  value={tab.id}
-                  className="whitespace-nowrap py-3 px-4 text-sm font-medium transition-colors data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:border-border border-b-2 border-transparent hover:bg-muted/80 data-[state=active]:rounded-t-md data-[state=active]:border-b-card relative"
-                >
-                  {tab.title}
-                  {tabs.length > 1 && (
-                     <div
-                      role="button"
-                      aria-label="Fechar aba"
-                      onClick={(e) => closeTab(e, tab.id)}
-                      className="ml-2 p-0.5 rounded-full hover:bg-muted-foreground/20"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </div>
-                  )}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
-          <main className="flex-1 overflow-auto bg-gray-100/50">
-            <Suspense fallback={<div className="p-6"><Skeleton className="h-48 w-full" /></div>}>
-              <DashboardContext.Provider value={dashboardContextValue}>
+        <div className="flex-1 flex flex-col min-h-0">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="flex-1 flex flex-col"
+          >
+            <div className="bg-muted/50 border-b">
+              <TabsList className="justify-start -mb-px rounded-none bg-transparent border-b p-0 h-auto">
                 {tabs.map((tab) => (
-                  <TabsContent key={tab.id} value={tab.id} className="p-4 h-full">
-                    {tab.id === activeTab && tab.component}
-                  </TabsContent>
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    className="whitespace-nowrap py-3 px-4 text-sm font-medium transition-colors data-[state=active]:bg-card data-[state=active]:text-foreground data-[state=active]:border-border border-b-2 border-transparent hover:bg-muted/80 data-[state=active]:rounded-t-md data-[state=active]:border-b-card relative"
+                  >
+                    {tab.title}
+                    {tabs.length > 1 && (
+                      <div
+                        role="button"
+                        aria-label="Fechar aba"
+                        onClick={(e) => closeTab(e, tab.id)}
+                        className="ml-2 p-0.5 rounded-full hover:bg-muted-foreground/20"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </div>
+                    )}
+                  </TabsTrigger>
                 ))}
-              </DashboardContext.Provider>
-            </Suspense>
-          </main>
-        </Tabs>
+              </TabsList>
+            </div>
+            <main className="flex-1 overflow-auto bg-gray-100/50">
+              <Suspense fallback={<div className="p-6"><Skeleton className="h-48 w-full" /></div>}>
+                <DashboardContext.Provider value={dashboardContextValue}>
+                  {tabs.map((tab) => (
+                    <TabsContent key={tab.id} value={tab.id} className="p-4 h-full">
+                      {tab.id === activeTab && tab.component}
+                    </TabsContent>
+                  ))}
+                </DashboardContext.Provider>
+              </Suspense>
+            </main>
+          </Tabs>
+        </div>
+        <footer className="bg-card border-t p-2 text-center text-xs text-muted-foreground">
+          Desenvolvido por Tech Ops 2026 | Versão 0.0.1
+        </footer>
+      </div>
     </DashboardContext.Provider>
   );
 }
