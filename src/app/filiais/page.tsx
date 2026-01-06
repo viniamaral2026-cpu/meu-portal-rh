@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -20,29 +20,16 @@ import {
   Building,
   CheckCircle,
   XCircle,
-  BarChart,
   Settings,
   AlertTriangle
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import type { Filial } from '@/domain/Filial';
+import { filialService } from '@/services/FilialService';
 
 type BranchStatus = 'active' | 'inactive' | 'setup';
-
-type Branch = {
-  id: string;
-  name: string;
-  location: string;
-  cnpj: string;
-  status: BranchStatus;
-};
-
-const initialBranches: Branch[] = [
-  { id: 'matriz', name: 'Unidade Matriz', location: 'Franca, SP', cnpj: '00.000.000/0001-00', status: 'active' },
-  { id: 'filial_mg', name: 'Filial Nova Serrana', location: 'Nova Serrana, MG', cnpj: '00.000.000/0002-00', status: 'active' },
-  { id: 'filial_rs', name: 'Filial Sapiranga', location: 'Sapiranga, RS', cnpj: '00.000.000/0003-00', status: 'setup' },
-];
 
 const statusConfig: { [key in BranchStatus]: { text: string; icon: React.ReactNode; badgeVariant: 'default' | 'secondary' | 'outline' } } = {
   active: { text: 'Ativa', icon: <CheckCircle className="h-3 w-3" />, badgeVariant: 'default' },
@@ -51,9 +38,13 @@ const statusConfig: { [key in BranchStatus]: { text: string; icon: React.ReactNo
 };
 
 export default function FiliaisPage() {
-    const [branches, setBranches] = useState(initialBranches);
+    const [branches, setBranches] = useState<Filial[]>([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { toast } = useToast();
+
+    useEffect(() => {
+        filialService.listarFiliais().then(setBranches);
+    }, []);
     
     const summaryCards = [
         { title: "Filiais Ativas", value: branches.filter(b => b.status === 'active').length },
@@ -61,13 +52,30 @@ export default function FiliaisPage() {
         { title: "Em Configuração", value: branches.filter(b => b.status === 'setup').length },
     ]
 
-    const handleRegisterBranch = () => {
-        setIsDialogOpen(false);
-        toast({
-            title: "Cadastro Enviado!",
-            description: "A nova filial está sendo configurada. Você será notificado quando o processo for concluído.",
-        });
-    }
+    const handleRegisterBranch = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const form = new FormData(event.currentTarget);
+        const name = form.get('branch-name') as string;
+        const cnpj = form.get('branch-cnpj') as string;
+        const location = form.get('branch-location') as string;
+
+        try {
+            await filialService.criarFilial({ nome: name, cnpj, localizacao: location });
+            const filiaisAtualizadas = await filialService.listarFiliais();
+            setBranches(filiaisAtualizadas);
+            setIsDialogOpen(false);
+            toast({
+                title: "Filial Cadastrada!",
+                description: "A nova filial foi criada com sucesso.",
+            });
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: "Erro ao Cadastrar",
+                description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido.",
+            });
+        }
+    };
 
     return (
         <div className="p-4 space-y-4">
@@ -102,28 +110,30 @@ export default function FiliaisPage() {
                                     Preencha os dados da nova unidade. O sistema criará um ambiente espelhado.
                                 </DialogDescription>
                             </DialogHeader>
-                            <div className="space-y-4 py-4">
-                                <div className="space-y-2">
-                                    <Label htmlFor="branch-name">Nome da Filial</Label>
-                                    <Input id="branch-name" placeholder="Ex: Filial Nordeste" />
+                            <form id="filial-form" onSubmit={handleRegisterBranch}>
+                                <div className="space-y-4 py-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="branch-name">Nome da Filial</Label>
+                                        <Input id="branch-name" name="branch-name" placeholder="Ex: Filial Nordeste" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="branch-cnpj">CNPJ</Label>
+                                        <Input id="branch-cnpj" name="branch-cnpj" placeholder="00.000.000/0004-00" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="branch-location">Localização</Label>
+                                        <Input id="branch-location" name="branch-location" placeholder="Cidade, UF" required />
+                                    </div>
+                                    <div className="flex items-center space-x-2 pt-2">
+                                        <Switch id="inherit-config" defaultChecked />
+                                        <Label htmlFor="inherit-config">Espelhar configurações da matriz</Label>
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="branch-cnpj">CNPJ</Label>
-                                    <Input id="branch-cnpj" placeholder="00.000.000/0004-00" />
-                                </div>
-                                 <div className="space-y-2">
-                                    <Label htmlFor="branch-location">Localização</Label>
-                                    <Input id="branch-location" placeholder="Cidade, UF" />
-                                </div>
-                                <div className="flex items-center space-x-2 pt-2">
-                                    <Switch id="inherit-config" defaultChecked />
-                                    <Label htmlFor="inherit-config">Espelhar configurações da matriz</Label>
-                                </div>
-                            </div>
-                            <DialogFooter>
-                                <Button type="button" variant="secondary" onClick={() => setIsDialogOpen(false)}>Cancelar</Button>
-                                <Button type="submit" onClick={handleRegisterBranch}>Cadastrar</Button>
-                            </DialogFooter>
+                                <DialogFooter>
+                                    <Button type="button" variant="secondary" onClick={() => setIsDialogOpen(false)}>Cancelar</Button>
+                                    <Button type="submit">Cadastrar</Button>
+                                </DialogFooter>
+                            </form>
                         </DialogContent>
                     </Dialog>
                 </CardHeader>
@@ -141,17 +151,16 @@ export default function FiliaisPage() {
                         <TableBody>
                             {branches.map(branch => (
                                 <TableRow key={branch.id}>
-                                    <TableCell className="font-medium">{branch.name}</TableCell>
-                                    <TableCell>{branch.location}</TableCell>
+                                    <TableCell className="font-medium">{branch.nome}</TableCell>
+                                    <TableCell>{branch.localizacao}</TableCell>
                                     <TableCell className="text-muted-foreground">{branch.cnpj}</TableCell>
                                     <TableCell>
-                                         <Badge variant={statusConfig[branch.status].badgeVariant} className="flex w-fit items-center gap-1.5">
-                                            {statusConfig[branch.status].icon}
-                                            {statusConfig[branch.status].text}
+                                         <Badge variant={statusConfig[branch.status as BranchStatus].badgeVariant} className="flex w-fit items-center gap-1.5">
+                                            {statusConfig[branch.status as BranchStatus].icon}
+                                            {statusConfig[branch.status as BranchStatus].text}
                                          </Badge>
                                     </TableCell>
                                     <TableCell className="text-right space-x-2">
-                                        <Button variant="outline" size="sm"><BarChart className="mr-2 h-4 w-4" /> Painel</Button>
                                         <Button variant="outline" size="sm"><Settings className="mr-2 h-4 w-4" /> Configurar</Button>
                                     </TableCell>
                                 </TableRow>
@@ -163,4 +172,3 @@ export default function FiliaisPage() {
         </div>
     );
 }
-    
