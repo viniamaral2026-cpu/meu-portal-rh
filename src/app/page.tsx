@@ -1,10 +1,13 @@
-
-import DashboardLayout from './dashboard/layout';
+'use client';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
-  return <DashboardLayout>
-    <div className="flex items-center justify-center h-full text-muted-foreground">
-        Selecione um item no menu para começar.
-    </div>
-  </DashboardLayout>;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/login');
+  }, [router]);
+
+  return null; 
 }

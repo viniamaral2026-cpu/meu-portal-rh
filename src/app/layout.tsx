@@ -1,12 +1,14 @@
-import type { Metadata } from 'next';
+import type {Metadata} from 'next';
 import './globals.css';
-import { Toaster } from "@/components/ui/toaster";
-import { Inter } from 'next/font/google';
+import { Toaster } from "@/components/ui/toaster"
+import { Inter, Source_Code_Pro } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const sourceCodePro = Source_Code_Pro({ subsets: ['latin'], variable: '--font-code' });
+
 
 export const metadata: Metadata = {
-  title: 'MeuRH',
+  title: 'GPWay Portal | Acesso',
   description: 'Software de Gestão para Fábricas de Calçados',
 };
 
@@ -17,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br" suppressHydrationWarning>
-      <body className={`font-sans antialiased ${inter.variable}`}>
+      <body className={`${inter.variable} ${sourceCodePro.variable} font-sans antialiased`}>
         {children}
         <Toaster />
       </body>
