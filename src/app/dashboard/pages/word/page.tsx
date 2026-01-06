@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,11 +12,10 @@ import {
   MenubarTrigger,
 } from '@/components/ui/menubar';
 import {
-  Undo, Redo, Printer, Bold, Italic, Underline, PaintBucket,
+  Undo, Redo, Printer, Highlighter, Bold, Italic, Underline, PaintBucket,
   AlignCenter, AlignLeft, AlignRight, AlignJustify,
-  File, ChevronDown, Link, MessageSquare, Image as ImageIcon
+  File, ArrowLeft, Plus, MoreVertical, Minus, Pilcrow, List, ListOrdered, Indent, Outdent, WrapText, Eraser, Link, ImageIcon as ImageIconLucide, ChevronDown, Check, Lock
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import {
     Select,
@@ -24,33 +24,43 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import Image from 'next/image';
 
+function HorizontalRuler() {
+  return (
+    <div className="sticky top-0 z-10 h-7 w-full bg-secondary pl-[calc(1cm)] pr-[calc(1cm)]">
+      <div className="relative h-full w-full border-b border-l border-r bg-card shadow-sm pl-4">
+        {/* Ruler ticks - assuming 1cm is approx 37.8px */}
+        {Array.from({ length: 19 }).map((_, i) => (
+          <div key={`cm-${i}`} className="absolute top-2 h-5" style={{ left: `${i * 37.8}px` }}>
+            <span className="absolute -translate-y-1/2 bottom-0 text-xs text-muted-foreground">{i + 1}</span>
+            <div className="h-2 border-l"></div>
+          </div>
+        ))}
+         {Array.from({ length: 19 * 4 }).map((_, i) => (
+            <div key={`mm-${i}`} className="absolute top-4 h-1 border-l" style={{ left: `${i * 9.45}px` }}></div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-const toolbarItems = [
-    { id: 'undo', icon: <Undo size={18} /> },
-    { id: 'redo', icon: <Redo size={18} /> },
-    { id: 'print', icon: <Printer size={18} /> },
-];
-
-const formattingItems = [
-    { id: 'bold', icon: <Bold size={18} /> },
-    { id: 'italic', icon: <Italic size={18} /> },
-    { id: 'underline', icon: <Underline size={18} /> },
-    { id: 'color', icon: <PaintBucket size={18} /> },
-];
-
-const alignmentItems = [
-    { id: 'left', icon: <AlignLeft size={18} /> },
-    { id: 'center', icon: <AlignCenter size={18} /> },
-    { id: 'right', icon: <AlignRight size={18} /> },
-    { id: 'justify', icon: <AlignJustify size={18} /> },
-]
-
-const insertItems = [
-    { id: 'link', icon: <Link size={18} /> },
-    { id: 'comment', icon: <MessageSquare size={18} /> },
-    { id: 'image', icon: <ImageIcon size={18} /> },
-]
+function VerticalRuler() {
+    return (
+        <div className="absolute top-0 left-0 h-full w-7 bg-card border-r shadow-sm pt-[calc(1cm)]">
+             {/* Ruler ticks - assuming 1cm is approx 37.8px */}
+            {Array.from({ length: 27 }).map((_, i) => (
+            <div key={`v-cm-${i}`} className="absolute left-2 w-5" style={{ top: `${(i * 37.8) + 38}px` }}>
+                <span className="absolute -translate-y-1/2 right-0 text-xs text-muted-foreground">{i + 1}</span>
+                <div className="w-2 border-t"></div>
+            </div>
+            ))}
+            {Array.from({ length: 27 * 2 }).map((_, i) => (
+                <div key={`v-mm-${i}`} className="absolute left-4 w-1 border-t" style={{ top: `${(i * 18.9) + 38}px` }}></div>
+            ))}
+        </div>
+    )
+}
 
 
 export default function WordPage() {
@@ -58,11 +68,11 @@ export default function WordPage() {
   const [documentTitle, setDocumentTitle] = useState('Documento sem título');
 
   return (
-    <div className="flex flex-col h-full bg-secondary text-sm">
+    <div className="flex flex-col h-full bg-card text-sm">
       {/* Header with Menubar */}
-      <div className="p-2 flex items-center justify-between border-b bg-card text-card-foreground">
+      <header className="p-2 flex items-center justify-between border-b bg-card text-card-foreground shadow-sm flex-shrink-0">
             <div className="flex items-center gap-2">
-                <File className='w-8 h-8 text-blue-600'/>
+                <File className='w-10 h-10 text-blue-600'/>
                 <div>
                     <Input 
                         value={documentTitle} 
@@ -80,23 +90,17 @@ export default function WordPage() {
                     </Menubar>
                 </div>
             </div>
-             <div className="flex items-center gap-2">
-                <Button>
-                    <MessageSquare size={16} />
-                </Button>
-                <Button>
-                    Compartilhar
-                </Button>
-            </div>
-      </div>
+      </header>
       
       {/* Toolbar */}
-       <div className="p-1 flex items-center gap-1 border-b bg-card flex-wrap">
-            {toolbarItems.map(item => (
-                <Button variant="ghost" size="icon" key={item.id} className='h-8 w-8'>{item.icon}</Button>
-            ))}
+       <div className="p-1 flex items-center gap-1 border-b bg-card flex-wrap text-card-foreground flex-shrink-0">
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Undo size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Redo size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Printer size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Highlighter size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><PaintBucket size={18} /></Button>
             <Separator orientation='vertical' className='h-6 mx-1' />
-            <Select defaultValue='100'>
+             <Select defaultValue='100'>
                 <SelectTrigger className="w-24 h-8">
                     <SelectValue />
                 </SelectTrigger>
@@ -104,8 +108,6 @@ export default function WordPage() {
                     <SelectItem value="50">50%</SelectItem>
                     <SelectItem value="75">75%</SelectItem>
                     <SelectItem value="100">100%</SelectItem>
-                    <SelectItem value="125">125%</SelectItem>
-                    <SelectItem value="150">150%</SelectItem>
                 </SelectContent>
             </Select>
             <Separator orientation='vertical' className='h-6 mx-1' />
@@ -115,46 +117,99 @@ export default function WordPage() {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="normal">Texto normal</SelectItem>
-                    <SelectItem value="title">Título</SelectItem>
-                    <SelectItem value="subtitle">Subtítulo</SelectItem>
-                    <SelectItem value="h1">Cabeçalho 1</SelectItem>
                 </SelectContent>
             </Select>
             <Separator orientation='vertical' className='h-6 mx-1' />
              <Select defaultValue='arial'>
                 <SelectTrigger className="w-32 h-8">
                     <SelectValue />
-                </Trigger>
+                </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="arial">Arial</SelectItem>
-                    <SelectItem value="times">Times New Roman</SelectItem>
+                     <SelectItem value="times">Times New Roman</SelectItem>
                     <SelectItem value="courier">Courier New</SelectItem>
                 </SelectContent>
             </Select>
-             <Separator orientation='vertical' className='h-6 mx-1' />
-            {formattingItems.map(item => (
-                <Button variant="ghost" size="icon" key={item.id} className='h-8 w-8'>{item.icon}</Button>
-            ))}
-             <Separator orientation='vertical' className='h-6 mx-1' />
-             {insertItems.map(item => (
-                <Button variant="ghost" size="icon" key={item.id} className='h-8 w-8'>{item.icon}</Button>
-            ))}
             <Separator orientation='vertical' className='h-6 mx-1' />
-            {alignmentItems.map(item => (
-                <Button variant="ghost" size="icon" key={item.id} className='h-8 w-8'>{item.icon}</Button>
-            ))}
+            <div className='flex items-center border rounded-md h-8'>
+                <Button variant="ghost" size="icon" className='h-7 w-7'><Minus size={16}/></Button>
+                <Input type="number" defaultValue={11} className="w-10 h-full text-center border-x p-0 rounded-none focus-visible:ring-0" />
+                <Button variant="ghost" size="icon" className='h-7 w-7'><Plus size={16}/></Button>
+            </div>
+            <Separator orientation='vertical' className='h-6 mx-1' />
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Bold size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Italic size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Underline size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><PaintBucket size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Pilcrow size={18} /></Button>
+             <Separator orientation='vertical' className='h-6 mx-1' />
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Link size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><ImageIconLucide size={18} /></Button>
+            <Separator orientation='vertical' className='h-6 mx-1' />
+            <Button variant="ghost" size="icon" className='h-8 w-8'><AlignLeft size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><AlignCenter size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><AlignRight size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><AlignJustify size={18} /></Button>
+            <Separator orientation='vertical' className='h-6 mx-1' />
+             <Button variant="ghost" size="icon" className='h-8 w-8'><WrapText size={18} /></Button>
+            <Separator orientation='vertical' className='h-6 mx-1' />
+            <Button variant="ghost" size="icon" className='h-8 w-8'><ListOrdered size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><List size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Outdent size={18} /></Button>
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Indent size={18} /></Button>
+             <Separator orientation='vertical' className='h-6 mx-1' />
+            <Button variant="ghost" size="icon" className='h-8 w-8'><Eraser size={18} /></Button>
+
+            <div className='flex-grow' />
+
+            <Button variant="ghost" className='h-8 px-3 text-sm'>
+                <Pilcrow className='mr-2 h-4 w-4' />
+                Edição
+                <ChevronDown className='ml-2 h-4 w-4' />
+            </Button>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-auto p-8">
-        <div className="bg-white text-black shadow-lg mx-auto" style={{width: '21cm', minHeight: '29.7cm'}}>
-            <Textarea
-                value={documentContent}
-                onChange={(e) => setDocumentContent(e.target.value)}
-                className="w-full h-full resize-none border-none focus-visible:ring-0 text-base p-16"
-                placeholder="Comece a escrever seu documento..."
-            />
-        </div>
+      <div className="flex-1 flex overflow-hidden">
+        {/* Sidebar on the left */}
+        <aside className="w-60 bg-card p-4 border-r flex-shrink-0">
+            <div className='flex items-center justify-between'>
+                <Button variant="ghost" size="icon"><ArrowLeft /></Button>
+                <div className='flex-grow' />
+                <Button variant="ghost" size="icon"><Plus /></Button>
+                <Button variant="ghost" size="icon"><MoreVertical /></Button>
+            </div>
+            <div className='mt-4'>
+                <p className='text-sm font-medium'>Guias no documento</p>
+                <div className='mt-2 bg-blue-100 border-l-4 border-blue-500 p-2 rounded-r-md flex items-center justify-between'>
+                    <div className='flex items-center gap-2'>
+                        <ListOrdered size={16} className='text-muted-foreground' />
+                        <span className='text-sm text-blue-900 font-medium'>Guia 1</span>
+                    </div>
+                    <Button variant="ghost" size="icon" className='h-6 w-6'><MoreVertical size={16} /></Button>
+                </div>
+                <p className='text-xs text-muted-foreground mt-2'>Os títulos que forem adicionados ao documento aparecerão aqui.</p>
+            </div>
+        </aside>
+
+        {/* Scrollable area for rulers and paper */}
+        <main className="flex-1 overflow-auto bg-secondary p-8">
+          <div className="relative mx-auto" style={{width: 'calc(21cm + 28px)'}}>
+            <HorizontalRuler />
+            <div className='relative' style={{paddingLeft: '28px'}}>
+              <VerticalRuler />
+              <div className="bg-white text-black shadow-lg" style={{width: '21cm', minHeight: '29.7cm'}}>
+                  <Textarea
+                      value={documentContent}
+                      onChange={(e) => setDocumentContent(e.target.value)}
+                      className="w-full h-full resize-none border-none focus-visible:ring-0 text-base"
+                      style={{minHeight: '29.7cm', paddingTop: '2.54cm', paddingBottom: '2.54cm', paddingLeft: '3cm', paddingRight: '3cm'}}
+                      placeholder="Comece a escrever seu documento..."
+                  />
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );
