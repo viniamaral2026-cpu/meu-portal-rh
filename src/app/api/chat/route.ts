@@ -1,8 +1,9 @@
-import { OpenAI } from 'openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
+import { streamText } from 'ai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+const google = createGoogleGenerativeAI({
+  // Nota: A chave de API do Google deve ser configurada na variável de ambiente GOOGLE_API_KEY
+  apiKey: process.env.GOOGLE_API_KEY,
 });
 
 export const runtime = 'edge';
@@ -10,13 +11,11 @@ export const runtime = 'edge';
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
-    stream: true,
+  const result = await streamText({
+    model: google('models/gemini-2.5-flash-lite'),
+    system: 'Você é um assistente de RH prestativo.',
     messages,
   });
 
-  const stream = OpenAIStream(response);
-
-  return new StreamingTextResponse(stream);
+  return result.toAIStreamResponse();
 }
