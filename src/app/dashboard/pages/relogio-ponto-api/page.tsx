@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Clock, HardDrive, CheckCircle, AlertTriangle, RefreshCw, Terminal, Users, ListFilter } from 'lucide-react';
+import { Clock, HardDrive, CheckCircle, AlertTriangle, RefreshCw, Terminal, Users, ListFilter, FileDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
@@ -45,6 +45,15 @@ export default function RelogioPontoApiPage() {
             description: "Forçando a busca por novos registros no arquivo AFD dos terminais."
         });
         const newLog = `[SYNC] Sincronização manual (leitura de AFD) iniciada pelo usuário.`;
+        setLogs(prev => [newLog, ...prev]);
+    }
+    
+     const handleGenerateAEJ = () => {
+        toast({
+            title: "Geração do AEJ Iniciada",
+            description: "O Arquivo Eletrônico de Jornada está sendo gerado para a competência atual."
+        });
+        const newLog = `[LEGAL] Geração do Arquivo Eletrônico de Jornada (AEJ) solicitada pelo usuário.`;
         setLogs(prev => [newLog, ...prev]);
     }
 
@@ -99,8 +108,8 @@ export default function RelogioPontoApiPage() {
                 <Card className="lg:col-span-3">
                     <CardHeader className='flex-row items-center justify-between'>
                          <div>
-                            <CardTitle>Batidas Brutas Recebidas</CardTitle>
-                            <CardDescription>Registros exatamente como vieram do relógio, antes do tratamento.</CardDescription>
+                            <CardTitle>Batidas Brutas Recebidas (AFD)</CardTitle>
+                            <CardDescription>Registros como vieram do relógio, antes do tratamento.</CardDescription>
                          </div>
                          <div className="flex items-center gap-2">
                             <Button variant="outline" size="sm" onClick={handleSync}><RefreshCw className="mr-2 h-4 w-4"/> Ler Arquivo AFD</Button>
@@ -143,8 +152,8 @@ export default function RelogioPontoApiPage() {
                             </div>
                         </ScrollArea>
                          <div className="flex gap-2 mt-4">
-                             <Button variant="outline" size="sm" className='w-full'><Users className='mr-2 h-4 w-4'/> Sincronizar Colaboradores</Button>
-                             <Button variant="outline" size="sm" className='w-full'><ListFilter className='mr-2 h-4 w-4'/> Ver Regras de Cálculo</Button>
+                             <Button variant="outline" size="sm" className='w-full'><Users className='mr-2 h-4 w-4'/> Sinc. Colaboradores</Button>
+                             <Button variant="outline" size="sm" className='w-full' onClick={handleGenerateAEJ}><FileDown className='mr-2 h-4 w-4'/> Gerar Arquivo de Jornada (AEJ)</Button>
                          </div>
                     </CardContent>
                 </Card>
