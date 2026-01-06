@@ -14,6 +14,8 @@ export class Colaborador {
   readonly setorId: string;
   readonly status: ColaboradorStatus;
   readonly filialId: string;
+  readonly cpf?: string;
+  readonly matricula?: string;
 
   constructor(
     id: string,
@@ -21,7 +23,9 @@ export class Colaborador {
     cargoId: string,
     setorId: string,
     status: ColaboradorStatus,
-    filialId: string
+    filialId: string,
+    cpf?: string,
+    matricula?: string
   ) {
     if (!nome) throw new Error("O nome do colaborador é obrigatório.");
     this.id = id;
@@ -30,5 +34,7 @@ export class Colaborador {
     this.setorId = setorId;
     this.status = status;
     this.filialId = filialId;
+    this.cpf = cpf;
+    this.matricula = matricula;
   }
 }

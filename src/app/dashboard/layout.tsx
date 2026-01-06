@@ -53,7 +53,7 @@ import {
   UserSquare,
   MessageSquare,
 } from 'lucide-react';
-import React, { useState, createContext, useContext, lazy, Suspense, ComponentType, useEffect } from 'react';
+import React, { useState, createContext, useContext, lazy, Suspense, ComponentType, useEffect, useCallback } from 'react';
 import { MeuRHLogo } from '@/components/icons';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -291,6 +291,7 @@ type Tab = {
   id: string;
   title: string;
   data?: any;
+  key?: number; // Add key for re-rendering
 };
 
 type LogEntry = {
@@ -300,6 +301,7 @@ type LogEntry = {
 
 type DashboardContextType = {
   openTab: (tab: Tab) => void;
+  refreshTab: (tabId: string) => void;
   jornada: {
     isRunning: boolean;
     elapsedTime: { days: number; hours: number; minutes: number; seconds: number };
@@ -340,8 +342,8 @@ export default function DashboardLayout({
   const router = useRouter();
   const { toast } = useToast();
   const [openTabs, setOpenTabs] = useState<Tab[]>([
-    { id: 'dashboard', title: 'Dashboard Principal' },
-    { id: 'employees', title: 'Consulta de Colaboradores' },
+    { id: 'dashboard', title: 'Dashboard Principal', key: Date.now() },
+    { id: 'employees', title: 'Consulta de Colaboradores', key: Date.now() + 1 },
   ]);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [currentEnvironment, setCurrentEnvironment] = useState('production');
@@ -402,10 +404,17 @@ const handleJornadaStop = () => {
 
   const openTab = (tab: Tab) => {
     if (!openTabs.find(t => t.id === tab.id)) {
-      setOpenTabs(prev => [...prev, tab]);
+      setOpenTabs(prev => [...prev, { ...tab, key: Date.now() }]);
     }
     setActiveTab(tab.id);
   };
+  
+  const refreshTab = useCallback((tabId: string) => {
+    setOpenTabs(prev => 
+        prev.map(t => t.id === tabId ? { ...t, key: Date.now() } : t)
+    );
+  }, []);
+
 
   const closeTab = (e: React.MouseEvent, tabId: string) => {
     e.stopPropagation();
@@ -418,7 +427,7 @@ const handleJornadaStop = () => {
         setActiveTab(newTabs[newTabs.length - 1]?.id);
       } else if (newTabs.length === 0) {
          // If all tabs are closed, open the default dashboard
-         setOpenTabs([{ id: 'dashboard', title: 'Dashboard Principal' }]);
+         setOpenTabs([{ id: 'dashboard', title: 'Dashboard Principal', key: Date.now() }]);
          setActiveTab('dashboard');
          return [];
       }
@@ -460,6 +469,7 @@ const handleJornadaStop = () => {
 
   const dashboardContextValue: DashboardContextType = {
     openTab,
+    refreshTab,
     jornada: {
       isRunning: jornadaIsRunning,
       elapsedTime: jornadaElapsedTime,
@@ -675,7 +685,7 @@ const handleJornadaStop = () => {
                 }
 
                 return (
-                    <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
+                    <TabsContent key={tab.key || tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
                       <Suspense fallback={<PageSkeleton />}>
                         {PageComponent ? <PageComponent {...props} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
                       </Suspense>

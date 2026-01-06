@@ -8,12 +8,15 @@ import { Button } from '@/components/ui/button';
 import { Save, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { Colaborador as Employee } from '@/domain/Colaborador';
+import { colaboradorService } from '@/services/ColaboradorService';
+import { useDashboard } from '../../layout';
 
 type EditarColaboradorPageProps = {
     tab: { data?: { employee: Employee } };
 }
 
 export default function EditarColaboradorPage({ tab }: EditarColaboradorPageProps) {
+    const dashboard = useDashboard();
     const [employee, setEmployee] = useState<Employee | undefined>(tab?.data?.employee);
     const { toast } = useToast();
 
@@ -27,14 +30,35 @@ export default function EditarColaboradorPage({ tab }: EditarColaboradorPageProp
         setEmployee(prev => prev ? { ...prev, [id]: value } as Employee : undefined);
     };
 
-    const handleSaveChanges = (e: React.FormEvent) => {
+    const handleSaveChanges = async (e: React.FormEvent) => {
         e.preventDefault();
-        toast({
-            title: "Dados salvos!",
-            description: `As informações de ${employee?.nome} foram atualizadas com sucesso. (Simulação)`,
-        });
-        // Here you would typically call a service to save the data.
-        // For now, we just show a toast and the local state of this tab is updated.
+        if (!employee) return;
+
+        try {
+            await colaboradorService.alterarColaborador({
+                id: employee.id,
+                nome: employee.nome,
+                cargoId: employee.cargoId,
+                setorId: employee.setorId,
+                status: employee.status,
+                filialId: employee.filialId,
+            });
+            toast({
+                title: "Dados salvos!",
+                description: `As informações de ${employee?.nome} foram atualizadas com sucesso.`,
+            });
+            // Opcional: fechar a aba ou atualizar a aba de visualização se estiver aberta
+             dashboard.refreshTab('employees');
+             dashboard.refreshTab(`visualizar-colaborador-${employee.id}`);
+
+
+        } catch (error) {
+            toast({
+                variant: 'destructive',
+                title: "Erro ao salvar",
+                description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido.",
+            });
+        }
     };
 
     if (!employee) {
