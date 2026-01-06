@@ -67,6 +67,7 @@ import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import { Sheet as MobileSheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 // Lazy load all page components for better performance
 const DashboardPage = lazy(() => import('./page'));
@@ -486,12 +487,31 @@ const handleJornadaStop = () => {
 
   return (
     <div className="flex flex-col h-screen bg-secondary text-sm text-white">
-      <header className="flex flex-col bg-primary">
+      <header className="flex flex-col bg-primary flex-shrink-0">
         {/* Top Bar */}
         <div className="flex h-8 items-center px-2 justify-between bg-[hsl(var(--primary-darker))]">
             <div className='flex items-center gap-2'>
+                <MobileSheet>
+                  <SheetTrigger asChild>
+                      <Button variant="ghost" size="icon" className="md:hidden h-6 w-6">
+                          <PanelLeft />
+                      </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="p-0 flex flex-col">
+                      <div className="p-4 border-b">
+                        <h2 className="font-bold text-lg text-primary">Meu RH Menu</h2>
+                      </div>
+                      <div className="flex-grow overflow-y-auto p-2">
+                        {navMenuItems.map(item => (
+                          <Button key={item.id} variant="ghost" onClick={() => openTab({ id: item.id, title: item.label })} className="w-full justify-start text-base">
+                            {item.label}
+                          </Button>
+                        ))}
+                      </div>
+                  </SheetContent>
+                </MobileSheet>
                 {topBarIcons.map((item) => (
-                    <Button variant='ghost' size='icon' key={item.id} className='h-6 w-6' onClick={() => handleTopBarClick(item.id)}>
+                    <Button variant='ghost' size='icon' key={item.id} className='h-6 w-6 hidden md:flex' onClick={() => handleTopBarClick(item.id)}>
                         {item.icon}
                     </Button>
                 ))}
@@ -513,7 +533,7 @@ const handleJornadaStop = () => {
               </DropdownMenuContent>
             </DropdownMenu>
             <div className='flex items-center gap-2'>
-                <Button variant='ghost' className='h-auto px-3 py-1 text-xs' onClick={() => openTab({ id: 'sistema', title: 'Configurações do Sistema'})}>Sistema</Button>
+                <Button variant='ghost' className='h-auto px-3 py-1 text-xs hidden md:flex' onClick={() => openTab({ id: 'sistema', title: 'Configurações do Sistema'})}>Sistema</Button>
                 <div className='flex items-center'>
                     <Button variant='ghost' size='icon' className='h-6 w-6'><Minimize size={16}/></Button>
                     <Button variant='ghost' size='icon' className='h-6 w-6'><Maximize size={16}/></Button>
@@ -522,7 +542,7 @@ const handleJornadaStop = () => {
             </div>
         </div>
         {/* Main Navigation Bar */}
-        <div className='flex h-10 items-center px-2 justify-between'>
+        <div className='hidden md:flex h-10 items-center px-2 justify-between'>
             <nav className='flex items-center gap-2'>
                 <Button variant='ghost' size='icon' className='h-7 w-7' onClick={() => openTab({id: 'filiais', title: 'Gestão de Filiais'})}>
                     <Factory size={16} />
@@ -652,7 +672,7 @@ const handleJornadaStop = () => {
         </div>
       </header>
 
-      <main className="flex-1 p-4 overflow-auto bg-background text-foreground">
+      <main className="flex-1 p-2 md:p-4 overflow-auto bg-background text-foreground">
         {openTabs.length > 0 ? (
           <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
             <TabsList className="bg-transparent p-0 justify-start h-auto rounded-none border-b-0">
@@ -689,7 +709,7 @@ const handleJornadaStop = () => {
                 }
 
                 return (
-                    <TabsContent key={tab.key || tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
+                    <TabsContent key={tab.key || tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1 overflow-y-auto'>
                       <Suspense fallback={<PageSkeleton />}>
                         {PageComponent ? <PageComponent {...props} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
                       </Suspense>
