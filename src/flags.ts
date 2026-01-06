@@ -1,5 +1,5 @@
 import { statsigAdapter, type StatsigUser } from "@flags-sdk/statsig";
-import { flag, dedupe } from "flags/next";
+import { flag, dedupe } from "flg/next";
 import type { Identify } from "flags";
 
 export const identify = dedupe((async () => ({
