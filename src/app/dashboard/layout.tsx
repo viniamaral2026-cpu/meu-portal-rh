@@ -422,8 +422,8 @@ export default function DashboardLayout({
         {/* Main Navigation Bar */}
         <div className='flex h-10 items-center px-2 justify-between'>
             <nav className='flex items-center gap-2'>
-                <Button variant='ghost' size='icon' className='h-7 w-7'>
-                    <LayoutGrid size={16} />
+                <Button variant='ghost' size='icon' className='h-7 w-7' onClick={() => openTab({id: 'filiais', title: 'Gestão de Filiais'})}>
+                    <Factory size={16} />
                 </Button>
                 {navMenuItems.map(item => (
                     <Button variant='ghost' key={item.id} onClick={() => openTab({ id: item.id, title: item.label })} className='h-auto py-1 px-2 text-xs font-normal'>
@@ -605,3 +605,5 @@ export default function DashboardLayout({
     </div>
   );
 }
+
+    

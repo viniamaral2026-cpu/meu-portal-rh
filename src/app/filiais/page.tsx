@@ -17,12 +17,12 @@ import {
 import {
   Factory,
   PlusCircle,
-  FileDown,
   Building,
   CheckCircle,
   XCircle,
   BarChart,
-  Copy,
+  Settings,
+  AlertTriangle
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -45,21 +45,21 @@ const initialBranches: Branch[] = [
 ];
 
 const statusConfig: { [key in BranchStatus]: { text: string; icon: React.ReactNode; badgeVariant: 'default' | 'secondary' | 'outline' } } = {
-  active: { text: 'Ativa', icon: <CheckCircle className="h-4 w-4 text-green-500" />, badgeVariant: 'default' },
-  inactive: { text: 'Inativa', icon: <XCircle className="h-4 w-4 text-gray-500" />, badgeVariant: 'secondary' },
-  setup: { text: 'Em Configuração', icon: <XCircle className="h-4 w-4 text-yellow-500" />, badgeVariant: 'outline' },
+  active: { text: 'Ativa', icon: <CheckCircle className="h-3 w-3" />, badgeVariant: 'default' },
+  inactive: { text: 'Inativa', icon: <XCircle className="h-3 w-3" />, badgeVariant: 'secondary' },
+  setup: { text: 'Em Configuração', icon: <AlertTriangle className="h-3 w-3" />, badgeVariant: 'outline' },
 };
-
-const summaryCards = [
-    { title: "Filiais Ativas", value: initialBranches.filter(b => b.status === 'active').length },
-    { title: "Filiais Inativas", value: initialBranches.filter(b => b.status === 'inactive').length },
-    { title: "Filiais em Configuração", value: initialBranches.filter(b => b.status === 'setup').length },
-]
 
 export default function FiliaisPage() {
     const [branches, setBranches] = useState(initialBranches);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { toast } = useToast();
+    
+    const summaryCards = [
+        { title: "Filiais Ativas", value: branches.filter(b => b.status === 'active').length },
+        { title: "Filiais Inativas", value: branches.filter(b => b.status === 'inactive').length },
+        { title: "Em Configuração", value: branches.filter(b => b.status === 'setup').length },
+    ]
 
     const handleRegisterBranch = () => {
         setIsDialogOpen(false);
@@ -117,7 +117,7 @@ export default function FiliaisPage() {
                                 </div>
                                 <div className="flex items-center space-x-2 pt-2">
                                     <Switch id="inherit-config" defaultChecked />
-                                    <Label htmlFor="inherit-config">Espelhar configurações da matriz (usuários, permissões, etc.)</Label>
+                                    <Label htmlFor="inherit-config">Espelhar configurações da matriz</Label>
                                 </div>
                             </div>
                             <DialogFooter>
@@ -145,14 +145,14 @@ export default function FiliaisPage() {
                                     <TableCell>{branch.location}</TableCell>
                                     <TableCell className="text-muted-foreground">{branch.cnpj}</TableCell>
                                     <TableCell>
-                                         <Badge variant={statusConfig[branch.status].badgeVariant} className="flex w-fit items-center gap-2">
+                                         <Badge variant={statusConfig[branch.status].badgeVariant} className="flex w-fit items-center gap-1.5">
                                             {statusConfig[branch.status].icon}
                                             {statusConfig[branch.status].text}
                                          </Badge>
                                     </TableCell>
                                     <TableCell className="text-right space-x-2">
                                         <Button variant="outline" size="sm"><BarChart className="mr-2 h-4 w-4" /> Painel</Button>
-                                        <Button variant="outline" size="sm"><FileDown className="mr-2 h-4 w-4" /> Relatórios</Button>
+                                        <Button variant="outline" size="sm"><Settings className="mr-2 h-4 w-4" /> Configurar</Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -163,3 +163,4 @@ export default function FiliaisPage() {
         </div>
     );
 }
+    
