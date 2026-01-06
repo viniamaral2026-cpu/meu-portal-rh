@@ -1,9 +1,21 @@
 'use client';
 import {
+  Home,
   Users,
   Clock,
+  Puzzle,
+  LogOut,
+  Boxes,
+  Factory,
+  CheckCircle,
+  FileText,
+  Bell,
+  PanelLeft,
+  Search,
+  Printer,
   FileDown,
-  LayoutGrid,
+  UserPlus,
+  Settings,
   ChevronDown,
   Minimize,
   Maximize,
@@ -11,6 +23,7 @@ import {
   Globe,
   HelpCircle,
   ChevronUp,
+  LayoutGrid,
   Calculator,
   CalendarDays,
   Share2,
@@ -19,6 +32,7 @@ import {
   FunctionSquare,
   FilePlus2,
   Database,
+  LayoutDashboard,
   Mail,
   BarChart,
   ClipboardList,
@@ -29,22 +43,21 @@ import {
   Wrench,
   ExternalLink,
   Sigma,
-  LayoutDashboard,
-  FileText,
-  Settings,
 } from 'lucide-react';
-import React, from 'react';
-import { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
-import { Button } from '@/components/ui/button';
+import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
+import { MeuRHLogo } from '@/components/icons';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Image from 'next/image';
 import type { Employee } from './employees/page';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 // Lazy load all page components for better performance
-const DashboardPage = lazy(() => import('../dashboard-principal/page'));
+const DashboardPage = lazy(() => import('./page'));
 const EmployeesPage = lazy(() => import('./employees/page'));
 const AdministracaoPessoalPage = lazy(() => import('./pages/administracao-pessoal/page'));
 const FolhaMensalPage = lazy(() => import('./pages/folha-mensal/page'));
@@ -67,7 +80,7 @@ const FormulaPage = lazy(() => import('./pages/formula/page'));
 const RelatoriosPage = lazy(() => import('./pages/relatorios/page'));
 const GeradorRelatoriosPage = lazy(() => import('./pages/gerador-relatorios/page'));
 const VisoesDadosPage = lazy(() => import('./pages/visoes-dados/page'));
-const GeradorSaidaPage = lazy(() => import('../gerador-saidas/page'));
+const GeradorSaidaPage = lazy(() => import('./pages/gerador-saida/page'));
 const GraficoPage = lazy(() => import('./pages/grafico/page'));
 const CategoriasPage = lazy(() => import('./pages/categorias/page'));
 const FontesGraficosPage = lazy(() => import('./pages/fontes-graficos/page'));
@@ -85,13 +98,14 @@ const VisualizarColaboradorPage = lazy(() => import('./pages/visualizar-colabora
 const EditarColaboradorPage = lazy(() => import('./pages/editar-colaborador/page'));
 const WordPage = lazy(() => import('./pages/word/page'));
 const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
+const SistemaPage = lazy(() => import('./pages/sistema/page'));
 
 
 const topBarIcons = [
-  { icon: Clock },
-  { icon: Users },
-  { icon: FileDown },
-  { icon: LayoutGrid },
+  { icon: <Clock size={16} /> },
+  { icon: <Users size={16} /> },
+  { icon: <FileDown size={16} /> },
+  { icon: <LayoutGrid size={16} /> },
 ];
 
 const navMenuItems = [
@@ -109,54 +123,54 @@ const navMenuItems = [
 ];
 
 const navRightIcons = [
-    { icon: ChevronUp },
-    { icon: Globe },
-    { icon: FileText },
-    { icon: ChevronDown },
-    { icon: HelpCircle },
+    { icon: <ChevronUp size={16} /> },
+    { icon: <Globe size={16} /> },
+    { icon: <FileText size={16} /> },
+    { icon: <ChevronDown size={16} /> },
+    { icon: <HelpCircle size={16} /> },
 ];
 
 const toolbarItems = [
     {
         group: 'Utilitários',
         items: [
-            { id: 'calculadora', icon: Calculator, label: 'Calculadora' },
-            { id: 'agenda', icon: BookUser, label: 'Agenda' },
-            { id: 'calendarios', icon: CalendarDays, label: 'Calendários' },
-            { id: 'compartilhamento', icon: Share2, label: 'Compartilhamento' },
-            { id: 'cubo', icon: Cuboid, label: 'Cubo' },
-            { id: 'planilha', icon: Sheet, label: 'Planilha' },
-            { id: 'formula', icon: FunctionSquare, label: 'Fórmula' },
+            { id: 'calculadora', icon: <Calculator size={20} />, label: 'Calculadora' },
+            { id: 'agenda', icon: <BookUser size={20} />, label: 'Agenda' },
+            { id: 'calendarios', icon: <CalendarDays size={20} />, label: 'Calendários' },
+            { id: 'compartilhamento', icon: <Share2 size={20} />, label: 'Compartilhamento' },
+            { id: 'cubo', icon: <Cuboid size={20} />, label: 'Cubo' },
+            { id: 'planilha', icon: <Sheet size={20} />, label: 'Planilha' },
+            { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula' },
         ]
     },
     {
         group: 'Ferramentas de Análise',
         items: [
-            { id: 'employees', icon: Users, label: 'Colaboradores' },
-            { id: 'relatorios', icon: FileText, label: 'Relatórios' },
-            { id: 'gerador-relatorios', icon: FilePlus2, label: 'Gerador' },
-            { id: 'visoes-dados', icon: Database, label: 'Visões de Dados' },
+            { id: 'employees', icon: <Users size={20} />, label: 'Colaboradores' },
+            { id: 'relatorios', icon: <FileText size={20} />, label: 'Relatórios' },
+            { id: 'gerador-relatorios', icon: <FilePlus2 size={20} />, label: 'Gerador' },
+            { id: 'visoes-dados', icon: <Database size={20} />, label: 'Visões de Dados' },
         ]
     },
     {
         group: 'Gráficos',
         items: [
-            { id: 'gerador-saidas', icon: Mail, label: 'Gerador Saída' },
-            { id: 'grafico', icon: BarChart, label: 'Gráfico' },
-            { id: 'categorias', icon: ClipboardList, label: 'Categorias' },
-            { id: 'fontes-graficos', icon: Sigma, label: 'Fontes' },
+            { id: 'gerador-saida', icon: <Mail size={20} />, label: 'Gerador Saída' },
+            { id: 'grafico', icon: <BarChart size={20} />, label: 'Gráfico' },
+            { id: 'categorias', icon: <ClipboardList size={20} />, label: 'Categorias' },
+            { id: 'fontes-graficos', icon: <Sigma size={20} />, label: 'Fontes' },
         ]
     },
     {
         group: 'RSS',
         items: [
-            { id: 'leitor-rss', icon: Rss, label: 'Leitor RSS' },
-            { id: 'iniciar-servico-rss', icon: PlayCircle, label: 'Iniciar Serviço' },
-            { id: 'configuracao-rss', icon: Settings, label: 'Configuração' },
-            { id: 'canais-rss', icon: Rss, label: 'Canais RSS' },
-            { id: 'planilha', icon: () => <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
-            { id: 'word', icon: () => <Image src="https://img.icons8.com/?size=50&id=11571&format=png" width={20} height={20} alt="Word Icon" />, label: 'Word' },
-            { id: 'assistente-ai', icon: () => <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Gemini' },
+            { id: 'leitor-rss', icon: <Rss size={20} />, label: 'Leitor RSS' },
+            { id: 'iniciar-servico-rss', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
+            { id: 'configuracao-rss', icon: <Settings size={20} />, label: 'Configuração' },
+            { id: 'canais-rss', icon: <Rss size={20} />, label: 'Canais RSS' },
+            { id: 'planilha', icon: <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
+            { id: 'word', icon: <Image src="https://img.icons8.com/?size=50&id=11571&format=png" width={20} height={20} alt="Word Icon" />, label: 'Word' },
+            { id: 'assistente-ai', icon: <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Gemini' },
         ]
     },
 ];
@@ -165,27 +179,28 @@ const paineisMenuItems = [
     {
         group: 'RM Conec',
         items: [
-            { id: 'meus-canais', icon: Users, label: 'Meus Canais' },
-            { id: 'rm-conector', icon: LinkIcon, label: 'RM Conector' },
+            { id: 'meus-canais', icon: <Users size={20} />, label: 'Meus Canais' },
+            { id: 'rm-conector', icon: <LinkIcon size={20} />, label: 'RM Conector' },
         ]
     },
     {
         group: 'Comunicação',
         items: [
-            { id: 'fontes-comunicacao', icon: Wrench, label: 'Fontes' },
-            { id: 'contas-comunicacao', icon: Users, label: 'Contas' },
-            { id: 'aplicativos-externos', icon: ExternalLink, label: 'Aplicativos Externos' },
-            { id: 'aplicativos-saml', icon: ExternalLink, label: 'Aplicativos SAML' },
+            { id: 'fontes-comunicacao', icon: <Wrench size={20} />, label: 'Fontes' },
+            { id: 'contas-comunicacao', icon: <Users size={20} />, label: 'Contas' },
+            { id: 'aplicativos-externos', icon: <ExternalLink size={20} />, label: 'Aplicativos Externos' },
+            { id: 'aplicativos-saml', icon: <ExternalLink size={20} />, label: 'Aplicativos SAML' },
         ]
     },
 ];
 
 type PageComponentProps = {
+    tab: Tab;
     employee?: Employee;
 };
 
 const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
-  'dashboard-principal': DashboardPage,
+  dashboard: DashboardPage,
   employees: EmployeesPage,
   'administracao-pessoal': AdministracaoPessoalPage,
   'folha-mensal': FolhaMensalPage,
@@ -208,7 +223,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'relatorios': RelatoriosPage,
   'gerador-relatorios': GeradorRelatoriosPage,
   'visoes-dados': VisoesDadosPage,
-  'gerador-saidas': GeradorSaidaPage,
+  'gerador-saida': GeradorSaidaPage,
   'grafico': GraficoPage,
   'categorias': CategoriasPage,
   'fontes-graficos': FontesGraficosPage,
@@ -224,6 +239,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'aplicativos-saml': AplicativosSamlPage,
   'word': WordPage,
   'assistente-ai': AssistenteAiPage,
+  'sistema': SistemaPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -267,10 +283,12 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const [openTabs, setOpenTabs] = useState<Tab[]>([
-    { id: 'dashboard-principal', title: 'Dashboard Principal' },
+    { id: 'dashboard', title: 'Dashboard Principal' },
+    { id: 'employees', title: 'Consulta de Colaboradores' },
   ]);
-  const [activeTab, setActiveTab] = useState('dashboard-principal');
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const openTab = (tab: Tab) => {
     if (!openTabs.find(t => t.id === tab.id)) {
@@ -281,35 +299,28 @@ export default function DashboardLayout({
 
   const closeTab = (e: React.MouseEvent, tabId: string) => {
     e.stopPropagation();
-    if (tabId === 'dashboard-principal') return;
+    // Prevent closing the main dashboard tab
+    if (tabId === 'dashboard') return;
 
     setOpenTabs(prev => {
-      let newActiveTab = activeTab;
-      const tabIndex = prev.findIndex(t => t.id === tabId);
-      
-      // If closing the active tab, decide the next active tab
-      if (activeTab === tabId) {
-        if (prev[tabIndex - 1]) {
-            newActiveTab = prev[tabIndex - 1].id;
-        } else if (prev[tabIndex + 1]) {
-            newActiveTab = prev[tabIndex + 1].id;
-        } else {
-            newActiveTab = 'dashboard-principal';
-        }
-      }
-      
       const newTabs = prev.filter(t => t.id !== tabId);
-      
-      if(newTabs.length === 0) {
-        setActiveTab('dashboard-principal');
-        return [{ id: 'dashboard-principal', title: 'Dashboard Principal' }];
+      if (activeTab === tabId && newTabs.length > 0) {
+        setActiveTab(newTabs[newTabs.length - 1]?.id);
+      } else if (newTabs.length === 0) {
+         // If all tabs are closed, open the default dashboard
+         setOpenTabs([{ id: 'dashboard', title: 'Dashboard Principal' }]);
+         setActiveTab('dashboard');
+         return [];
       }
-      
-      setActiveTab(newActiveTab);
       return newTabs;
     });
   };
   
+  const handleLogout = () => {
+    // Here you would typically clear session, tokens, etc.
+    router.push('/');
+  };
+
   const dashboardContextValue = {
     openTab,
   };
@@ -317,21 +328,34 @@ export default function DashboardLayout({
 
   return (
     <div className="flex flex-col h-screen bg-secondary text-sm text-white">
-      <header className="flex flex-col bg-primary print:hidden">
+      <header className="flex flex-col bg-primary">
         {/* Top Bar */}
         <div className="flex h-8 items-center px-2 justify-between bg-[hsl(var(--primary-darker))]">
             <div className='flex items-center gap-2'>
-                {topBarIcons.map((Item, index) => (
+                {topBarIcons.map((item, index) => (
                     <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
-                        <Item.icon />
+                        {item.icon}
                     </Button>
                 ))}
             </div>
-            <div className='text-xs opacity-80'>
-                Minha Empresa Calçados | Unidade Matriz | Usuário: Admin
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="text-xs opacity-80 h-auto py-1 px-3">
+                    Minha Empresa Calçados | Unidade Matriz | Usuário: Admin
+                    <ChevronDown className="ml-2 h-3 w-3" />
+                  </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sair</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <div className='flex items-center gap-2'>
-                <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Sistema</Button>
+                <Button variant='ghost' className='h-auto px-3 py-1 text-xs' onClick={() => openTab({ id: 'sistema', title: 'Configurações do Sistema'})}>Sistema</Button>
                 <div className='flex items-center'>
                     <Button variant='ghost' size='icon' className='h-6 w-6'><Minimize size={16}/></Button>
                     <Button variant='ghost' size='icon' className='h-6 w-6'><Maximize size={16}/></Button>
@@ -352,16 +376,23 @@ export default function DashboardLayout({
                 ))}
             </nav>
             <div className='flex items-center gap-2'>
-                <Tabs defaultValue="gestao" className='text-xs'>
-                    <TabsList className='bg-transparent p-0 gap-0.5'>
-                        <TabsTrigger value="gestao" className='data-[state=active]:bg-card data-[state=active]:text-card-foreground rounded-sm h-6 px-4 text-xs'>Gestão</TabsTrigger>
-                        <TabsTrigger value="ambiente" className='data-[state=active]:bg-card data-[state=active]:text-card-foreground rounded-sm h-6 px-4 text-xs'>Ambiente</TabsTrigger>
-                    </TabsList>
-                </Tabs>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant='ghost' className='h-auto px-3 py-1 text-xs data-[state=open]:bg-card data-[state=open]:text-card-foreground'>Gestão <ChevronDown className='ml-1 h-3 w-3'/></Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Painéis de Gestão</DropdownMenuLabel>
+                    <DropdownMenuSeparator/>
+                    <DropdownMenuItem>Gestão de Pessoas</DropdownMenuItem>
+                    <DropdownMenuItem>Gestão Financeira/Contábil</DropdownMenuItem>
+                    <DropdownMenuItem>Gestão de Produção</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Ambiente</Button>
                 <div className='flex items-center'>
-                     {navRightIcons.map((Item, index) => (
+                     {navRightIcons.map((item, index) => (
                         <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
-                            <Item.icon />
+                            {item.icon}
                         </Button>
                     ))}
                 </div>
@@ -374,19 +405,17 @@ export default function DashboardLayout({
               <div key={group.group} className="flex h-full items-center">
                 <div className="flex flex-col items-center justify-center h-full px-1">
                     <div className='flex items-center justify-center gap-0.5 h-full'>
-                    {group.items.map((item) => {
-                        const Icon = item.icon;
-                        return(
-                        <Button 
-                        variant="ghost" 
-                        key={item.id}
-                        onClick={() => openTab({ id: item.id, title: item.label })}
-                        className="flex flex-col items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1"
-                        >
-                            <Icon />
-                            <span className='w-full text-center truncate'>{item.label}</span>
-                        </Button>
-                    )})}
+                    {group.items.map((item) => (
+                    <Button 
+                      variant="ghost" 
+                      key={item.id}
+                      onClick={() => openTab({ id: item.id, title: item.label })}
+                      className="flex flex-col items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1"
+                    >
+                        {item.icon}
+                        <span className='w-full text-center truncate'>{item.label}</span>
+                    </Button>
+                    ))}
                     </div>
                     <p className="text-xs -mt-2 mb-1">{group.group}</p>
                 </div>
@@ -408,81 +437,81 @@ export default function DashboardLayout({
                     </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
-                    {paineisMenuItems.map((group, index) => {
-                       const Icon = group.items[0].icon;
-                       return (
+                    {paineisMenuItems.map((group, index) => (
                         <React.Fragment key={group.group}>
                             <DropdownMenuLabel>{group.group}</DropdownMenuLabel>
                             <DropdownMenuGroup>
-                            {group.items.map(item => {
-                                const ItemIcon = item.icon;
-                                return (
+                            {group.items.map(item => (
                                 <DropdownMenuItem key={item.id} onClick={() => openTab({ id: item.id, title: item.label })}>
-                                <ItemIcon className="mr-2 h-4 w-4" />
+                                {item.icon}
                                 <span>{item.label}</span>
                                 </DropdownMenuItem>
-                            )})}
+                            ))}
                             </DropdownMenuGroup>
                             {index < paineisMenuItems.length - 1 && <DropdownMenuSeparator />}
                         </React.Fragment>
-                    )})}
+                    ))}
                 </DropdownMenuContent>
             </DropdownMenu>
           </div>
         </div>
       </header>
 
-      <DashboardContext.Provider value={dashboardContextValue}>
-        <main className="flex-1 overflow-y-auto bg-background text-foreground">
-            {openTabs.length > 0 ? (
-            <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
-                <TabsList className="bg-transparent p-0 justify-start h-auto rounded-none border-b-0 print:hidden">
-                {openTabs.map(tab => (
-                    <TabsTrigger 
-                    key={tab.id} 
-                    value={tab.id} 
-                    className="relative pr-8 h-10 rounded-none rounded-t-md border-b-0 data-[state=inactive]:bg-muted data-[state=active]:bg-card data-[state=active]:shadow-none data-[state=inactive]:border data-[state=inactive]:border-b-0"
-                    >
-                    {tab.title}
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
-                        onClick={(e) => closeTab(e, tab.id)}
-                        disabled={tab.id === 'dashboard-principal'}
-                    >
-                        <X className="h-3 w-3" />
-                    </Button>
-                    </TabsTrigger>
-                ))}
-                </TabsList>
-                
+      <main className="flex-1 p-4 overflow-auto bg-background text-foreground">
+        {openTabs.length > 0 ? (
+          <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
+            <TabsList className="bg-transparent p-0 justify-start h-auto rounded-none border-b-0">
+              {openTabs.map(tab => (
+                <TabsTrigger 
+                  key={tab.id} 
+                  value={tab.id} 
+                  className="relative pr-8 h-10 rounded-none rounded-t-md border-b-0 data-[state=inactive]:bg-muted data-[state=active]:bg-card data-[state=active]:shadow-none data-[state=inactive]:border data-[state=inactive]:border-b-0"
+                >
+                  {tab.title}
+                  <div
+                    role="button"
+                    aria-label="Fechar aba"
+                    onClick={(e) => closeTab(e, tab.id)}
+                    className={cn(
+                        buttonVariants({ variant: "ghost", size: "icon" }),
+                        "absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full",
+                        tab.id === 'dashboard' && 'pointer-events-none opacity-50'
+                    )}
+                  >
+                    <X className="h-3 w-3" />
+                  </div>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <DashboardContext.Provider value={dashboardContextValue}>
                 {openTabs.map(tab => {
-                    const baseId = tab.id.split('-')[0];
-                    const PageComponent = pageComponents[baseId];
-                    
-                    return (
-                        <TabsContent key={tab.id} value={tab.id} className='bg-card border-t-0 rounded-b-lg mt-0 flex-1 overflow-y-auto'>
-                        <Suspense fallback={<PageSkeleton />}>
-                            {PageComponent ? <PageComponent {...tab.data} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
-                        </Suspense>
-                        </TabsContent>
-                    )
+                const pageId = tab.id.startsWith('visualizar-colaborador') ? 'visualizar-colaborador' : tab.id.startsWith('editar-colaborador') ? 'editar-colaborador' : tab.id;
+                const PageComponent = pageComponents[pageId as keyof typeof pageComponents];
+                
+                const props: PageComponentProps = { tab };
+                if ((pageId === 'visualizar-colaborador' || pageId === 'editar-colaborador') && tab.data) {
+                    props.employee = tab.data as Employee;
+                }
+
+                return (
+                    <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1'>
+                      <Suspense fallback={<PageSkeleton />}>
+                        {PageComponent ? <PageComponent {...props} /> : <div className="p-4">Conteúdo para {tab.title}</div>}
+                      </Suspense>
+                    </TabsContent>
+                )
                 })}
-            
-            </Tabs>
-            ) : (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-                Selecione um item no menu para começar.
-            </div>
-            )}
-        </main>
-       </DashboardContext.Provider>
-      <footer className="p-1 text-center text-xs bg-card text-card-foreground border-t print:hidden">
+            </DashboardContext.Provider>
+          </Tabs>
+        ) : (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Selecione um item no menu para começar.
+          </div>
+        )}
+      </main>
+      <footer className="p-1 text-center text-xs bg-card text-card-foreground border-t">
         Desenvolvido por Tech Ops 2026 | Versão 0.0.1
       </footer>
     </div>
   );
 }
-
-    

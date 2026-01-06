@@ -21,6 +21,7 @@ import {
   Cell,
 } from 'recharts';
 import { Factory, Users, ListTodo, AlertTriangle } from 'lucide-react';
+import type { Tab } from './layout';
 
 const producaoMensalData = [
   { month: 'Jan', Produção: 4000 },
@@ -49,7 +50,7 @@ const headcountData = [
 ];
 
 
-export default function DashboardPrincipalPage() {
+export default function DashboardPrincipalPage({ tab }: { tab: Tab }) {
   return (
     <div className="space-y-4 p-4">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
