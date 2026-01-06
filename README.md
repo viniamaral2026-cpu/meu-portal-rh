@@ -1,4 +1,3 @@
-
 # Meu RH - Sistema de Gestão para Indústria de Calçados
 
 Bem-vindo ao **Meu RH**, um sistema de gestão de recursos humanos e ERP completo, projetado especificamente para as necessidades da indústria de calçados. A plataforma integra desde a administração de pessoal e folha de pagamento até a gestão de produção e recrutamento, tudo em uma interface moderna e intuitiva.
