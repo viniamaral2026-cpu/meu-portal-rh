@@ -30,7 +30,8 @@ import {
   ExternalLink,
   Sigma,
   LayoutDashboard,
-  FileText
+  FileText,
+  Settings,
 } from 'lucide-react';
 import React, from 'react';
 import { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
@@ -140,7 +141,7 @@ const toolbarItems = [
     {
         group: 'Gráficos',
         items: [
-            { id: 'gerador-saida', icon: Mail, label: 'Gerador Saída' },
+            { id: 'gerador-saidas', icon: Mail, label: 'Gerador Saída' },
             { id: 'grafico', icon: BarChart, label: 'Gráfico' },
             { id: 'categorias', icon: ClipboardList, label: 'Categorias' },
             { id: 'fontes-graficos', icon: Sigma, label: 'Fontes' },
@@ -483,3 +484,5 @@ export default function DashboardLayout({
     </div>
   );
 }
+
+    
