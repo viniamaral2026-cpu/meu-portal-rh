@@ -52,6 +52,7 @@ import {
   Smartphone,
   UserSquare,
   MessageSquare,
+  Book,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType, useEffect, useCallback } from 'react';
 import { MeuRHLogo } from '@/components/icons';
@@ -125,6 +126,7 @@ const RelogioPontoApiPage = lazy(() => import('./pages/relogio-ponto-api/page'))
 const ChatPage = lazy(() => import('./pages/chat/page'));
 const GeminiApiPage = lazy(() => import('./pages/gemini-api/page'));
 const DocumentosGeradosPage = lazy(() => import('./pages/documentos-gerados/page'));
+const NotesPage = lazy(() => import('../notes/page'));
 
 const topBarIcons = [
   { id: 'controle-jornada', title: 'Controle de Jornada', icon: <Clock size={16} /> },
@@ -146,6 +148,7 @@ const navMenuItems = [
     { id: 'assinatura-eletronica', label: 'Assinatura Eletrônica' },
     { id: 'customizacao', label: 'Customização' },
     { id: 'documentos-gerados', label: 'Documentos' },
+    { id: 'notes', label: 'Notas' },
 ];
 
 const navRightIcons = [
@@ -282,6 +285,7 @@ const pageComponents: { [key: string]: ComponentType<any> } = {
   chat: ChatPage,
   'gemini-api': GeminiApiPage,
   'documentos-gerados': DocumentosGeradosPage,
+  notes: NotesPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
