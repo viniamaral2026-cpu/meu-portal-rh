@@ -26,19 +26,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import type { Filial } from '@/domain/Filial';
+import type { FilialDTO } from '@/application/dtos/FilialDTO';
 import { filialService } from '@/services/FilialService';
 
-type BranchStatus = 'active' | 'inactive' | 'setup';
-
-const statusConfig: { [key in BranchStatus]: { text: string; icon: React.ReactNode; badgeVariant: 'default' | 'secondary' | 'outline' } } = {
+const statusConfig: { [key in FilialDTO['status']]: { text: string; icon: React.ReactNode; badgeVariant: 'default' | 'secondary' | 'outline' } } = {
   active: { text: 'Ativa', icon: <CheckCircle className="h-3 w-3" />, badgeVariant: 'default' },
   inactive: { text: 'Inativa', icon: <XCircle className="h-3 w-3" />, badgeVariant: 'secondary' },
   setup: { text: 'Em Configuração', icon: <AlertTriangle className="h-3 w-3" />, badgeVariant: 'outline' },
 };
 
 export default function FiliaisPage() {
-    const [branches, setBranches] = useState<Filial[]>([]);
+    const [branches, setBranches] = useState<FilialDTO[]>([]);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { toast } = useToast();
 
@@ -55,12 +53,12 @@ export default function FiliaisPage() {
     const handleRegisterBranch = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = new FormData(event.currentTarget);
-        const name = form.get('branch-name') as string;
+        const nome = form.get('branch-name') as string;
         const cnpj = form.get('branch-cnpj') as string;
-        const location = form.get('branch-location') as string;
+        const localizacao = form.get('branch-location') as string;
 
         try {
-            await filialService.criarFilial({ nome: name, cnpj, localizacao: location });
+            await filialService.criarFilial({ nome, cnpj, localizacao });
             const filiaisAtualizadas = await filialService.listarFiliais();
             setBranches(filiaisAtualizadas);
             setIsDialogOpen(false);
@@ -155,9 +153,9 @@ export default function FiliaisPage() {
                                     <TableCell>{branch.localizacao}</TableCell>
                                     <TableCell className="text-muted-foreground">{branch.cnpj}</TableCell>
                                     <TableCell>
-                                         <Badge variant={statusConfig[branch.status as BranchStatus].badgeVariant} className="flex w-fit items-center gap-1.5">
-                                            {statusConfig[branch.status as BranchStatus].icon}
-                                            {statusConfig[branch.status as BranchStatus].text}
+                                         <Badge variant={statusConfig[branch.status].badgeVariant} className="flex w-fit items-center gap-1.5">
+                                            {statusConfig[branch.status].icon}
+                                            {statusConfig[branch.status].text}
                                          </Badge>
                                     </TableCell>
                                     <TableCell className="text-right space-x-2">
