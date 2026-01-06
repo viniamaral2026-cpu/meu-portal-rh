@@ -7,7 +7,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Input } from '@/components/ui/input';
 import { Search, FileDown, Trash2, Edit, Eye } from 'lucide-react';
 import { Label } from '@/components/ui/label';
-import { useDashboard } from '../client-layout';
+import { useDashboard } from '../layout';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 
@@ -144,7 +144,7 @@ export default function EmployeesPage() {
     const pageId = action === 'view' ? 'visualizar-colaborador' : 'editar-colaborador';
     const tabId = `${pageId}-${selectedEmployee.id}`;
     const title = `${action === 'view' ? 'Vis.' : 'Edt.'} ${selectedEmployee.name.split(' ')[0]}`;
-    dashboard.openTab(tabId, title, { employee: selectedEmployee });
+    dashboard.openTab({id: tabId, title, data: { employee: selectedEmployee }});
   };
 
 
