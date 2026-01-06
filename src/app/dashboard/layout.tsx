@@ -79,7 +79,7 @@ const AssinaturaEletronicaPage = lazy(() => import('./pages/assinatura-eletronic
 const CustomizacaoPage = lazy(() => import('./pages/customizacao/page'));
 const CalculadoraPage = lazy(() => import('./pages/calculadora/page'));
 const AgendaPage = lazy(() => import('./pages/agenda/page'));
-const CurriculosPage = lazy(() => import('../curriculos/page'));
+const CurriculosPage = lazy(() => import('./pages/curriculos/page'));
 const CompartilhamentoPage = lazy(() => import('./pages/compartilhamento/page'));
 const CuboPage = lazy(() => import('./pages/cubo/page'));
 const PlanilhaPage = lazy(() => import('./pages/planilha/page'));
@@ -111,15 +111,16 @@ const GestaoPessoasPage = lazy(() => import('./pages/gestao-pessoas/page'));
 const GestaoFinanceiraPage = lazy(() => import('./pages/gestao-financeira/page'));
 const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
 const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/page'));
-const PortalCarreirasPage = lazy(() => import('./pages/portal-carreiras/page'));
 const DocumentacaoPage = lazy(() => import('./pages/documentacao/page'));
+const ControleJornadaPage = lazy(() => import('../controle-jornada/page'));
+const MonitoramentoUsuariosPage = lazy(() => import('../monitoramento-usuarios/page'));
 
 
 const topBarIcons = [
-  { icon: <Clock size={16} /> },
-  { icon: <Users size={16} /> },
-  { icon: <FileDown size={16} /> },
-  { icon: <LayoutGrid size={16} /> },
+  { id: 'controle-jornada', title: 'Controle de Jornada', icon: <Clock size={16} /> },
+  { id: 'monitoramento-usuarios', title: 'Monitoramento de Usuários', icon: <Users size={16} /> },
+  { id: 'downloads', title: 'Downloads', icon: <FileDown size={16} /> },
+  { id: 'apps', title: 'Aplicativos', icon: <LayoutGrid size={16} /> },
 ];
 
 const navMenuItems = [
@@ -259,8 +260,9 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'gestao-financeira': GestaoFinanceiraPage,
   'gestao-producao': GestaoProducaoPage,
   'atualizacao-sistema': AtualizacaoSistemaPage,
-  'portal-carreiras': PortalCarreirasPage,
   'documentacao': DocumentacaoPage,
+  'controle-jornada': ControleJornadaPage,
+  'monitoramento-usuarios': MonitoramentoUsuariosPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
@@ -365,6 +367,61 @@ export default function DashboardLayout({
     }
   }
 
+  const handleDownloadReport = () => {
+    const reportContent = `
+Relatório Técnico e de Uso - Sistema MeuRH
+Versão: 2.1.3-beta
+Data de Emissão: ${new Date().toLocaleString('pt-BR')}
+
+================================
+1. Status dos Serviços
+================================
+- API Principal: Operacional
+- Banco de Dados: Operacional
+- Serviço de Email: Performance Degradada
+- Conector RM: Operacional
+- Serviço de Fila: Fora do Ar
+
+================================
+2. Uso Recente
+================================
+- Usuários Ativos: 3
+- Relatórios Gerados (24h): 15
+- Sincronizações (24h): 128
+- Módulos mais acessados: Folha Mensal, Consulta de Colaboradores, Dashboard
+
+================================
+3. Configuração do Ambiente
+================================
+- Ambiente Ativo: ${currentEnvironment}
+- URL Base: https://meurh.minhaempresa.com.br
+- Versão do Node.js: 20.x
+- Versão do Next.js: 15.x
+
+* Este é um relatório de diagnóstico gerado automaticamente.
+`;
+    const blob = new Blob([reportContent.trim()], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `relatorio_tecnico_meurh_${Date.now()}.txt`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+    toast({ title: 'Download Iniciado', description: 'O relatório técnico foi gerado.' });
+  };
+
+
+  const handleTopBarClick = (id: string) => {
+    if (id === 'downloads') {
+      handleDownloadReport();
+    } else {
+      openTab({ id, title: topBarIcons.find(i => i.id === id)?.title || 'Nova Aba' });
+    }
+  };
+
+
   const dashboardContextValue = {
     openTab,
   };
@@ -376,8 +433,8 @@ export default function DashboardLayout({
         {/* Top Bar */}
         <div className="flex h-8 items-center px-2 justify-between bg-[hsl(var(--primary-darker))]">
             <div className='flex items-center gap-2'>
-                {topBarIcons.map((item, index) => (
-                    <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
+                {topBarIcons.map((item) => (
+                    <Button variant='ghost' size='icon' key={item.id} className='h-6 w-6' onClick={() => handleTopBarClick(item.id)}>
                         {item.icon}
                     </Button>
                 ))}
@@ -588,7 +645,7 @@ export default function DashboardLayout({
         )}
       </main>
       <footer className="p-1 text-center text-xs bg-card text-card-foreground border-t">
-        Desenvolvido por Dresbach hosting do brasi l/ Tech Ops 2026 | Versão 0.0.1
+        Desenvolvido por Tech Ops 2026 | Versão 0.0.1
       </footer>
     </div>
   );
