@@ -29,18 +29,18 @@ import {
 
 export function HeaderTop() {
   return (
-    <header className="bg-card text-foreground px-2 py-0.5 flex items-center justify-between text-xs h-7 border-b">
+    <header className="bg-header-top-background text-header-foreground px-2 py-0.5 flex items-center justify-between text-xs h-7 border-b">
       <div className="flex items-center gap-1">
-        <button className="p-1 rounded-sm hover:bg-accent">
+        <button className="p-1 rounded-sm hover:bg-white/10">
           <Clock className="h-3.5 w-3.5" />
         </button>
-        <button className="p-1 rounded-sm hover:bg-accent">
+        <button className="p-1 rounded-sm hover:bg-white/10">
           <Users className="h-3.5 w-3.5" />
         </button>
-        <button className="p-1 rounded-sm hover:bg-accent">
+        <button className="p-1 rounded-sm hover:bg-white/10">
           <FilePlus className="h-3.5 w-3.5" />
         </button>
-        <button className="p-1 rounded-sm hover:bg-accent">
+        <button className="p-1 rounded-sm hover:bg-white/10">
           <LayoutGrid className="h-3.5 w-3.5" />
         </button>
       </div>
@@ -48,7 +48,7 @@ export function HeaderTop() {
       <div className="flex-1 flex justify-center items-center">
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <div className="flex items-center gap-2 text-muted-foreground cursor-pointer p-1 rounded-md hover:bg-accent">
+                <div className="flex items-center gap-2 text-white/80 cursor-pointer p-1 rounded-md hover:bg-white/10">
                     <span>Minha Empresa Calçados | Unidade Matriz | Usuário: Admin</span>
                     <ChevronDown className="h-3 w-3" />
                 </div>
@@ -75,25 +75,25 @@ export function HeaderTop() {
 
 
       <div className="flex items-center gap-1">
-        <span className="font-semibold text-muted-foreground">Sistema</span>
-        <button className="p-1 rounded-sm hover:bg-accent">
-          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
+        <span className="font-semibold text-white/80">Sistema</span>
+        <button className="p-1 rounded-sm hover:bg-white/10">
+          <ChevronDown className="h-3.5 w-3.5 text-white/80" />
         </button>
-        <button className="p-1 rounded-sm hover:bg-accent">
-          <Globe className="h-3.5 w-3.5 text-muted-foreground" />
+        <button className="p-1 rounded-sm hover:bg-white/10">
+          <Globe className="h-3.5 w-3.5 text-white/80" />
         </button>
-        <button className="p-1 rounded-sm hover:bg-accent">
-          <MessageSquare className="h-3.5 w-3.5 text-muted-foreground" />
+        <button className="p-1 rounded-sm hover:bg-white/10">
+          <MessageSquare className="h-3.5 w-3.5 text-white/80" />
         </button>
-         <button className="p-1 rounded-sm hover:bg-accent">
-          <HelpCircle className="h-3.5 w-3.5 text-muted-foreground" />
+         <button className="p-1 rounded-sm hover:bg-white/10">
+          <HelpCircle className="h-3.5 w-3.5 text-white/80" />
         </button>
         <div className="w-px h-4 bg-border mx-1"></div>
-        <button className="p-1 rounded-sm hover:bg-accent">
-          <Minimize2 className="h-3.5 w-3.5 text-muted-foreground" />
+        <button className="p-1 rounded-sm hover:bg-white/10">
+          <Minimize2 className="h-3.5 w-3.5 text-white/80" />
         </button>
-        <button className="p-1 rounded-sm hover:bg-accent">
-          <Maximize2 className="h-3.5 w-3.5 text-muted-foreground" />
+        <button className="p-1 rounded-sm hover:bg-white/10">
+          <Maximize2 className="h-3.5 w-3.5 text-white/80" />
         </button>
         <button className="p-1 rounded-sm hover:bg-red-500/80 hover:bg-red-500">
           <X className="h-3.5 w-3.5 text-white" />

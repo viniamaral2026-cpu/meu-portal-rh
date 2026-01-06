@@ -39,17 +39,17 @@ export function HeaderPrimary({ openTab }: { openTab: (id: string, title?: strin
   }
 
   return (
-    <header className="bg-card shadow-sm border-b h-9">
-      <nav className="px-4 h-full flex items-center justify-between text-foreground">
+    <header className="bg-header-primary-background shadow-sm border-b h-9">
+      <nav className="px-4 h-full flex items-center justify-between text-header-foreground">
         <div className="flex items-center gap-1">
-          <a href="#" className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-accent">
+          <a href="#" className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-white/10">
             <LayoutGrid className="h-4 w-4" />
           </a>
           {menuItems.map((item) => (
             <button
               key={item.id}
               onClick={() => openTab(item.id, item.label)}
-              className="px-2 py-1 rounded-md text-sm font-medium hover:bg-accent"
+              className="px-2 py-1 rounded-md text-sm font-medium hover:bg-white/10"
             >
               {item.label}
             </button>
@@ -58,7 +58,7 @@ export function HeaderPrimary({ openTab }: { openTab: (id: string, title?: strin
         <div className="flex items-center gap-2 text-sm">
            <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex items-center gap-1 cursor-pointer px-2 py-1 rounded-md hover:bg-accent">
+              <div className="flex items-center gap-1 cursor-pointer px-2 py-1 rounded-md hover:bg-white/10">
                 <span>Gestão</span>
                 <ChevronDown className="h-3.5 w-3.5" />
               </div>
@@ -72,7 +72,7 @@ export function HeaderPrimary({ openTab }: { openTab: (id: string, title?: strin
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex items-center gap-1 cursor-pointer px-2 py-1 rounded-md hover:bg-accent">
+              <div className="flex items-center gap-1 cursor-pointer px-2 py-1 rounded-md hover:bg-white/10">
                 <span>Ambiente</span>
                 <ChevronDown className="h-3.5 w-3.5" />
               </div>
