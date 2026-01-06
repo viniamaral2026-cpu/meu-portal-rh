@@ -72,6 +72,7 @@ const AplicativosExternosPage = lazy(() => import('./pages/aplicativos-externos/
 const AplicativosSamlPage = lazy(() => import('./pages/aplicativos-saml/page'));
 const SistemaPage = lazy(() => import('./pages/sistema/page'));
 const VisualizarColaboradorPage = lazy(() => import('./pages/visualizar-colaborador/page'));
+const EditarColaboradorPage = lazy(() => import('./pages/editar-colaborador/page'));
 
 
 type Tab = {
@@ -135,6 +136,7 @@ const pagesMap: { [key: string]: React.LazyExoticComponent<any> } = {
   'aplicativos-saml': AplicativosSamlPage,
   'sistema': SistemaPage,
   'visualizar-colaborador': VisualizarColaboradorPage,
+  'editar-colaborador': EditarColaboradorPage,
 };
 
 type DashboardContextType = {
@@ -157,25 +159,26 @@ export function DashboardClientLayout({
     },
   ]);
   const [activeTab, setActiveTab] = useState('dashboard-principal');
-  const [nextTabId, setNextTabId] = useState(1);
 
   const openTab = (id: string, title?: string, data: any = {}) => {
-    // Check if a tab of the same base ID already exists
-    const baseId = id.split('-')[0];
-    const existingTab = tabs.find((tab) => tab.id.startsWith(id));
+    // Check if a tab with the exact same ID already exists
+    const existingTab = tabs.find((tab) => tab.id === id);
     
     if (existingTab) {
       setActiveTab(existingTab.id);
       return;
     }
 
+    // Determine the base component to use
+    const baseId = id.split('-')[0];
     const PageComponent = pagesMap[baseId];
+    
     if (!PageComponent) {
-      console.error(`Page component for id "${baseId}" not found.`);
+      console.error(`Page component for baseId "${baseId}" not found.`);
       return;
     }
 
-    const newTabId = id; // Use the full dynamic ID now
+    const newTabId = id; 
     const newTab: Tab = {
       id: newTabId,
       title: title || baseId.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),

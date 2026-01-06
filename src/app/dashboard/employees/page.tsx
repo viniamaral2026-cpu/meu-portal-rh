@@ -20,6 +20,8 @@ const initialEmployees = [
     matricula: 'MAT001',
     role: 'Cortador',
     sector: 'Corte',
+    admissionDate: '2022-01-15',
+    status: 'Ativo',
   },
   {
     id: 2,
@@ -29,6 +31,8 @@ const initialEmployees = [
     matricula: 'MAT002',
     role: 'Costureira',
     sector: 'Costura',
+    admissionDate: '2021-07-20',
+    status: 'Ativo',
   },
   {
     id: 3,
@@ -38,6 +42,8 @@ const initialEmployees = [
     matricula: 'MAT003',
     role: 'Montador',
     sector: 'Montagem',
+    admissionDate: '2023-03-10',
+    status: 'Férias',
   },
   {
     id: 4,
@@ -47,6 +53,8 @@ const initialEmployees = [
     matricula: 'MAT004',
     role: 'Acabador',
     sector: 'Acabamento',
+    admissionDate: '2020-11-05',
+    status: 'Ativo',
   },
   {
     id: 5,
@@ -56,10 +64,12 @@ const initialEmployees = [
     matricula: 'MAT005',
     role: 'Costureiro',
     sector: 'Costura',
+    admissionDate: '2022-09-01',
+    status: 'Afastado',
   },
 ];
 
-type Employee = typeof initialEmployees[0];
+export type Employee = typeof initialEmployees[0];
 
 export default function EmployeesPage() {
   const dashboard = useDashboard();
@@ -131,9 +141,10 @@ export default function EmployeesPage() {
     }
     if (!dashboard) return;
 
-    const tabId = `${action === 'view' ? 'visualizar' : 'editar'}-colaborador-${selectedEmployee.id}`;
+    const pageId = action === 'view' ? 'visualizar-colaborador' : 'editar-colaborador';
+    const tabId = `${pageId}-${selectedEmployee.id}`;
     const title = `${action === 'view' ? 'Vis.' : 'Edt.'} ${selectedEmployee.name.split(' ')[0]}`;
-    dashboard.openTab(tabId, title, { employeeId: selectedEmployee.id });
+    dashboard.openTab(tabId, title, { employee: selectedEmployee });
   };
 
 
