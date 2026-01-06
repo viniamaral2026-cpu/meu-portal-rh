@@ -13,7 +13,8 @@ O sistema é modular e abrange diversas áreas da gestão empresarial:
 - **Dashboard Principal:** Visão geral com KPIs de produção, ausências, pedidos e alertas de estoque.
 - **Administração de Pessoal:** Cadastro e gerenciamento completo do perfil dos colaboradores.
 - **Folha de Pagamento:** Cálculo, processamento e emissão de relatórios da folha mensal.
-- **Controle de Jornada:** Relógio de ponto digital para que os colaboradores registrem o início e o fim do expediente.
+- **Controle de Jornada (REP-P):** Módulo para tratamento de ponto eletrônico, com painel de monitoramento da comunicação com os relógios (REP-P) e conformidade com a Portaria 671.
+- **Portal do Colaborador:** Uma interface moderna para que os funcionários acessem holerites, espelho de ponto, solicitem férias e assinem documentos digitalmente.
 - **Gestão de Férias e Rescisão:** Módulos para aprovar solicitações de férias e calcular rescisões contratuais.
 - **Cargos e Salários:** Gerenciamento das estruturas de cargos e faixas salariais da empresa.
 - **eSocial e Encargos:** Painéis para monitorar o envio de eventos ao eSocial e visualizar os encargos sociais.
@@ -36,6 +37,17 @@ O sistema é modular e abrange diversas áreas da gestão empresarial:
 - **Monitoramento de Usuários:** Acompanhamento em tempo real dos usuários ativos no sistema.
 - **Painel de Auditoria:** Logs de atividades críticas e status dos serviços para fins de suporte.
 - **Customização (White Label):** Ferramentas para personalizar a aparência do sistema com a marca da empresa.
+
+## ⚖️ Conformidade Legal (Portaria 671/MTP)
+
+O desenvolvimento do sistema de ponto eletrônico segue rigorosamente as diretrizes da **Portaria 671 do Ministério do Trabalho e Previdência**, garantindo total segurança jurídica para a empresa.
+
+- **Imutabilidade dos Registros:** Nenhum registro de ponto pode ser alterado ou excluído. Ajustes são sempre lançados como novas informações auditáveis.
+- **Formatos Oficiais:** O sistema é capaz de ler o **Arquivo Fonte de Dados (AFD)** dos relógios e exportar o **Arquivo Eletrônico de Jornada (AEJ)**, seguindo os layouts oficiais.
+- **Integração com REP-P:** A comunicação com os relógios de ponto (REP-P) é feita via SDKs dos fabricantes, com um serviço de fundo que garante a coleta dos dados em tempo real.
+- **Assinatura Digital:** Todos os arquivos fiscais e comprovantes gerados possuem assinatura digital no padrão ICP-Brasil, assegurando sua validade legal.
+
+Estamos comprometidos em manter o sistema sempre atualizado com as últimas exigências do MTE.
 
 ## 🚀 Tecnologias Utilizadas
 
