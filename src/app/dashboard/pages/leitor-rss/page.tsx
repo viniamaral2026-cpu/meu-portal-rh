@@ -1,73 +1,196 @@
-'use client';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Rss, BookMarked, Eye } from 'lucide-react';
-import { useState } from 'react';
 
-const articles = [
-    { id: 1, feed: 'Notícias de Calçados', title: 'Exportações de calçados crescem 15% no primeiro semestre', snippet: 'O setor calçadista brasileiro comemora os resultados positivos...', read: false },
-    { id: 2, feed: 'Blog de RH', title: '5 tendências para gestão de pessoas em 2024', snippet: 'A tecnologia e o bem-estar dos colaboradores são os pilares para...', read: false },
-    { id: 3, feed: 'Notícias de Calçados', title: 'Nova feira de componentes para calçados será em Novembro', snippet: 'O evento reunirá os principais fornecedores de matéria-prima e...', read: true },
-    { id: 4, feed: 'Economia - G1', title: 'Dólar fecha em alta e impacta custos de importação', snippet: 'A moeda americana subiu 0.8% nesta terça-feira, o que pode afetar...', read: false },
-    { id: 5, feed: 'Blog de RH', title: 'Como implementar uma cultura de feedback contínuo', snippet: 'Esqueça as avaliações anuais. O feedback contínuo é a chave para...', read: true },
+'use client';
+
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
+import { Rss, Folder, CheckCheck, RefreshCw, ExternalLink, Search } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+
+// --- Mock Data ---
+
+type Article = {
+  id: string;
+  feedId: string;
+  title: string;
+  source: string;
+  date: string;
+  link: string;
+  snippet: string;
+  content: string;
+  isRead: boolean;
+};
+
+type Feed = {
+  id: string;
+  name: string;
+  url: string;
+};
+
+type Folder = {
+  id: string;
+  name: string;
+  feeds: Feed[];
+};
+
+const folders: Folder[] = [
+  {
+    id: 'folder1',
+    name: 'Legislação e eSocial',
+    feeds: [
+      { id: 'feed1', name: 'Portal eSocial', url: '#' },
+      { id: 'feed2', name: 'Diário Oficial da União', url: '#' },
+    ],
+  },
+  {
+    id: 'folder2',
+    name: 'Notícias de RH',
+    feeds: [
+      { id: 'feed3', name: 'RH Pra Você', url: '#' },
+      { id: 'feed4', name: 'Mundo RH', url: '#' },
+    ],
+  },
+  {
+    id: 'folder3',
+    name: 'Economia',
+    feeds: [
+      { id: 'feed5', name: 'Infomoney', url: '#' },
+    ]
+  }
 ];
 
+const articles: Article[] = [
+  { id: 'art1', feedId: 'feed1', title: 'eSocial: Nova versão S-1.3 entra em produção em setembro', source: 'Portal eSocial', date: '2024-07-15', link: '#', isRead: false, snippet: 'A nova versão do eSocial Simplificado S-1.3 trará mudanças significativas nos leiautes de eventos de SST...', content: '<h3>eSocial: Nova versão S-1.3 entra em produção em setembro</h3><p>A nova versão do eSocial Simplificado S-1.3 trará mudanças significativas nos leiautes de eventos de Segurança e Saúde no Trabalho (SST), com o objetivo de simplificar o envio de informações e melhorar a qualidade dos dados.</p><p>Fique atento aos prazos para adaptação dos sistemas de folha de pagamento.</p>' },
+  { id: 'art2', feedId: 'feed1', title: 'Publicada Nota Técnica com ajustes no evento S-2230', source: 'Portal eSocial', date: '2024-07-14', link: '#', isRead: false, snippet: 'Ajustes visam corrigir inconsistências no processamento de afastamentos temporários por motivo de doença...', content: '<h3>Publicada Nota Técnica com ajustes no evento S-2230</h3><p>Ajustes visam corrigir inconsistências no processamento de afastamentos temporários por motivo de doença, principalmente em casos de múltiplos atestados sequenciais.</p>' },
+  { id: 'art3', feedId: 'feed3', title: 'As 5 tendências de gestão de pessoas para o segundo semestre', source: 'RH Pra Você', date: '2024-07-15', link: '#', isRead: true, snippet: 'Flexibilidade, bem-estar e uso de IA para recrutamento estão entre as principais apostas para o mercado de RH...', content: '<h3>As 5 tendências de gestão de pessoas para o segundo semestre</h3><p>Flexibilidade, bem-estar e uso de IA para recrutamento estão entre as principais apostas para o mercado de RH. Empresas que não se adaptarem podem perder talentos.', },
+  { id: 'art4', feedId: 'feed2', title: 'INSS: Portaria define novo teto para contribuição', source: 'Diário Oficial da União', date: '2024-07-12', link: '#', isRead: false, snippet: 'O valor máximo do salário de contribuição foi reajustado para R$ 7.850,25 a partir de agosto...', content: '<h3>INSS: Portaria define novo teto para contribuição</h3><p>O valor máximo do salário de contribuição foi reajustado para R$ 7.850,25 a partir de agosto. O reajuste impacta o cálculo da contribuição previdenciária de todos os trabalhadores.</p>' },
+];
+
+// --- Component ---
+
 export default function LeitorRssPage() {
-    const [selectedArticle, setSelectedArticle] = useState(articles[0]);
+  const { toast } = useToast();
+  const [selectedFeedId, setSelectedFeedId] = useState<string | null>('feed1');
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>('art1');
+  const [articleList, setArticleList] = useState(articles);
+
+  const getUnreadCount = (feedId: string) => articleList.filter(a => a.feedId === feedId && !a.isRead).length;
+
+  const filteredArticles = articleList.filter(a => selectedFeedId ? a.feedId === selectedFeedId : true);
+  const selectedArticle = articleList.find(a => a.id === selectedArticleId);
+
+  const handleSelectArticle = (articleId: string) => {
+    setSelectedArticleId(articleId);
+    setArticleList(prev => prev.map(a => a.id === articleId ? { ...a, isRead: true } : a));
+  };
+  
+  const handleRefresh = () => {
+    toast({
+        title: 'Atualizando Feeds...',
+        description: 'Buscando novas notícias. (Esta é uma simulação)',
+    });
+  };
 
   return (
-    <div className="h-full flex flex-col">
-        <CardHeader>
-            <CardTitle className="flex items-center"><Rss className="mr-2"/> Leitor de Notícias RSS</CardTitle>
-            <CardDescription>Mantenha-se atualizado com as últimas notícias do mercado e de RH.</CardDescription>
+    <div className="h-full flex gap-4 p-4">
+      {/* Feeds Panel */}
+      <Card className="w-[300px] flex-shrink-0 flex flex-col">
+        <CardHeader className="flex-row items-center justify-between">
+          <CardTitle className="text-lg flex items-center gap-2"><Rss size={20} /> Fontes</CardTitle>
+          <div className='flex items-center gap-1'>
+            <Button variant="ghost" size="icon" className='h-7 w-7' onClick={handleRefresh}><RefreshCw size={16} /></Button>
+            <Button variant="ghost" size="icon" className='h-7 w-7'><CheckCheck size={16} /></Button>
+          </div>
         </CardHeader>
-        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-px bg-border overflow-hidden">
-            <div className="md:col-span-1 bg-card flex flex-col">
-                <div className="p-4 border-b">
-                    <h3 className="font-semibold">Caixa de Entrada ({articles.filter(a => !a.read).length} não lidos)</h3>
+        <ScrollArea className="flex-grow">
+          <div className="p-2 space-y-2">
+            {folders.map(folder => (
+              <div key={folder.id}>
+                <h3 className="px-2 text-xs font-semibold text-muted-foreground uppercase flex items-center gap-2"><Folder size={14} /> {folder.name}</h3>
+                <div className="mt-1 space-y-1">
+                  {folder.feeds.map(feed => {
+                    const unreadCount = getUnreadCount(feed.id);
+                    return (
+                      <Button
+                        key={feed.id}
+                        variant={selectedFeedId === feed.id ? 'secondary' : 'ghost'}
+                        className="w-full justify-between h-auto py-2"
+                        onClick={() => setSelectedFeedId(feed.id)}
+                      >
+                        <span className="truncate text-left">{feed.name}</span>
+                        {unreadCount > 0 && <Badge variant="default" className="flex-shrink-0">{unreadCount}</Badge>}
+                      </Button>
+                    );
+                  })}
                 </div>
-                <ScrollArea className="flex-1">
-                    {articles.map((article, index) => (
-                        <div key={article.id}>
-                            <button className={`w-full text-left p-4 ${selectedArticle.id === article.id ? 'bg-accent' : ''} ${!article.read ? 'font-bold' : ''}`} onClick={() => setSelectedArticle(article)}>
-                                <p className="text-sm text-primary">{article.feed}</p>
-                                <p className="truncate">{article.title}</p>
-                                <p className="text-xs text-muted-foreground truncate">{article.snippet}</p>
-                            </button>
-                            {index < articles.length - 1 && <Separator />}
-                        </div>
-                    ))}
-                </ScrollArea>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+      </Card>
+
+      {/* Articles List Panel */}
+      <Card className="flex-1 flex flex-col">
+        <CardHeader>
+            <div className="flex w-full items-center space-x-2">
+                <Input type="text" placeholder="Pesquisar artigos..." />
+                <Button variant="outline" size="icon"><Search size={18}/></Button>
             </div>
-            <div className="md:col-span-2 bg-card flex flex-col">
-                {selectedArticle ? (
-                    <>
-                        <div className="p-4 border-b">
-                            <p className="text-sm text-primary">{selectedArticle.feed}</p>
-                            <h2 className="text-2xl font-bold mt-1">{selectedArticle.title}</h2>
-                        </div>
-                        <ScrollArea className="flex-1">
-                            <div className="p-6 space-y-4">
-                               <p className="text-lg">
-                                    {selectedArticle.snippet} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                               </p>
-                               <p>
-                                   Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                               </p>
-                            </div>
-                        </ScrollArea>
-                         <div className="p-4 border-t flex justify-end gap-2">
-                            <button className="flex items-center text-sm gap-2"><BookMarked className="h-4 w-4"/> Marcar como lido</button>
-                        </div>
-                    </>
-                ) : (
-                    <div className="flex items-center justify-center h-full">
-                        <p className="text-muted-foreground">Selecione um artigo para ler.</p>
-                    </div>
-                )}
+        </CardHeader>
+        <ScrollArea className="flex-grow">
+          {filteredArticles.map(article => (
+            <div
+              key={article.id}
+              onClick={() => handleSelectArticle(article.id)}
+              className={cn(
+                'p-4 border-b cursor-pointer hover:bg-muted/50',
+                selectedArticleId === article.id && 'bg-muted'
+              )}
+            >
+              <p className="text-xs text-muted-foreground">{article.source} - {article.date}</p>
+              <p className={cn("font-semibold mt-1", !article.isRead && "text-primary")}>{article.title}</p>
+              <p className="text-xs text-muted-foreground mt-1 truncate">{article.snippet}</p>
             </div>
-        </div>
+          ))}
+        </ScrollArea>
+      </Card>
+
+      {/* Article Content Panel */}
+      <Card className="w-1/2 flex-shrink-0 flex flex-col">
+        {selectedArticle ? (
+          <>
+            <CardHeader className="flex-row items-start justify-between">
+                <div className='flex-grow'>
+                    <CardTitle className="text-xl leading-tight">{selectedArticle.title}</CardTitle>
+                    <p className="text-sm text-muted-foreground mt-2">{selectedArticle.source} - {selectedArticle.date}</p>
+                </div>
+                <Button asChild variant="outline" size="sm">
+                    <a href={selectedArticle.link} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink size={16} className='mr-2' /> Ver Original
+                    </a>
+                </Button>
+            </CardHeader>
+            <Separator />
+            <ScrollArea className="flex-grow">
+                <CardContent className="py-6">
+                    <div
+                        className="prose prose-sm dark:prose-invert max-w-none"
+                        dangerouslySetInnerHTML={{ __html: selectedArticle.content }}
+                    />
+                </CardContent>
+            </ScrollArea>
+          </>
+        ) : (
+          <div className="flex-grow flex items-center justify-center">
+            <p className="text-muted-foreground">Selecione um artigo para ler</p>
+          </div>
+        )}
+      </Card>
     </div>
   );
 }
