@@ -2,40 +2,29 @@
 
 Bem-vindo ao **Meu RH**, um sistema de gestão de recursos humanos e ERP completo, projetado especificamente para as necessidades da indústria de calçados. A plataforma integra desde a administração de pessoal e folha de pagamento até a gestão de produção e recrutamento, tudo em uma interface moderna e intuitiva.
 
-Este projeto foi desenvolvido utilizando tecnologias de ponta para garantir performance, escalabilidade e uma excelente experiência de usuário.
+A arquitetura do sistema é focada em **segurança e soberania de dados**, sendo 100% **On-Premise** (instalado no servidor do cliente) e entregue via tecnologia de **containers (Docker)**, garantindo performance, controle total sobre as informações e resiliência operacional.
 
-## ✨ Funcionalidades Principais
+## ✨ Arquitetura e Diferenciais Estratégicos
 
-O sistema é modular e abrange diversas áreas da gestão empresarial:
+Nosso sistema foi projetado para atender às mais rigorosas políticas de segurança e escalabilidade das grandes indústrias, com foco em três pilares:
 
-### Módulos de RH e Pessoal
-- **Dashboard Principal:** Visão geral com KPIs de produção, ausências, pedidos e alertas de estoque.
-- **Administração de Pessoal:** Cadastro e gerenciamento completo do perfil dos colaboradores.
-- **Folha de Pagamento:** Cálculo, processamento e emissão de relatórios da folha mensal.
-- **Controle de Jornada (REP-P):** Módulo para tratamento de ponto eletrônico, com painel de monitoramento da comunicação com os relógios (REP-P) e conformidade com a Portaria 671.
-- **Portal do Colaborador:** Uma interface moderna para que os funcionários acessem holerites, espelho de ponto, solicitem férias e assinem documentos digitalmente. A assinatura eletrônica é integrada ao fluxo de RH, eliminando o uso de papel.
-- **Gestão de Férias e Rescisão:** Módulos para aprovar solicitações de férias e calcular rescisões contratuais.
-- **Cargos e Salários:** Gerenciamento das estruturas de cargos e faixas salariais da empresa.
-- **eSocial e Encargos:** Painéis para monitorar o envio de eventos ao eSocial e visualizar os encargos sociais.
+### 1. Soberania e Segurança de Dados (On-Premise)
+Diferente de sistemas SaaS tradicionais que armazenam seus dados em nuvens públicas, o Meu RH é instalado **dentro do seu datacenter**.
+- **Controle Total:** O banco de dados é seu, as chaves de segurança são suas e nenhum dado sensível (folha de pagamento, dados de produção) sai da sua rede interna sem autorização.
+- **Performance Máxima:** O acesso aos dados é ultrarrápido, pois não depende da velocidade ou da disponibilidade da internet externa.
+- **Conformidade com a LGPD:** Garante o mais alto nível de conformidade, mantendo os dados pessoais dos colaboradores sob sua custódia física e lógica.
 
-### Gestão e BI
-- **Gestão de Pessoas:** Dashboard com KPIs de RH, como headcount, turnover e avaliação de desempenho.
-- **Gestão Financeira:** Análise de custos da folha de pagamento por setor e evolução histórica.
-- **Gestão de Produção:** Acompanhamento em tempo real de ordens de produção, controle de eficiência (OEE) por linha e rastreabilidade de lotes por grade de numeração.
-- **BI de RH:** Painel de Business Intelligence com gráficos interativos sobre a composição da força de trabalho.
+### 2. Escalabilidade e Manutenção Simplificada (Docker)
+O sistema é entregue em um **container Docker isolado**, o que permite uma gestão de TI moderna e eficiente.
+- **Instalação Rápida:** Ativar o sistema em um novo servidor ou filial se resume a executar um comando, sem conflitos com outros softwares.
+- **Atualizações Seguras:** As atualizações são aplicadas de forma atômica dentro do container, garantindo estabilidade e reduzindo o tempo de inatividade.
+- **Multi-Filiais:** A arquitetura de *tenancy* isolado permite que a matriz tenha uma visão consolidada, enquanto cada filial acessa apenas seus próprios dados, com espelhamento em tempo real.
 
-### Ferramentas e Utilitários
-- **Gestão de Currículos (ATS):** Um sistema de rastreamento de candidatos completo, com pipeline kanban para vagas.
-- **Gerador de Relatórios e Visões:** Ferramentas para criar relatórios e consultas personalizadas a partir dos dados do sistema.
-- **Calculadora de Custos:** Ferramenta para calcular o custo de produção detalhado por modelo de calçado.
-- **Agenda de Produção:** Calendário para planejamento de ordens de produção, manutenções e entregas.
-- **Integração Office & IA:** Módulos que simulam a integração com Planilhas, Documentos de Texto e um assistente de IA (Gemini).
-
-### Administração e Configuração
-- **Gestão de Filiais:** Cadastro e gerenciamento de múltiplas unidades da empresa.
-- **Monitoramento de Usuários:** Acompanhamento em tempo real dos usuários ativos no sistema.
-- **Painel de Auditoria:** Logs de atividades críticas e status dos serviços para fins de suporte.
-- **Customização (White Label):** Ferramentas para personalizar a aparência do sistema com a marca da empresa.
+### 3. Resiliência e Experiência Moderna (PWA & Offline-First)
+Oferecemos o melhor dos dois mundos: a segurança de um sistema local com a usabilidade de uma aplicação web moderna.
+- **Funciona sem Internet:** Se a conexão externa da fábrica cair, o sistema continua 100% operacional na rede interna. O RH continua trabalhando e os relógios de ponto continuam sincronizando.
+- **Acesso Universal (PWA):** O sistema é acessado via navegador, mas pode ser "instalado" como um atalho (Progressive Web App) no desktop ou celular de qualquer funcionário, funcionando como um programa nativo sem a necessidade de instalação via `.exe`.
+- **Independência de Hardware:** Funciona em qualquer dispositivo, desde totens no chão de fábrica e tablets na linha de produção até os computadores do escritório.
 
 ## ⚖️ Conformidade Legal (Portaria 671/MTP)
 
@@ -45,8 +34,8 @@ O desenvolvimento do sistema de ponto eletrônico segue rigorosamente as diretri
 - **Formatos Oficiais:** O sistema é capaz de ler o **Arquivo Fonte de Dados (AFD)** dos relógios e exportar o **Arquivo Eletrônico de Jornada (AEPS)**, seguindo os layouts oficiais.
 - **Integração com REP-P:** A comunicação com os relógios de ponto (REP-P) é feita via SDKs dos fabricantes, com um serviço de fundo que garante a coleta dos dados em tempo real.
 - **Assinatura Digital:** Todos os arquivos fiscais e comprovantes gerados possuem assinatura digital no padrão ICP-Brasil, assegurando sua validade legal.
+- **Backup e Ransomware:** Recomendamos uma rotina de backup offline (em fitas ou HDs externos) para proteger o banco de dados local contra ataques de ransomware que possam atingir a rede interna.
 
-Estamos comprometidos em manter o sistema sempre atualizado com as últimas exigências do MTE.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -58,6 +47,7 @@ Estamos comprometidos em manter o sistema sempre atualizado com as últimas exig
 - **Ícones:** [Lucide React](https://lucide.dev/)
 - **Formulários:** [React Hook Form](https://react-hook-form.com/) com [Zod](https://zod.dev/)
 - **Inteligência Artificial (GenAI):** [Genkit (Google)](https://firebase.google.com/docs/genkit)
+- **Containerização:** [Docker](https://www.docker.com/)
 
 ## 🛠️ Como Começar
 
@@ -66,6 +56,7 @@ Siga os passos abaixo para executar o projeto em seu ambiente de desenvolvimento
 ### Pré-requisitos
 - [Node.js](https://nodejs.org/en) (versão 20.x ou superior)
 - [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/products/docker-desktop/) (para simular o ambiente On-Premise)
 
 ### Instalação
 1. Clone o repositório para a sua máquina local.
