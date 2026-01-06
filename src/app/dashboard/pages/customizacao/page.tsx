@@ -1,69 +1,152 @@
 'use client';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
+
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Save, Building, Palette } from 'lucide-react';
-import Image from 'next/image';
+import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+import { Save, Palette, Image as ImageIcon, Building, Globe } from 'lucide-react';
 
 export default function CustomizacaoPage() {
+  const { toast } = useToast();
+  const [headerColor, setHeaderColor] = useState('#1e40af'); // Exemplo de cor (azul escuro)
+  const [logoUrl, setLogoUrl] = useState('');
+  const [loginBgUrl, setLoginBgUrl] = useState('https://matoleitao.rs.gov.br/wp-content/uploads/2021/04/beira-1-scaled-750x450.jpg');
+  const [isWhiteLabel, setIsWhiteLabel] = useState(false);
+
+  const handleSave = () => {
+    // Aplicar a cor do cabeçalho
+    // Em uma aplicação real, a conversão para HSL e a aplicação seriam mais dinâmicas.
+    // Esta é uma simulação para o exemplo.
+    if (isWhiteLabel) {
+      document.documentElement.style.setProperty('--primary', '221 83% 45%'); 
+      document.documentElement.style.setProperty('--primary-darker', '221 83% 40%');
+    }
+
+    toast({
+      title: 'Configurações Salvas!',
+      description: 'As configurações de customização foram atualizadas com sucesso.',
+    });
+  };
+
   return (
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="p-4 space-y-6">
       <Card>
-        <CardHeader className="flex flex-row items-center gap-4">
-            <Building className="h-6 w-6" />
-            <div>
-                <CardTitle>Dados da Empresa</CardTitle>
-                <CardDescription>Informações que aparecerão em relatórios e documentos.</CardDescription>
-            </div>
+        <CardHeader>
+          <CardTitle>Central de Customização</CardTitle>
+          <CardDescription>
+            Personalize a aparência, marca e informações da sua empresa no sistema.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="razao-social">Razão Social</Label>
-            <Input id="razao-social" defaultValue="Minha Empresa Calçados LTDA" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="cnpj">CNPJ</Label>
-            <Input id="cnpj" defaultValue="00.123.456/0001-00" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="endereco">Endereço Matriz</Label>
-            <Input id="endereco" defaultValue="Rua das Flores, 123 - São Paulo, SP" />
-          </div>
+        <CardContent>
+            <div className='flex justify-end'>
+                 <Button onClick={handleSave} size="lg">
+                    <Save className="mr-2 h-4 w-4" /> Salvar Todas as Alterações
+                </Button>
+            </div>
         </CardContent>
       </Card>
+
+      {/* White Label Card */}
       <Card>
-        <CardHeader className="flex flex-row items-center gap-4">
-            <Palette className="h-6 w-6" />
-            <div>
-                <CardTitle>Aparência (White Label)</CardTitle>
-                <CardDescription>Personalize o sistema com a identidade da sua marca.</CardDescription>
-            </div>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2"><Palette /> Marca e Aparência (White Label)</CardTitle>
+          <CardDescription>Ative para aplicar as customizações de cor e logo em todo o sistema.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-2">
-            <Label htmlFor="logo">Logo da Empresa</Label>
-            <div className="flex items-center gap-4">
-                <div className="p-2 border rounded-md bg-muted">
-                    <Image src="/logo-placeholder.svg" alt="Logo atual" width={80} height={40} />
-                </div>
-                <Input id="logo" type="file" />
-            </div>
-            <p className="text-xs text-muted-foreground">Envie um arquivo PNG ou JPG (recomendado: 200x100 pixels).</p>
+          <div className="flex items-center justify-between p-4 border rounded-lg">
+            <Label htmlFor="white-label-switch" className="font-semibold text-base">
+              Ativar Modo White Label
+            </Label>
+            <Switch
+              id="white-label-switch"
+              checked={isWhiteLabel}
+              onCheckedChange={setIsWhiteLabel}
+            />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="cor-primaria">Cor Primária</Label>
-            <div className="flex items-center gap-2">
-                <Input id="cor-primaria" type="color" defaultValue="#1d4ed8" className="w-16 h-10 p-1"/>
-                <span className="font-mono text-sm">#1d4ed8</span>
+          
+          <Separator />
+
+          <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 ${!isWhiteLabel ? 'opacity-50 pointer-events-none' : ''}`}>
+            <div className="space-y-4">
+              <h3 className="font-medium text-lg">Cores do Sistema</h3>
+              <div className="space-y-2">
+                <Label htmlFor="header-color">Cor Principal (Cabeçalho)</Label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="header-color"
+                    type="color"
+                    value={headerColor}
+                    onChange={(e) => setHeaderColor(e.target.value)}
+                    className="w-14 h-10 p-1"
+                    disabled={!isWhiteLabel}
+                  />
+                  <Input
+                    value={headerColor}
+                    onChange={(e) => setHeaderColor(e.target.value)}
+                    className="w-32"
+                    disabled={!isWhiteLabel}
+                  />
+                </div>
+                 <p className="text-xs text-muted-foreground">Esta cor será aplicada a cabeçalhos, botões e outros elementos principais.</p>
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground">Esta cor será usada em botões, links e menus.</p>
+            
+            <div className="space-y-4">
+              <h3 className="font-medium text-lg flex items-center gap-2"><ImageIcon /> Customização de Imagens</h3>
+              <div className="space-y-2">
+                <Label htmlFor="logo-url">URL do Logo</Label>
+                <Input
+                  id="logo-url"
+                  placeholder="https://suaempresa.com/logo.png"
+                  value={logoUrl}
+                  onChange={(e) => setLogoUrl(e.target.value)}
+                  disabled={!isWhiteLabel}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="login-bg-url">URL da Imagem de Fundo do Login</Label>
+                <Input
+                  id="login-bg-url"
+                  placeholder="https://suaempresa.com/fundo.jpg"
+                  value={loginBgUrl}
+                  onChange={(e) => setLoginBgUrl(e.target.value)}
+                  disabled={!isWhiteLabel}
+                />
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
-      <div className="md:col-span-2 flex justify-end">
-        <Button size="lg"><Save className="mr-2 h-4 w-4" /> Salvar Todas as Alterações</Button>
-      </div>
+      
+      {/* Company Data Card */}
+       <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2"><Building /> Dados da Empresa</CardTitle>
+          <CardDescription>Informações usadas para relatórios e integrações com serviços governamentais.</CardDescription>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+                <Label htmlFor="razao-social">Razão Social</Label>
+                <Input id="razao-social" placeholder="Sua Empresa Calçados LTDA" />
+            </div>
+            <div className="space-y-2">
+                <Label htmlFor="cnpj">CNPJ</Label>
+                <Input id="cnpj" placeholder="00.000.000/0001-00" />
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor="inscricao-estadual">Inscrição Estadual</Label>
+                <Input id="inscricao-estadual" placeholder="000.0000000" />
+            </div>
+             <div className="space-y-2">
+                <Label htmlFor="cnae">CNAE Principal</Label>
+                <Input id="cnae" placeholder="15.31-9-01 - Fabricação de calçados de couro" />
+            </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
