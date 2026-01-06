@@ -118,6 +118,7 @@ const MonitoramentoUsuariosPage = lazy(() => import('../monitoramento-usuarios/p
 const AuditoriaPage = lazy(() => import('./pages/auditoria/page'));
 const FiliaisPage = lazy(() => import('../filiais/page'));
 const AppAndroidPage = lazy(() => import('./pages/app-android/page'));
+const RelogioPontoApiPage = lazy(() => import('./pages/relogio-ponto-api/page'));
 
 
 const topBarIcons = [
@@ -271,6 +272,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'auditoria': AuditoriaPage,
   'filiais': FiliaisPage,
   'app-android': AppAndroidPage,
+  'relogio-ponto-api': RelogioPontoApiPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
