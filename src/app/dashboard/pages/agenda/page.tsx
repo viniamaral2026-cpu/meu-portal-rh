@@ -155,12 +155,12 @@ export default function AgendaPage() {
                                            {event.details.responsible && <p><strong>Responsável:</strong> {event.details.responsible}</p>}
                                            {event.details.notes && <p><strong>Obs:</strong> {event.details.notes}</p>}
                                            {event.details.status && (
-                                                <p className="flex items-center gap-2">
+                                                <div className="flex items-center gap-2">
                                                     <strong>Status:</strong> 
                                                     <Badge variant={statusVariant[event.details.status] || 'secondary'} className="capitalize text-xs">
                                                         {event.details.status.replace('_', ' ')}
                                                     </Badge>
-                                                </p>
+                                                </div>
                                             )}
                                         </div>
                                     </div>
