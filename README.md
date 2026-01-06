@@ -13,7 +13,7 @@ O sistema é modular e abrange diversas áreas da gestão empresarial:
 - **Administração de Pessoal:** Cadastro e gerenciamento completo do perfil dos colaboradores.
 - **Folha de Pagamento:** Cálculo, processamento e emissão de relatórios da folha mensal.
 - **Controle de Jornada (REP-P):** Módulo para tratamento de ponto eletrônico, com painel de monitoramento da comunicação com os relógios (REP-P) e conformidade com a Portaria 671.
-- **Portal do Colaborador:** Uma interface moderna para que os funcionários acessem holerites, espelho de ponto, solicitem férias e assinem documentos digitalmente.
+- **Portal do Colaborador:** Uma interface moderna para que os funcionários acessem holerites, espelho de ponto, solicitem férias e assinem documentos digitalmente. A assinatura eletrônica é integrada ao fluxo de RH, eliminando o uso de papel.
 - **Gestão de Férias e Rescisão:** Módulos para aprovar solicitações de férias e calcular rescisões contratuais.
 - **Cargos e Salários:** Gerenciamento das estruturas de cargos e faixas salariais da empresa.
 - **eSocial e Encargos:** Painéis para monitorar o envio de eventos ao eSocial e visualizar os encargos sociais.
@@ -21,7 +21,7 @@ O sistema é modular e abrange diversas áreas da gestão empresarial:
 ### Gestão e BI
 - **Gestão de Pessoas:** Dashboard com KPIs de RH, como headcount, turnover e avaliação de desempenho.
 - **Gestão Financeira:** Análise de custos da folha de pagamento por setor e evolução histórica.
-- **Gestão de Produção:** Acompanhamento em tempo real de ordens de produção, eficiência (OEE) e status das linhas.
+- **Gestão de Produção:** Acompanhamento em tempo real de ordens de produção, controle de eficiência (OEE) por linha e rastreabilidade de lotes por grade de numeração.
 - **BI de RH:** Painel de Business Intelligence com gráficos interativos sobre a composição da força de trabalho.
 
 ### Ferramentas e Utilitários
@@ -42,7 +42,7 @@ O sistema é modular e abrange diversas áreas da gestão empresarial:
 O desenvolvimento do sistema de ponto eletrônico segue rigorosamente as diretrizes da **Portaria 671 do Ministério do Trabalho e Previdência**, garantindo total segurança jurídica para a empresa.
 
 - **Imutabilidade dos Registros:** Nenhum registro de ponto pode ser alterado ou excluído. Ajustes são sempre lançados como novas informações auditáveis.
-- **Formatos Oficiais:** O sistema é capaz de ler o **Arquivo Fonte de Dados (AFD)** dos relógios e exportar o **Arquivo Eletrônico de Jornada (AEJ)**, seguindo os layouts oficiais.
+- **Formatos Oficiais:** O sistema é capaz de ler o **Arquivo Fonte de Dados (AFD)** dos relógios e exportar o **Arquivo Eletrônico de Jornada (AEPS)**, seguindo os layouts oficiais.
 - **Integração com REP-P:** A comunicação com os relógios de ponto (REP-P) é feita via SDKs dos fabricantes, com um serviço de fundo que garante a coleta dos dados em tempo real.
 - **Assinatura Digital:** Todos os arquivos fiscais e comprovantes gerados possuem assinatura digital no padrão ICP-Brasil, assegurando sua validade legal.
 
