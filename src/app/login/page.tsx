@@ -43,8 +43,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center p-4 bg-muted/40">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <MeuRHLogo className="w-24 mx-auto mb-4" />
-          <CardTitle className="text-2xl">Acessar o Meu Rh Portal</CardTitle>
+          <CardTitle className="text-2xl font-bold">Meu Rh Portal</CardTitle>
           <CardDescription>Software de Gestão para Fábricas de Calçados</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
