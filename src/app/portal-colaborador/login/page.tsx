@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { MeuRHLogo } from '@/components/icons';
+import { Fingerprint } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 export default function PortalLogin() {
   const router = useRouter();
@@ -48,10 +50,8 @@ export default function PortalLogin() {
 
   return (
     <div 
-      className="flex min-h-screen items-center justify-center p-4 bg-cover bg-center"
-      style={{ backgroundImage: "url('https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2574&auto=format&fit=crop')" }}
+      className="flex min-h-screen items-center justify-center p-4 bg-muted/40"
     >
-      <div className="absolute inset-0 bg-black/60" />
       <Card className="w-full max-w-sm z-10">
         <CardHeader className="text-center">
           <MeuRHLogo className="w-24 mx-auto mb-4" />
@@ -87,11 +87,13 @@ export default function PortalLogin() {
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? 'Entrando...' : 'Entrar'}
             </Button>
-            <div className='flex justify-center w-full gap-4'>
-                <Button variant="link" size="sm" type="button" onClick={handleFirstAccess}>
-                  Primeiro acesso ou esqueceu o PIN?
-                </Button>
-            </div>
+            <Button variant="link" size="sm" type="button" onClick={handleFirstAccess} className="text-xs">
+              Primeiro acesso ou esqueceu o PIN?
+            </Button>
+            <Separator />
+            <Button variant="outline" className="w-full" type="button">
+                <Fingerprint className="mr-2 h-4 w-4" /> Login Biométrico
+            </Button>
           </CardFooter>
         </form>
       </Card>
