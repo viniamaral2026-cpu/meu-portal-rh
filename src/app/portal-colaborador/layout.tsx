@@ -1,15 +1,18 @@
 'use client';
 import { MeuRHLogo } from '@/components/icons';
 import { cn } from '@/lib/utils';
-import { Clock, FileText, Home, User as UserIcon } from 'lucide-react';
+import { Clock, FileText, Home, User as UserIcon, Calendar, Megaphone, Receipt } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
   { href: '/portal-colaborador', label: 'Início', icon: Home },
-  { href: '/portal-colaborador/ponto', label: 'Ponto', icon: Clock },
+  { href: '/portal-colaborador/ponto', label: 'Espelho de Ponto', icon: Clock },
+  { href: '/portal-colaborador/holerites', label: 'Meus Holerites', icon: Receipt },
+  { href: '/portal-colaborador/ferias', label: 'Férias', icon: Calendar },
   { href: '/portal-colaborador/documentos', label: 'Documentos', icon: FileText },
-  { href: '/portal-colaborador/perfil', label: 'Perfil', icon: UserIcon },
+  { href: '/portal-colaborador/comunicados', label: 'Comunicados', icon: Megaphone },
+  { href: '/portal-colaborador/perfil', label: 'Meu Perfil', icon: UserIcon },
 ];
 
 export default function PortalColaboradorLayout({
@@ -19,11 +22,8 @@ export default function PortalColaboradorLayout({
 }) {
   const pathname = usePathname();
 
-  // This layout removes the top bar and integrates the header into the main content area
-  // as shown in the new design.
   return (
     <div className="flex h-screen bg-muted/40 text-foreground">
-      {/* Sidebar */}
       <aside className="w-[260px] flex-shrink-0 bg-card border-r">
         <div className="p-6 flex items-center gap-3 h-[88px] border-b">
           <MeuRHLogo className="w-9 h-9" />
@@ -51,9 +51,7 @@ export default function PortalColaboradorLayout({
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 overflow-y-auto">
-        {/* The top bar is removed, and the header is part of the page content now */}
         <div className="p-8">
             {children}
         </div>
