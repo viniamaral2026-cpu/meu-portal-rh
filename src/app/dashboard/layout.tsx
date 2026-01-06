@@ -158,7 +158,7 @@ const toolbarItems = [
             { id: 'curriculos', icon: <BookUser size={20} />, label: 'Currículos' },
             { id: 'compartilhamento', icon: <Share2 size={20} />, label: 'Compartilhamento' },
             { id: 'cubo', icon: <Cuboid size={20} />, label: 'Cubo' },
-            { id: 'planilha', icon: <Sheet size={20} />, label: 'Planilha' },
+            { id: 'relogio-ponto-api', icon: <Clock size={20} />, label: 'Relógio Ponto' },
             { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula' },
         ]
     },
