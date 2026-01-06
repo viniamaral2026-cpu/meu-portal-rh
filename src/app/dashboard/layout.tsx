@@ -46,6 +46,9 @@ import {
   Server,
   Cloud,
   Trash2,
+  HeartHandshake,
+  DollarSign,
+  TrendingUp,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
@@ -76,7 +79,7 @@ const AssinaturaEletronicaPage = lazy(() => import('./pages/assinatura-eletronic
 const CustomizacaoPage = lazy(() => import('./pages/customizacao/page'));
 const CalculadoraPage = lazy(() => import('./pages/calculadora/page'));
 const AgendaPage = lazy(() => import('./pages/agenda/page'));
-const CalendariosPage = lazy(() => import('./pages/calendarios/page'));
+const CurriculosPage = lazy(() => import('../curriculos/page'));
 const CompartilhamentoPage = lazy(() => import('./pages/compartilhamento/page'));
 const CuboPage = lazy(() => import('./pages/cubo/page'));
 const PlanilhaPage = lazy(() => import('./pages/planilha/page'));
@@ -104,7 +107,10 @@ const WordPage = lazy(() => import('./pages/word/page'));
 const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
 const SistemaPage = lazy(() => import('./pages/sistema/page'));
 const StatusServicosPage = lazy(() => import('./pages/status-servicos/page'));
-const GestaoCurriculosPage = lazy(() => import('../curriculos/page'));
+const GestaoPessoasPage = lazy(() => import('./pages/gestao-pessoas/page'));
+const GestaoFinanceiraPage = lazy(() => import('./pages/gestao-financeira/page'));
+const GestaoProducaoPage = lazy(() => import('./pages/gestao-producao/page'));
+const AtualizacaoSistemaPage = lazy(() => import('./pages/atualizacao-sistema/page'));
 const PortalCarreirasPage = lazy(() => import('./pages/portal-carreiras/page'));
 
 
@@ -130,11 +136,11 @@ const navMenuItems = [
 ];
 
 const navRightIcons = [
-    { icon: <ChevronUp size={16} /> },
-    { icon: <Globe size={16} /> },
-    { icon: <FileText size={16} /> },
-    { icon: <ChevronDown size={16} /> },
-    { icon: <HelpCircle size={16} /> },
+    { id: 'chevron-up', icon: <ChevronUp size={16} /> },
+    { id: 'atualizacao-sistema', icon: <Globe size={16} /> },
+    { id: 'documentacao', icon: <FileText size={16} /> },
+    { id: 'chevron-down', icon: <ChevronDown size={16} /> },
+    { id: 'help-circle', icon: <HelpCircle size={16} /> },
 ];
 
 const toolbarItems = [
@@ -222,7 +228,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'customizacao': CustomizacaoPage,
   'calculadora': CalculadoraPage,
   'agenda': AgendaPage,
-  'calendarios': CalendariosPage,
+  'curriculos': CurriculosPage,
   'compartilhamento': CompartilhamentoPage,
   'cubo': CuboPage,
   'planilha': PlanilhaPage,
@@ -248,7 +254,10 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'assistente-ai': AssistenteAiPage,
   'sistema': SistemaPage,
   'status-servicos': StatusServicosPage,
-  'curriculos': GestaoCurriculosPage,
+  'gestao-pessoas': GestaoPessoasPage,
+  'gestao-financeira': GestaoFinanceiraPage,
+  'gestao-producao': GestaoProducaoPage,
+  'atualizacao-sistema': AtualizacaoSistemaPage,
   'portal-carreiras': PortalCarreirasPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
@@ -339,6 +348,19 @@ export default function DashboardLayout({
         description: `O cache do ambiente de ${currentEnvironment} foi limpo com sucesso.`
     });
   }
+  
+  const handleNavRightClick = (id: string) => {
+    switch (id) {
+        case 'atualizacao-sistema':
+            openTab({ id: 'atualizacao-sistema', title: 'Atualização do Sistema' });
+            break;
+        case 'documentacao':
+            openTab({ id: 'documentacao', title: 'Documentação' });
+            break;
+        default:
+            break;
+    }
+  }
 
   const dashboardContextValue = {
     openTab,
@@ -402,9 +424,18 @@ export default function DashboardLayout({
                   <DropdownMenuContent>
                     <DropdownMenuLabel>Painéis de Gestão</DropdownMenuLabel>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem>Gestão de Pessoas</DropdownMenuItem>
-                    <DropdownMenuItem>Gestão Financeira/Contábil</DropdownMenuItem>
-                    <DropdownMenuItem>Gestão de Produção</DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => openTab({ id: 'gestao-pessoas', title: 'Gestão de Pessoas'})}>
+                      <HeartHandshake className="mr-2 h-4 w-4" />
+                      <span>Gestão de Pessoas</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => openTab({ id: 'gestao-financeira', title: 'Gestão Financeira/Contábil'})}>
+                      <DollarSign className="mr-2 h-4 w-4" />
+                      <span>Gestão Financeira/Contábil</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => openTab({ id: 'gestao-producao', title: 'Gestão de Produção'})}>
+                      <Factory className="mr-2 h-4 w-4" />
+                      <span>Gestão de Produção</span>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
@@ -434,8 +465,8 @@ export default function DashboardLayout({
                     </DropdownMenuContent>
                 </DropdownMenu>
                 <div className='flex items-center'>
-                     {navRightIcons.map((item, index) => (
-                        <Button variant='ghost' size='icon' key={index} className='h-6 w-6'>
+                     {navRightIcons.map((item) => (
+                        <Button variant='ghost' size='icon' key={item.id} onClick={() => handleNavRightClick(item.id)} className='h-6 w-6'>
                             {item.icon}
                         </Button>
                     ))}
@@ -559,3 +590,11 @@ export default function DashboardLayout({
     </div>
   );
 }
+
+Remember, the XML structure you generate is the only mechanism for applying changes to the user's code. Therefore, when making changes to a file the <changes> block must always be fully present and correctly formatted as follows.
+
+<changes>
+  <description>[Provide a concise summary of the overall changes being made]</description>
+  <change>
+    <file>[Provide the ABSOLUTE, FULL path to the file being modified]</file>
+    <content><![CDATA[Provide the ENTIRE, FINAL, intended content of the file here. Do NOT provide diffs or partial snippets. Ensure all code is properly escaped within the CDATA section.
