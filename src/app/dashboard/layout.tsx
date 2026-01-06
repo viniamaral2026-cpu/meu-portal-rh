@@ -51,6 +51,7 @@ import {
   TrendingUp,
   Smartphone,
   UserSquare,
+  MessageSquare,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
@@ -121,7 +122,8 @@ const AuditoriaPage = lazy(() => import('./pages/auditoria/page'));
 const FiliaisPage = lazy(() => import('../filiais/page'));
 const AppAndroidPage = lazy(() => import('./pages/app-android/page'));
 const RelogioPontoApiPage = lazy(() => import('./pages/relogio-ponto-api/page'));
-
+const ChatPage = lazy(() => import('./pages/chat/page'));
+const GeminiApiPage = lazy(() => import('./pages/gemini-api/page'));
 
 const topBarIcons = [
   { id: 'controle-jornada', title: 'Controle de Jornada', icon: <Clock size={16} /> },
@@ -159,7 +161,7 @@ const toolbarItems = [
             { id: 'calculadora', icon: <Calculator size={20} />, label: 'Calculadora' },
             { id: 'agenda', icon: <CalendarDays size={20} />, label: 'Agenda' },
             { id: 'curriculos', icon: <BookUser size={20} />, label: 'Currículos' },
-            { id: 'compartilhamento', icon: <Share2 size={20} />, label: 'Compartilhamento' },
+            { id: 'chat', icon: <MessageSquare size={20} />, label: 'Chat Interno' },
             { id: 'cubo', icon: <Cuboid size={20} />, label: 'Cubo' },
             { id: 'relogio-ponto-api', icon: <Clock size={20} />, label: 'Relógio Ponto' },
             { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula' },
@@ -193,7 +195,7 @@ const toolbarItems = [
             { id: 'planilha', icon: <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
             { id: 'word', icon: <Image src="https://img.icons8.com/?size=50&id=11571&format=png" width={20} height={20} alt="Word Icon" />, label: 'Word' },
             { id: 'assistente-ai', icon: <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Gemini' },
-            { id: 'app-android', icon: <Smartphone size={20} />, label: 'App Android' },
+            { id: 'gemini-api', icon: <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Config. Gemini' },
         ]
     },
 ];
@@ -275,6 +277,8 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'filiais': FiliaisPage,
   'app-android': AppAndroidPage,
   'relogio-ponto-api': RelogioPontoApiPage,
+  chat: ChatPage,
+  'gemini-api': GeminiApiPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
