@@ -89,6 +89,7 @@ const pagesMap: { [key: string]: React.LazyExoticComponent<any> } = {
   'filiais': FiliaisPage,
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
   'administracao-pessoal': AdministracaoPessoalPage,
+  'colaboradores': AdministracaoPessoalPage,
   'folha-mensal': FolhaMensalPage,
   'ferias': FeriasPage,
   'rescisao': RescisaoPage,
@@ -211,7 +212,7 @@ export default function DashboardLayout({
   return (
     <DashboardContext.Provider value={dashboardContextValue}>
       <div className="flex flex-col h-screen bg-background text-sm">
-        <HeaderTop openTab={openTab} />
+        <HeaderTop />
         <HeaderPrimary openTab={openTab} />
         <Toolbar openTab={openTab} />
         <Tabs
