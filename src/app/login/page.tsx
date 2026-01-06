@@ -20,15 +20,9 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulação de login com múltiplas credenciais
+    // Simulação de login
     setTimeout(() => {
-      if (email === 'viniamaral2026@gmail.com' && password === 'Ma596220@') {
-        toast({
-          title: 'Login de Administrador!',
-          description: 'Acesso total concedido. Redirecionando para o painel de controle.',
-        });
-        router.push('/dashboard');
-      } else if (email === 'demo2026@minhaempresa.com.br' && password === 'demo2026') {
+      if (email === 'demo2026@minhaempresa.com.br' && password === 'demo2026') {
         toast({
           title: 'Login de Demonstração!',
           description: 'Bem-vindo, usuário Demo Master. Redirecionando para o painel.',
@@ -94,12 +88,6 @@ export default function LoginPage() {
                 <CardTitle className="text-lg">Credenciais de Teste</CardTitle>
             </CardHeader>
             <CardContent className="text-sm space-y-4">
-                 <div>
-                    <p className="font-semibold">Usuário Administrador:</p>
-                    <p>Email: <code className="bg-muted px-1 rounded">viniamaral2026@gmail.com</code></p>
-                    <p>Senha: <code className="bg-muted px-1 rounded">Ma596220@</code></p>
-                 </div>
-                 <Separator />
                  <div>
                     <p className="font-semibold">Usuário Demo Master:</p>
                     <p>Email: <code className="bg-muted px-1 rounded">demo2026@minhaempresa.com.br</code></p>
