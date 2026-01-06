@@ -48,6 +48,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 // Lazy load all page components
 const AdministracaoPessoalPage = React.lazy(() => import('./pages/administracao-pessoal/page'));
@@ -85,6 +86,8 @@ const ContasComunicacaoPage = React.lazy(() => import('./pages/contas-comunicaca
 const AplicativosExternosPage = React.lazy(() => import('./pages/aplicativos-externos/page'));
 const AplicativosSamlPage = React.lazy(() => import('./pages/aplicativos-saml/page'));
 const DashboardPage = React.lazy(() => import('./dashboard/page'));
+const GeradorSaidasPage = React.lazy(() => import('../gerador-saidas/page'));
+
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -119,62 +122,64 @@ const toolbarItems = [
     {
         group: 'Utilitários',
         items: [
-            { id: 'calculator', icon: <Calculator size={20} />, label: 'Calculadora' },
-            { id: 'agenda', icon: <BookUser size={20} />, label: 'Agenda' },
-            { id: 'calendars', icon: <CalendarDays size={20} />, label: 'Calendários' },
-            { id: 'sharing', icon: <Share2 size={20} />, label: 'Compartilhamento' },
-            { id: 'cube', icon: <Cuboid size={20} />, label: 'Cubo' },
-            { id: 'spreadsheet', icon: <Sheet size={20} />, label: 'Planilha' },
-            { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula' },
+            { id: 'calculator', icon: Calculator, label: 'Calculadora' },
+            { id: 'agenda', icon: BookUser, label: 'Agenda' },
+            { id: 'calendars', icon: CalendarDays, label: 'Calendários' },
+            { id: 'sharing', icon: Share2, label: 'Compartilhamento' },
+            { id: 'cube', icon: Cuboid, label: 'Cubo' },
+            { id: 'spreadsheet', icon: Sheet, label: 'Planilha' },
+            { id: 'formula', icon: FunctionSquare, label: 'Fórmula' },
         ]
     },
     {
         group: 'Ferramentas de Análise',
         items: [
-            { id: 'employees', icon: <Users size={20} />, label: 'Colaboradores' },
-            { id: 'reports', icon: <FileText size={20} />, label: 'Relatórios' },
-            { id: 'report-generator', icon: <FilePlus2 size={20} />, label: 'Gerador' },
-            { id: 'data-views', icon: <Database size={20} />, label: 'Visões de Dados' },
-            { id: 'dashboards', icon: <LayoutDashboard size={20} />, label: 'Painéis' },
+            { id: 'employees', icon: Users, label: 'Colaboradores' },
+            { id: 'reports', icon: FileText, label: 'Relatórios' },
+            { id: 'report-generator', icon: FilePlus2, label: 'Gerador' },
+            { id: 'data-views', icon: Database, label: 'Visões de Dados' },
         ]
     },
     {
         group: 'Gráficos',
         items: [
-            { id: 'output-generator', icon: <Mail size={20} />, label: 'Gerador Saída' },
-            { id: 'chart', icon: <BarChart size={20} />, label: 'Gráfico' },
-            { id: 'categories', icon: <ClipboardList size={20} />, label: 'Categorias' },
-            { id: 'chart-sources', icon: <Sigma size={20} />, label: 'Fontes' },
+            { id: 'output-generator', icon: Mail, label: 'Gerador Saída' },
+            { id: 'chart', icon: BarChart, label: 'Gráfico' },
+            { id: 'categories', icon: ClipboardList, label: 'Categorias' },
+            { id: 'chart-sources', icon: Sigma, label: 'Fontes' },
         ]
     },
     {
         group: 'RSS',
         items: [
-            { id: 'rss-reader', icon: <Rss size={20} />, label: 'Leitor RSS' },
-            { id: 'start-service', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
-            { id: 'rss-config', icon: <Settings size={20} />, label: 'Configuração' },
-            { id: 'rss-channels', icon: <Rss size={20} />, label: 'Canais RSS' },
+            { id: 'rss-reader', icon: Rss, label: 'Leitor RSS' },
+            { id: 'start-service', icon: PlayCircle, label: 'Iniciar Serviço' },
+            { id: 'rss-config', icon: Settings, label: 'Configuração' },
+            { id: 'rss-channels', icon: Rss, label: 'Canais RSS' },
         ]
     },
+];
+
+const paineisMenuItems = [
     {
         group: 'RM Conec',
         items: [
-             { id: 'my-channels', icon: <Users size={20} />, label: 'Meus Canais' },
-             { id: 'rm-connector', icon: <LinkIcon size={20} />, label: 'Conector' },
+            { id: 'my-channels', icon: Users, label: 'Meus Canais' },
+            { id: 'rm-connector', icon: LinkIcon, label: 'RM Conector' },
         ]
     },
     {
         group: 'Comunicação',
         items: [
-             { id: 'comm-sources', icon: <Wrench size={20} />, label: 'Fontes' },
-             { id: 'comm-accounts', icon: <Users size={20} />, label: 'Contas' },
-             { id: 'external-apps', icon: <ExternalLink size={20} />, label: 'Apps Externos' },
-             { id: 'saml-apps', icon: <ExternalLink size={20} />, label: 'Apps SAML' },
+            { id: 'comm-sources', icon: Wrench, label: 'Fontes' },
+            { id: 'comm-accounts', icon: Users, label: 'Contas' },
+            { id: 'external-apps', icon: ExternalLink, label: 'Aplicativos Externos' },
+            { id: 'saml-apps', icon: ExternalLink, label: 'Aplicativos SAML' },
         ]
     },
 ];
 
-const pageComponents: { [key: string]: React.ComponentType } = {
+const pageComponents: { [key: string]: React.ComponentType<any> } = {
   'employees': AdministracaoPessoalPage,
   'dashboard': DashboardPage,
   'calculator': CalculadoraPage,
@@ -184,9 +189,10 @@ const pageComponents: { [key: string]: React.ComponentType } = {
   'spreadsheet': PlanilhaPage,
   'formula': FormulaPage,
   'reports': RelatoriosPage,
+  'report-generator': GeradorSaidasPage,
   'data-views': VisoesDadosPage,
-  'dashboards': DashboardPage, // Reusing Dashboard for 'Painéis'
-  'output-generator': () => <div>Gerador de Saída</div>,
+  'dashboards': DashboardPage,
+  'output-generator': GeradorSaidasPage,
   'chart': () => <div>Gráfico</div>,
   'categories': CategoriasPage,
   'chart-sources': FontesGraficosPage,
@@ -200,10 +206,8 @@ const pageComponents: { [key: string]: React.ComponentType } = {
   'comm-accounts': ContasComunicacaoPage,
   'external-apps': AplicativosExternosPage,
   'saml-apps': AplicativosSamlPage,
-  'report-generator': () => <div>Gerador de Relatórios</div>,
   'calendars': () => <div>Calendários</div>,
 };
-
 
 export default function DashboardLayout({
   children,
@@ -217,10 +221,9 @@ export default function DashboardLayout({
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const openTab = (tab: { id: string, title: string }) => {
-     const PageComponent = pageComponents[tab.id];
+    const PageComponent = pageComponents[tab.id];
     if (!PageComponent) {
       console.error(`Page component for id "${tab.id}" not found.`);
-      // Optionally, open a placeholder tab or show a toast
       return;
     }
     
@@ -235,11 +238,9 @@ export default function DashboardLayout({
     setOpenTabs(prev => {
       const newTabs = prev.filter(t => t.id !== tabId);
       if (activeTab === tabId && newTabs.length > 0) {
-        setActiveTab(newTabs[newTabs.length - 1].id);
+        setActiveTab(newTabs[newTabs.length - 1]?.id);
       } else if (newTabs.length === 0) {
-        // If all tabs are closed, open a default one
-        setOpenTabs([{ id: 'dashboard', title: 'Dashboard Principal' }]);
-        setActiveTab('dashboard');
+        setActiveTab(''); 
       }
       return newTabs;
     });
@@ -298,8 +299,37 @@ export default function DashboardLayout({
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border overflow-x-auto">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border overflow-x-hidden">
           <div className="flex h-full items-start">
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <div className='flex flex-col items-center justify-center h-full px-1 cursor-pointer'>
+                         <div className='flex items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1 flex-col'>
+                            <LayoutDashboard size={20} />
+                            <span className='w-full text-center truncate'>Painéis</span>
+                        </div>
+                        <p className="text-xs -mt-8 mb-1 invisible">Painéis</p>
+                    </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
+                    {paineisMenuItems.map(group => (
+                        <React.Fragment key={group.group}>
+                            <DropdownMenuLabel>{group.group}</DropdownMenuLabel>
+                            <DropdownMenuGroup>
+                            {group.items.map(item => (
+                                <DropdownMenuItem key={item.id} onClick={() => openTab({ id: item.id, title: item.label })}>
+                                <item.icon className="mr-2 h-4 w-4" />
+                                <span>{item.label}</span>
+                                </DropdownMenuItem>
+                            ))}
+                            </DropdownMenuGroup>
+                            <DropdownMenuSeparator />
+                        </React.Fragment>
+                    ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
+            <Separator orientation="vertical" className="h-4/5 my-auto" />
+            
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
                 <div className="flex flex-col items-center justify-center h-full px-1">
@@ -311,7 +341,7 @@ export default function DashboardLayout({
                       onClick={() => openTab({ id: item.id, title: item.label })}
                       className="flex flex-col items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1"
                     >
-                        {item.icon}
+                        <item.icon />
                         <span className='w-full text-center truncate'>{item.label}</span>
                     </Button>
                     ))}
@@ -326,23 +356,24 @@ export default function DashboardLayout({
       </header>
 
       <main className="flex-1 p-4 overflow-auto bg-background text-foreground">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
-          <TabsList>
-            {openTabs.map(tab => (
-              <TabsTrigger key={tab.id} value={tab.id} className="relative pr-8">
-                {tab.title}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
-                  onClick={(e) => closeTab(e, tab.id)}
-                >
-                  <X className="h-3 w-3" />
-                </Button>
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        {openTabs.length > 0 ? (
           <React.Suspense fallback={<div className="p-4">Carregando...</div>}>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
+            <TabsList>
+              {openTabs.map(tab => (
+                <TabsTrigger key={tab.id} value={tab.id} className="relative pr-8">
+                  {tab.title}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
+                    onClick={(e) => closeTab(e, tab.id)}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </TabsTrigger>
+              ))}
+            </TabsList>
             {openTabs.map(tab => {
               const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
               return (
@@ -351,8 +382,13 @@ export default function DashboardLayout({
                 </TabsContent>
               )
             })}
+          </Tabs>
           </React.Suspense>
-        </Tabs>
+        ) : (
+          <div className="flex items-center justify-center h-full text-muted-foreground">
+            Selecione um item no menu para começar.
+          </div>
+        )}
       </main>
     </div>
   );
