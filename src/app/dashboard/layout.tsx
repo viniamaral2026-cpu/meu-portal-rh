@@ -49,6 +49,7 @@ import {
   HeartHandshake,
   DollarSign,
   TrendingUp,
+  Smartphone,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
@@ -116,6 +117,7 @@ const ControleJornadaPage = lazy(() => import('../controle-jornada/page'));
 const MonitoramentoUsuariosPage = lazy(() => import('../monitoramento-usuarios/page'));
 const AuditoriaPage = lazy(() => import('./pages/auditoria/page'));
 const FiliaisPage = lazy(() => import('../filiais/page'));
+const AppAndroidPage = lazy(() => import('./pages/app-android/page'));
 
 
 const topBarIcons = [
@@ -188,6 +190,7 @@ const toolbarItems = [
             { id: 'planilha', icon: <Image src="https://cdn-icons-png.flaticon.com/512/1/1396.png" width={20} height={20} alt="Excel Icon" />, label: 'Excel' },
             { id: 'word', icon: <Image src="https://img.icons8.com/?size=50&id=11571&format=png" width={20} height={20} alt="Word Icon" />, label: 'Word' },
             { id: 'assistente-ai', icon: <Image src="https://www.gstatic.com/apps/signup/resources/gemini-color-v3-24dp.svg" width={20} height={20} alt="Gemini Icon" />, label: 'Gemini' },
+            { id: 'app-android', icon: <Smartphone size={20} />, label: 'App Android' },
         ]
     },
 ];
@@ -267,6 +270,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
   'auditoria': AuditoriaPage,
   'filiais': FiliaisPage,
+  'app-android': AppAndroidPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
