@@ -33,11 +33,11 @@ export default function PortalColaboradorPage() {
         />
       </div>
 
-      {/* Registro de Ponto */}
+      {/* Ajuste de Ponto */}
       <Card className="shadow-lg rounded-xl">
         <CardContent className="p-6">
-          <h2 className="text-lg font-semibold mb-4">Registro de Ponto</h2>
-          <Button size="lg" className="w-full h-14 text-lg bg-primary hover:bg-primary/90">Iniciar Jornada</Button>
+          <h2 className="text-lg font-semibold mb-4">Ajuste de Ponto</h2>
+          <Button size="lg" className="w-full h-14 text-lg bg-primary hover:bg-primary/90">Ajustar Ponto</Button>
         </CardContent>
       </Card>
 
