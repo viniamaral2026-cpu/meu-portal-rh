@@ -5,8 +5,6 @@ import {
   FileDown,
   Settings,
   ChevronDown,
-  Minimize,
-  Maximize,
   X,
   Globe,
   HelpCircle,
@@ -31,7 +29,8 @@ import {
   Wrench,
   ExternalLink,
   Sigma,
-  FileText,
+  Minimize,
+  Maximize,
 } from 'lucide-react';
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -39,43 +38,47 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
-// Lazy load all page components
-const AdministracaoPessoalPage = React.lazy(() => import('./pages/administracao-pessoal/page'));
-const FolhaMensalPage = React.lazy(() => import('./pages/folha-mensal/page'));
-const FeriasPage = React.lazy(() => import('./pages/ferias/page'));
-const RescisaoPage = React.lazy(() => import('./pages/rescisao/page'));
-const EncargosPage = React.lazy(() => import('./pages/encargos/page'));
-const AnuaisPage = React.lazy(() => import('./pages/anuais/page'));
-const EsocialPage = React.lazy(() => import('./pages/esocial/page'));
-const OrcamentoPage = React.lazy(() => import('./pages/orcamento/page'));
-const ConfiguracoesPage = React.lazy(() => import('./pages/configuracoes/page'));
-const AssinaturaEletronicaPage = React.lazy(() => import('./pages/assinatura-eletronica/page'));
-const CustomizacaoPage = React.lazy(() => import('./pages/customizacao/page'));
-const GestaoPage = React.lazy(() => import('./pages/gestao/page'));
-const AmbientePage = React.lazy(() => import('./pages/ambiente/page'));
-const CalculadoraPage = React.lazy(() => import('./pages/calculadora/page'));
-const AgendaPage = React.lazy(() => import('./pages/agenda/page'));
-const CompartilhamentoPage = React.lazy(() => import('./pages/compartilhamento/page'));
-const CuboPage = React.lazy(() => import('./pages/cubo/page'));
-const PlanilhaPage = React.lazy(() => import('./pages/planilha/page'));
-const FormulaPage = React.lazy(() => import('./pages/formula/page'));
-const RelatoriosPage = React.lazy(() => import('./pages/relatorios/page'));
-const VisoesDadosPage = React.lazy(() => import('./pages/visoes-dados/page'));
-const CategoriasPage = React.lazy(() => import('./pages/categorias/page'));
-const FontesGraficosPage = React.lazy(() => import('./pages/fontes-graficos/page'));
-const LeitorRssPage = React.lazy(() => import('./pages/leitor-rss/page'));
-const IniciarServicoRssPage = React.lazy(() => import('./pages/iniciar-servico-rss/page'));
-const ConfiguracaoRssPage = React.lazy(() => import('./pages/configuracao-rss/page'));
-const CanaisRssPage = React.lazy(() => import('./pages/canais-rss/page'));
-const WordPage = React.lazy(() => import('./pages/word/page'));
-const AssistenteAiPage = React.lazy(() => import('./pages/assistente-ai/page'));
-const MeusCanaisPage = React.lazy(() => import('./pages/meus-canais/page'));
-const RmConectorPage = React.lazy(() => import('./pages/rm-conector/page'));
-const ContasComunicacaoPage = React.lazy(() => import('./pages/contas-comunicacao/page'));
-const AplicativosExternosPage = React.lazy(() => import('./pages/aplicativos-externos/page'));
-const AplicativosSamlPage = React.lazy(() => import('./pages/aplicativos-saml/page'));
-const DashboardPage = React.lazy(() => import('./dashboard/page'));
-const GeradorSaidasPage = React.lazy(() => import('../gerador-saidas/page'));
+// Import all page components
+import DashboardPage from '../dashboard-principal/page';
+import EmployeesPage from './employees/page';
+import AdministracaoPessoalPage from './pages/administracao-pessoal/page';
+import FolhaMensalPage from './pages/folha-mensal/page';
+import FeriasPage from './pages/ferias/page';
+import RescisaoPage from './pages/rescisao/page';
+import EncargosPage from './pages/encargos/page';
+import AnuaisPage from './pages/anuais/page';
+import EsocialPage from './pages/esocial/page';
+import OrcamentoPage from './pages/orcamento/page';
+import ConfiguracoesPage from './pages/configuracoes/page';
+import AssinaturaEletronicaPage from './pages/assinatura-eletronica/page';
+import CustomizacaoPage from './pages/customizacao/page';
+import CalculadoraPage from './pages/calculadora/page';
+import AgendaPage from './pages/agenda/page';
+import CalendariosPage from './pages/calendarios/page';
+import CompartilhamentoPage from './pages/compartilhamento/page';
+import CuboPage from './pages/cubo/page';
+import PlanilhaPage from './pages/planilha/page';
+import FormulaPage from './pages/formula/page';
+import RelatoriosPage from './pages/relatorios/page';
+import GeradorRelatoriosPage from './pages/gerador-relatorios/page';
+import VisoesDadosPage from './pages/visoes-dados/page';
+import GeradorSaidaPage from './pages/gerador-saida/page';
+import GraficoPage from './pages/grafico/page';
+import CategoriasPage from './pages/categorias/page';
+import FontesGraficosPage from './pages/fontes-graficos/page';
+import LeitorRssPage from './pages/leitor-rss/page';
+import IniciarServicoRssPage from './pages/iniciar-servico-rss/page';
+import ConfiguracaoRssPage from './pages/configuracao-rss/page';
+import CanaisRssPage from './pages/canais-rss/page';
+import MeusCanaisPage from './pages/meus-canais/page';
+import RmConectorPage from './pages/rm-conector/page';
+import FontesComunicacaoPage from './pages/fontes-comunicacao/page';
+import ContasComunicacaoPage from './pages/contas-comunicacao/page';
+import AplicativosExternosPage from './pages/aplicativos-externos/page';
+import AplicativosSamlPage from './pages/aplicativos-saml/page';
+import GestaoPage from './pages/gestao/page';
+import AmbientePage from './pages/ambiente/page';
+import GeradorSaidasPage from '../gerador-saidas/page';
 
 const topBarIcons = [
   { icon: Clock },
@@ -110,12 +113,12 @@ const toolbarItems = [
     {
         group: 'Utilitários',
         items: [
-            { id: 'calculator', icon: Calculator, label: 'Calculadora' },
+            { id: 'calculadora', icon: Calculator, label: 'Calculadora' },
             { id: 'agenda', icon: BookUser, label: 'Agenda' },
-            { id: 'calendars', icon: CalendarDays, label: 'Calendários' },
-            { id: 'sharing', icon: Share2, label: 'Compartilhamento' },
-            { id: 'cube', icon: Cuboid, label: 'Cubo' },
-            { id: 'spreadsheet', icon: Sheet, label: 'Planilha' },
+            { id: 'calendarios', icon: CalendarDays, label: 'Calendários' },
+            { id: 'compartilhamento', icon: Share2, label: 'Compartilhamento' },
+            { id: 'cubo', icon: Cuboid, label: 'Cubo' },
+            { id: 'planilha', icon: Sheet, label: 'Planilha' },
             { id: 'formula', icon: FunctionSquare, label: 'Fórmula' },
         ]
     },
@@ -123,27 +126,27 @@ const toolbarItems = [
         group: 'Ferramentas de Análise',
         items: [
             { id: 'employees', icon: Users, label: 'Colaboradores' },
-            { id: 'reports', icon: FileText, label: 'Relatórios' },
-            { id: 'report-generator', icon: FilePlus2, label: 'Gerador' },
-            { id: 'data-views', icon: Database, label: 'Visões de Dados' },
+            { id: 'relatorios', icon: FileText, label: 'Relatórios' },
+            { id: 'gerador-relatorios', icon: FilePlus2, label: 'Gerador' },
+            { id: 'visoes-dados', icon: Database, label: 'Visões de Dados' },
         ]
     },
     {
         group: 'Gráficos',
         items: [
-            { id: 'output-generator', icon: Mail, label: 'Gerador Saída' },
-            { id: 'chart', icon: BarChart, label: 'Gráfico' },
-            { id: 'categories', icon: ClipboardList, label: 'Categorias' },
-            { id: 'chart-sources', icon: Sigma, label: 'Fontes' },
+            { id: 'gerador-saida', icon: Mail, label: 'Gerador Saída' },
+            { id: 'grafico', icon: BarChart, label: 'Gráfico' },
+            { id: 'categorias', icon: ClipboardList, label: 'Categorias' },
+            { id: 'fontes-graficos', icon: Sigma, label: 'Fontes' },
         ]
     },
     {
         group: 'RSS',
         items: [
-            { id: 'rss-reader', icon: Rss, label: 'Leitor RSS' },
-            { id: 'start-service', icon: PlayCircle, label: 'Iniciar Serviço' },
-            { id: 'rss-config', icon: Settings, label: 'Configuração' },
-            { id: 'rss-channels', icon: Rss, label: 'Canais RSS' },
+            { id: 'leitor-rss', icon: Rss, label: 'Leitor RSS' },
+            { id: 'iniciar-servico-rss', icon: PlayCircle, label: 'Iniciar Serviço' },
+            { id: 'configuracao-rss', icon: Settings, label: 'Configuração' },
+            { id: 'canais-rss', icon: Rss, label: 'Canais RSS' },
         ]
     },
 ];
@@ -152,22 +155,24 @@ const paineisMenuItems = [
     {
         group: 'RM Conec',
         items: [
-            { id: 'my-channels', icon: Users, label: 'Meus Canais' },
-            { id: 'rm-connector', icon: LinkIcon, label: 'RM Conector' },
+            { id: 'meus-canais', icon: Users, label: 'Meus Canais' },
+            { id: 'rm-conector', icon: LinkIcon, label: 'RM Conector' },
         ]
     },
     {
         group: 'Comunicação',
         items: [
-            { id: 'comm-sources', icon: Wrench, label: 'Fontes' },
-            { id: 'comm-accounts', icon: Users, label: 'Contas' },
-            { id: 'external-apps', icon: ExternalLink, label: 'Aplicativos Externos' },
-            { id: 'saml-apps', icon: ExternalLink, label: 'Aplicativos SAML' },
+            { id: 'fontes-comunicacao', icon: Wrench, label: 'Fontes' },
+            { id: 'contas-comunicacao', icon: Users, label: 'Contas' },
+            { id: 'aplicativos-externos', icon: ExternalLink, label: 'Aplicativos Externos' },
+            { id: 'aplicativos-saml', icon: ExternalLink, label: 'Aplicativos SAML' },
         ]
     },
 ];
 
-const pageComponents: { [key: string]: React.ComponentType<any> } = {
+const pageComponents: { [key: string]: React.LazyExoticComponent<React.ComponentType<any>> } = {
+  'dashboard': React.lazy(() => import('../dashboard-principal/page')),
+  'employees': React.lazy(() => import('./employees/page')),
   'administracao-pessoal': AdministracaoPessoalPage,
   'folha-mensal': FolhaMensalPage,
   'ferias': FeriasPage,
@@ -179,37 +184,36 @@ const pageComponents: { [key: string]: React.ComponentType<any> } = {
   'configuracoes': ConfiguracoesPage,
   'assinatura-eletronica': AssinaturaEletronicaPage,
   'customizacao': CustomizacaoPage,
+  'calculadora': CalculadoraPage,
+  'agenda': AgendaPage,
+  'calendarios': CalendariosPage,
+  'compartilhamento': CompartilhamentoPage,
+  'cubo': CuboPage,
+  'planilha': PlanilhaPage,
+  'formula': FormulaPage,
+  'relatorios': RelatoriosPage,
+  'gerador-relatorios': GeradorRelatoriosPage,
+  'visoes-dados': VisoesDadosPage,
+  'gerador-saida': GeradorSaidaPage,
+  'grafico': GraficoPage,
+  'categorias': CategoriasPage,
+  'fontes-graficos': FontesGraficosPage,
+  'leitor-rss': LeitorRssPage,
+  'iniciar-servico-rss': IniciarServicoRssPage,
+  'configuracao-rss': ConfiguracaoRssPage,
+  'canais-rss': CanaisRssPage,
+  'meus-canais': MeusCanaisPage,
+  'rm-conector': RmConectorPage,
+  'fontes-comunicacao': FontesComunicacaoPage,
+  'contas-comunicacao': ContasComunicacaoPage,
+  'aplicativos-externos': AplicativosExternosPage,
+  'aplicativos-saml': AplicativosSamlPage,
   'gestao': GestaoPage,
   'ambiente': AmbientePage,
-  'calculator': CalculadoraPage,
-  'agenda': AgendaPage,
-  'sharing': CompartilhamentoPage,
-  'cube': CuboPage,
-  'spreadsheet': PlanilhaPage,
-  'formula': FormulaPage,
-  'reports': RelatoriosPage,
   'report-generator': GeradorSaidasPage,
-  'data-views': VisoesDadosPage,
-  'dashboards': DashboardPage,
   'output-generator': GeradorSaidasPage,
-  'chart': () => <div>Gráfico</div>,
-  'categories': CategoriasPage,
-  'chart-sources': FontesGraficosPage,
-  'rss-reader': LeitorRssPage,
-  'start-service': IniciarServicoRssPage,
-  'rss-config': ConfiguracaoRssPage,
-  'rss-channels': CanaisRssPage,
-  'word': WordPage,
-  'assistente-ai': AssistenteAiPage,
-  'my-channels': MeusCanaisPage,
-  'rm-connector': RmConectorPage,
-  'comm-sources': () => <div>Fontes de Comunicação</div>,
-  'comm-accounts': ContasComunicacaoPage,
-  'external-apps': AplicativosExternosPage,
-  'saml-apps': AplicativosSamlPage,
-  'calendars': () => <div>Calendários</div>,
-  'employees': AdministracaoPessoalPage,
-  'dashboard': DashboardPage,
+  'chart': GraficoPage,
+  'data-views': VisoesDadosPage,
 };
 
 
@@ -220,17 +224,14 @@ export default function DashboardLayout({
 }) {
   const [openTabs, setOpenTabs] = useState([
     { id: 'dashboard', title: 'Dashboard Principal' },
-    { id: 'employees', title: 'Consulta de Colaboradores' },
   ]);
   const [activeTab, setActiveTab] = useState('dashboard');
 
   const openTab = (tab: { id: string, title: string }) => {
-    const PageComponent = pageComponents[tab.id];
-    if (!PageComponent) {
-      console.error(`Page component for id "${tab.id}" not found.`);
+    if(!pageComponents[tab.id]) {
+      console.warn(`No page component for ${tab.id}`);
       return;
     }
-    
     if (!openTabs.find(t => t.id === tab.id)) {
       setOpenTabs(prev => [...prev, tab]);
     }
@@ -281,7 +282,7 @@ export default function DashboardLayout({
                     <LayoutGrid size={16} />
                 </Button>
                 {navMenuItems.map(item => (
-                    <Button variant='ghost' key={item.id} className='h-auto py-1 px-2 text-xs font-normal' onClick={() => openTab({ id: item.id, title: item.label })}>
+                    <Button variant='ghost' key={item.id} onClick={() => openTab({ id: item.id, title: item.label })} className='h-auto py-1 px-2 text-xs font-normal'>
                         {item.label}
                     </Button>
                 ))}
@@ -362,37 +363,41 @@ export default function DashboardLayout({
       </header>
 
       <main className="flex-1 p-4 overflow-auto bg-background text-foreground">
-        {openTabs.length > 0 ? (
+       {openTabs.length > 0 ? (
           <React.Suspense fallback={<div className="p-4">Carregando...</div>}>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className='h-full flex flex-col'>
-            <TabsList className="bg-transparent p-0 justify-start h-auto rounded-none border-b-0">
-              {openTabs.map(tab => (
-                <TabsTrigger 
-                  key={tab.id} 
-                  value={tab.id} 
-                  className="relative pr-8 h-10 rounded-none rounded-t-md border-b-0 data-[state=inactive]:bg-muted data-[state=active]:bg-card data-[state=active]:shadow-none data-[state=inactive]:border data-[state=inactive]:border-b-0"
-                >
-                  {tab.title}
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
-                    onClick={(e) => closeTab(e, tab.id)}
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+              <TabsList className="bg-transparent p-0 justify-start h-auto rounded-none border-b-0">
+                {openTabs.map((tab) => (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    className="relative pr-8 h-10 rounded-none rounded-t-md border-b-0 data-[state=inactive]:bg-muted data-[state=active]:bg-card data-[state=active]:shadow-none data-[state=inactive]:border data-[state=inactive]:border-b-0"
                   >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {openTabs.map(tab => {
-              const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
-              return (
-                <TabsContent key={tab.id} value={tab.id} className='bg-card border border-t-0 rounded-b-lg mt-0 flex-1 p-4'>
-                  {activeTab === tab.id && PageComponent ? <PageComponent /> : null}
-                </TabsContent>
-              )
-            })}
-          </Tabs>
+                    {tab.title}
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="absolute top-1/2 right-1 h-5 w-5 -translate-y-1/2 rounded-full"
+                      onClick={(e) => closeTab(e, tab.id)}
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              {openTabs.map((tab) => {
+                const PageComponent = pageComponents[tab.id];
+                return (
+                  <TabsContent
+                    key={tab.id}
+                    value={tab.id}
+                    className="bg-card border border-t-0 rounded-b-lg mt-0 flex-1 p-4"
+                  >
+                    {activeTab === tab.id && PageComponent ? <PageComponent /> : null}
+                  </TabsContent>
+                );
+              })}
+            </Tabs>
           </React.Suspense>
         ) : (
           <div className="flex items-center justify-center h-full text-muted-foreground">
