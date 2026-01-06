@@ -50,6 +50,7 @@ import {
   DollarSign,
   TrendingUp,
   Smartphone,
+  UserSquare,
 } from 'lucide-react';
 import React, { useState, createContext, useContext, lazy, Suspense, ComponentType } from 'react';
 import { MeuRHLogo } from '@/components/icons';
@@ -63,6 +64,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 // Lazy load all page components for better performance
 const DashboardPage = lazy(() => import('./page'));
@@ -431,6 +433,9 @@ export default function DashboardLayout({
                 <Button variant='ghost' size='icon' className='h-7 w-7' onClick={() => openTab({id: 'filiais', title: 'Gestão de Filiais'})}>
                     <Factory size={16} />
                 </Button>
+                <Link href="/portal-colaborador" target="_blank" className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'h-7 w-7')}>
+                    <UserSquare size={16} />
+                </Link>
                 {navMenuItems.map(item => (
                     <Button variant='ghost' key={item.id} onClick={() => openTab({ id: item.id, title: item.label })} className='h-auto py-1 px-2 text-xs font-normal'>
                         {item.label}
