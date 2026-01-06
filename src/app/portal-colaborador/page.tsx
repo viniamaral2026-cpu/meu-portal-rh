@@ -2,14 +2,8 @@
 
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { FileText, Calendar, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
-
-const employeeData = {
-  name: 'Marcos',
-  avatarUrl: '/placeholder.svg?text=M',
-};
 
 const quickAccessItems = [
     { label: "Meu Último Holerite", icon: FileText },
@@ -18,18 +12,25 @@ const quickAccessItems = [
 ];
 
 const comunicados = [
-    { title: "Novo comunicado", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date: "15 abr 2024", isNew: true },
-    { title: "Novo comunicado", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date: "3 abr, 2024", isNew: true },
-    { title: "Novo comunicado", content: "Lorem ipsum dolor sit amet, consectetur.", date: "22 mar, 2024", isNew: true },
+    { title: "Novo comunicado", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date: "15 abr, 2024" },
+    { title: "Novo comunicado", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", date: "3 abr, 2024" },
+    { title: "Novo comunicado", content: "Lorem ipsum dolor sit amet, consectetur.", date: "22 mar, 2024" },
 ]
 
 export default function PortalColaboradorPage() {
   return (
     <div className="space-y-12">
       {/* Header */}
-      <div className="flex justify-between items-center -mt-24 -mb-4">
+      <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">Olá, Marcos!</h1>
-        <Image width={56} height={56} src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" alt="Avatar de Marcos" className="rounded-full h-14 w-14" data-ai-hint="man portrait" />
+        <Image 
+          width={56} 
+          height={56} 
+          src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" 
+          alt="Avatar de Marcos" 
+          className="rounded-full h-14 w-14" 
+          data-ai-hint="man portrait"
+        />
       </div>
 
       {/* Registro de Ponto */}
@@ -63,7 +64,7 @@ export default function PortalColaboradorPage() {
              <Card key={index} className="shadow-lg rounded-xl">
                 <CardContent className="p-6">
                     <div className='flex items-center gap-2 mb-2'>
-                        {com.isNew && <div className='w-2.5 h-2.5 rounded-full bg-primary'/>}
+                        <div className='w-2.5 h-2.5 rounded-full bg-primary'/>
                         <h3 className="font-semibold">{com.title}</h3>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">{com.content}</p>

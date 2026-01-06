@@ -19,15 +19,17 @@ export default function PortalColaboradorLayout({
 }) {
   const pathname = usePathname();
 
+  // This layout removes the top bar and integrates the header into the main content area
+  // as shown in the new design.
   return (
     <div className="flex h-screen bg-muted/40 text-foreground">
       {/* Sidebar */}
       <aside className="w-[260px] flex-shrink-0 bg-card border-r">
-        <div className="p-6 flex items-center gap-3 h-20">
+        <div className="p-6 flex items-center gap-3 h-[88px] border-b">
           <MeuRHLogo className="w-9 h-9" />
-          <span className="font-bold text-xl text-primary">Meu RH</span>
+          <span className="font-bold text-xl text-foreground">Meu RH</span>
         </div>
-        <nav className="px-4">
+        <nav className="p-4">
           <ul>
             {navItems.map((item) => (
               <li key={item.href}>
@@ -50,12 +52,11 @@ export default function PortalColaboradorLayout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden">
-        {/* Top bar stub */}
-        <div className="h-20 border-b bg-card p-6 flex items-center">
-            {/* You can add a dynamic header here if needed */}
+      <main className="flex-1 overflow-y-auto">
+        {/* The top bar is removed, and the header is part of the page content now */}
+        <div className="p-8">
+            {children}
         </div>
-        <div className="flex-1 overflow-y-auto p-8">{children}</div>
       </main>
     </div>
   );
