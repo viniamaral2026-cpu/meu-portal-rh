@@ -104,6 +104,8 @@ const WordPage = lazy(() => import('./pages/word/page'));
 const AssistenteAiPage = lazy(() => import('./pages/assistente-ai/page'));
 const SistemaPage = lazy(() => import('./pages/sistema/page'));
 const StatusServicosPage = lazy(() => import('./pages/status-servicos/page'));
+const GestaoCurriculosPage = lazy(() => import('../curriculos/page'));
+const PortalCarreirasPage = lazy(() => import('./pages/portal-carreiras/page'));
 
 
 const topBarIcons = [
@@ -140,8 +142,8 @@ const toolbarItems = [
         group: 'Utilitários',
         items: [
             { id: 'calculadora', icon: <Calculator size={20} />, label: 'Calculadora' },
-            { id: 'agenda', icon: <BookUser size={20} />, label: 'Agenda' },
-            { id: 'calendarios', icon: <CalendarDays size={20} />, label: 'Calendários' },
+            { id: 'agenda', icon: <CalendarDays size={20} />, label: 'Agenda' },
+            { id: 'curriculos', icon: <BookUser size={20} />, label: 'Currículos' },
             { id: 'compartilhamento', icon: <Share2 size={20} />, label: 'Compartilhamento' },
             { id: 'cubo', icon: <Cuboid size={20} />, label: 'Cubo' },
             { id: 'planilha', icon: <Sheet size={20} />, label: 'Planilha' },
@@ -246,6 +248,8 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'assistente-ai': AssistenteAiPage,
   'sistema': SistemaPage,
   'status-servicos': StatusServicosPage,
+  'curriculos': GestaoCurriculosPage,
+  'portal-carreiras': PortalCarreirasPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
