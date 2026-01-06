@@ -180,21 +180,21 @@ const paineisMenuItems = [
 ];
 
 const pageComponents: { [key: string]: React.ComponentType<any> } = {
-  'employees': AdministracaoPessoalPage,
-  'dashboard': DashboardPage,
-  'calculator': CalculadoraPage,
-  'agenda': AgendaPage,
-  'sharing': CompartilhamentoPage,
-  'cube': CuboPage,
-  'spreadsheet': PlanilhaPage,
-  'formula': FormulaPage,
-  'reports': RelatoriosPage,
+  employees: AdministracaoPessoalPage,
+  dashboard: DashboardPage,
+  calculator: CalculadoraPage,
+  agenda: AgendaPage,
+  sharing: CompartilhamentoPage,
+  cube: CuboPage,
+  spreadsheet: PlanilhaPage,
+  formula: FormulaPage,
+  reports: RelatoriosPage,
   'report-generator': GeradorSaidasPage,
   'data-views': VisoesDadosPage,
-  'dashboards': DashboardPage,
+  dashboards: DashboardPage,
   'output-generator': GeradorSaidasPage,
-  'chart': () => <div>Gráfico</div>,
-  'categories': CategoriasPage,
+  chart: () => <div>Gráfico</div>,
+  categories: CategoriasPage,
   'chart-sources': FontesGraficosPage,
   'rss-reader': LeitorRssPage,
   'start-service': IniciarServicoRssPage,
@@ -206,7 +206,7 @@ const pageComponents: { [key: string]: React.ComponentType<any> } = {
   'comm-accounts': ContasComunicacaoPage,
   'external-apps': AplicativosExternosPage,
   'saml-apps': AplicativosSamlPage,
-  'calendars': () => <div>Calendários</div>,
+  calendars: () => <div>Calendários</div>,
 };
 
 export default function DashboardLayout({
@@ -300,7 +300,7 @@ export default function DashboardLayout({
         </div>
          {/* Sub-header Toolbar */}
         <div className="bg-card text-card-foreground flex h-[70px] items-center justify-between px-2 border-b border-t border-border overflow-x-hidden">
-          <div className="flex h-full items-start">
+          <div className="flex h-full items-start flex-1">
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
                 <div className="flex flex-col items-center justify-center h-full px-1">
