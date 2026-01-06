@@ -1,4 +1,3 @@
-
 'use client';
 import {
   Home,
@@ -48,9 +47,44 @@ import {
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import EmployeesPage from './employees/page';
-import DashboardPage from './dashboard/page';
 import { Separator } from '@/components/ui/separator';
+
+// Lazy load all page components
+const AdministracaoPessoalPage = React.lazy(() => import('./pages/administracao-pessoal/page'));
+const FolhaMensalPage = React.lazy(() => import('./pages/folha-mensal/page'));
+const FeriasPage = React.lazy(() => import('./pages/ferias/page'));
+const RescisaoPage = React.lazy(() => import('./pages/rescisao/page'));
+const EncargosPage = React.lazy(() => import('./pages/encargos/page'));
+const AnuaisPage = React.lazy(() => import('./pages/anuais/page'));
+const EsocialPage = React.lazy(() => import('./pages/esocial/page'));
+const OrcamentoPage = React.lazy(() => import('./pages/orcamento/page'));
+const ConfiguracoesPage = React.lazy(() => import('./pages/configuracoes/page'));
+const AssinaturaEletronicaPage = React.lazy(() => import('./pages/assinatura-eletronica/page'));
+const CustomizacaoPage = React.lazy(() => import('./pages/customizacao/page'));
+const GestaoPage = React.lazy(() => import('./pages/gestao/page'));
+const AmbientePage = React.lazy(() => import('./pages/ambiente/page'));
+const CalculadoraPage = React.lazy(() => import('./pages/calculadora/page'));
+const AgendaPage = React.lazy(() => import('./pages/agenda/page'));
+const CompartilhamentoPage = React.lazy(() => import('./pages/compartilhamento/page'));
+const CuboPage = React.lazy(() => import('./pages/cubo/page'));
+const PlanilhaPage = React.lazy(() => import('./pages/planilha/page'));
+const FormulaPage = React.lazy(() => import('./pages/formula/page'));
+const RelatoriosPage = React.lazy(() => import('./pages/relatorios/page'));
+const VisoesDadosPage = React.lazy(() => import('./pages/visoes-dados/page'));
+const CategoriasPage = React.lazy(() => import('./pages/categorias/page'));
+const FontesGraficosPage = React.lazy(() => import('./pages/fontes-graficos/page'));
+const LeitorRssPage = React.lazy(() => import('./pages/leitor-rss/page'));
+const IniciarServicoRssPage = React.lazy(() => import('./pages/iniciar-servico-rss/page'));
+const ConfiguracaoRssPage = React.lazy(() => import('./pages/configuracao-rss/page'));
+const CanaisRssPage = React.lazy(() => import('./pages/canais-rss/page'));
+const WordPage = React.lazy(() => import('./pages/word/page'));
+const AssistenteAiPage = React.lazy(() => import('./pages/assistente-ai/page'));
+const MeusCanaisPage = React.lazy(() => import('./pages/meus-canais/page'));
+const RmConectorPage = React.lazy(() => import('./pages/rm-conector/page'));
+const ContasComunicacaoPage = React.lazy(() => import('./pages/contas-comunicacao/page'));
+const AplicativosExternosPage = React.lazy(() => import('./pages/aplicativos-externos/page'));
+const AplicativosSamlPage = React.lazy(() => import('./pages/aplicativos-saml/page'));
+const DashboardPage = React.lazy(() => import('./dashboard/page'));
 
 const topBarIcons = [
   { icon: <Clock size={16} /> },
@@ -85,63 +119,89 @@ const toolbarItems = [
     {
         group: 'Utilitários',
         items: [
-            { id: 'calculator', icon: <Calculator size={24} />, label: 'Calculadora' },
-            { id: 'agenda', icon: <BookUser size={24} />, label: 'Agenda' },
-            { id: 'calendars', icon: <CalendarDays size={24} />, label: 'Calendários' },
-            { id: 'sharing', icon: <Share2 size={24} />, label: 'TOTVS Compartilhamento' },
-            { id: 'cube', icon: <Cuboid size={24} />, label: 'Cubo' },
-            { id: 'spreadsheet', icon: <Sheet size={24} />, label: 'Planilha Net' },
-            { id: 'formula', icon: <FunctionSquare size={24} />, label: 'Fórmula Visual' },
+            { id: 'calculator', icon: <Calculator size={20} />, label: 'Calculadora' },
+            { id: 'agenda', icon: <BookUser size={20} />, label: 'Agenda' },
+            { id: 'calendars', icon: <CalendarDays size={20} />, label: 'Calendários' },
+            { id: 'sharing', icon: <Share2 size={20} />, label: 'Compartilhamento' },
+            { id: 'cube', icon: <Cuboid size={20} />, label: 'Cubo' },
+            { id: 'spreadsheet', icon: <Sheet size={20} />, label: 'Planilha' },
+            { id: 'formula', icon: <FunctionSquare size={20} />, label: 'Fórmula' },
         ]
     },
     {
         group: 'Ferramentas de Análise',
         items: [
-            { id: 'reports', icon: <FileText size={24} />, label: 'RM Reports' },
-            { id: 'report-generator', icon: <FilePlus2 size={24} />, label: 'Gerador de Relatórios' },
-            { id: 'data-views', icon: <Database size={24} />, label: 'Visões de Dados' },
-            { id: 'dashboards', icon: <LayoutDashboard size={24} />, label: 'Painéis de Cenários' },
+            { id: 'employees', icon: <Users size={20} />, label: 'Colaboradores' },
+            { id: 'reports', icon: <FileText size={20} />, label: 'Relatórios' },
+            { id: 'report-generator', icon: <FilePlus2 size={20} />, label: 'Gerador' },
+            { id: 'data-views', icon: <Database size={20} />, label: 'Visões de Dados' },
+            { id: 'dashboards', icon: <LayoutDashboard size={20} />, label: 'Painéis' },
         ]
     },
     {
         group: 'Gráficos',
         items: [
-            { id: 'output-generator', icon: <Mail size={24} />, label: 'Gerador de Saída' },
-            { id: 'chart', icon: <BarChart size={24} />, label: 'Gráfico' },
-            { id: 'categories', icon: <ClipboardList size={24} />, label: 'Categorias' },
-            { id: 'chart-sources', icon: <Sigma size={24} />, label: 'Fontes de Gráficos' },
+            { id: 'output-generator', icon: <Mail size={20} />, label: 'Gerador Saída' },
+            { id: 'chart', icon: <BarChart size={20} />, label: 'Gráfico' },
+            { id: 'categories', icon: <ClipboardList size={20} />, label: 'Categorias' },
+            { id: 'chart-sources', icon: <Sigma size={20} />, label: 'Fontes' },
         ]
     },
     {
         group: 'RSS',
         items: [
-            { id: 'rss-reader', icon: <Rss size={24} />, label: 'Leitor RSS' },
-            { id: 'start-service', icon: <PlayCircle size={24} />, label: 'Iniciar Serviço' },
-            { id: 'rss-config', icon: <Settings size={24} />, label: 'Configuração' },
-            { id: 'rss-channels', icon: <Rss size={24} />, label: 'Canais RSS' },
+            { id: 'rss-reader', icon: <Rss size={20} />, label: 'Leitor RSS' },
+            { id: 'start-service', icon: <PlayCircle size={20} />, label: 'Iniciar Serviço' },
+            { id: 'rss-config', icon: <Settings size={20} />, label: 'Configuração' },
+            { id: 'rss-channels', icon: <Rss size={20} />, label: 'Canais RSS' },
         ]
     },
     {
         group: 'RM Conec',
         items: [
-             { id: 'my-channels', icon: <Users size={24} />, label: 'Meus Canais' },
-             { id: 'rm-connector', icon: <LinkIcon size={24} />, label: 'RM Conector' },
+             { id: 'my-channels', icon: <Users size={20} />, label: 'Meus Canais' },
+             { id: 'rm-connector', icon: <LinkIcon size={20} />, label: 'Conector' },
         ]
     },
     {
         group: 'Comunicação',
         items: [
-             { id: 'comm-sources', icon: <Wrench size={24} />, label: 'Fontes' },
-             { id: 'comm-accounts', icon: <Users size={24} />, label: 'Contas' },
-             { id: 'external-apps', icon: <ExternalLink size={24} />, label: 'Aplicativos Externos' },
-             { id: 'saml-apps', icon: <ExternalLink size={24} />, label: 'Aplicativos SAML' },
+             { id: 'comm-sources', icon: <Wrench size={20} />, label: 'Fontes' },
+             { id: 'comm-accounts', icon: <Users size={20} />, label: 'Contas' },
+             { id: 'external-apps', icon: <ExternalLink size={20} />, label: 'Apps Externos' },
+             { id: 'saml-apps', icon: <ExternalLink size={20} />, label: 'Apps SAML' },
         ]
     },
 ];
 
-const pageComponents = {
-  employees: EmployeesPage,
-  dashboard: DashboardPage,
+const pageComponents: { [key: string]: React.ComponentType } = {
+  'employees': AdministracaoPessoalPage,
+  'dashboard': DashboardPage,
+  'calculator': CalculadoraPage,
+  'agenda': AgendaPage,
+  'sharing': CompartilhamentoPage,
+  'cube': CuboPage,
+  'spreadsheet': PlanilhaPage,
+  'formula': FormulaPage,
+  'reports': RelatoriosPage,
+  'data-views': VisoesDadosPage,
+  'dashboards': DashboardPage, // Reusing Dashboard for 'Painéis'
+  'output-generator': () => <div>Gerador de Saída</div>,
+  'chart': () => <div>Gráfico</div>,
+  'categories': CategoriasPage,
+  'chart-sources': FontesGraficosPage,
+  'rss-reader': LeitorRssPage,
+  'start-service': IniciarServicoRssPage,
+  'rss-config': ConfiguracaoRssPage,
+  'rss-channels': CanaisRssPage,
+  'my-channels': MeusCanaisPage,
+  'rm-connector': RmConectorPage,
+  'comm-sources': () => <div>Fontes de Comunicação</div>,
+  'comm-accounts': ContasComunicacaoPage,
+  'external-apps': AplicativosExternosPage,
+  'saml-apps': AplicativosSamlPage,
+  'report-generator': () => <div>Gerador de Relatórios</div>,
+  'calendars': () => <div>Calendários</div>,
 };
 
 
@@ -151,12 +211,19 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [openTabs, setOpenTabs] = useState([
-    { id: 'employees', title: 'Consulta de Colaboradores' },
     { id: 'dashboard', title: 'Dashboard Principal' },
+    { id: 'employees', title: 'Consulta de Colaboradores' },
   ]);
-  const [activeTab, setActiveTab] = useState('employees');
+  const [activeTab, setActiveTab] = useState('dashboard');
 
   const openTab = (tab: { id: string, title: string }) => {
+     const PageComponent = pageComponents[tab.id];
+    if (!PageComponent) {
+      console.error(`Page component for id "${tab.id}" not found.`);
+      // Optionally, open a placeholder tab or show a toast
+      return;
+    }
+    
     if (!openTabs.find(t => t.id === tab.id)) {
       setOpenTabs(prev => [...prev, tab]);
     }
@@ -167,8 +234,12 @@ export default function DashboardLayout({
     e.stopPropagation();
     setOpenTabs(prev => {
       const newTabs = prev.filter(t => t.id !== tabId);
-      if (activeTab === tabId) {
-        setActiveTab(newTabs[newTabs.length - 1]?.id || '');
+      if (activeTab === tabId && newTabs.length > 0) {
+        setActiveTab(newTabs[newTabs.length - 1].id);
+      } else if (newTabs.length === 0) {
+        // If all tabs are closed, open a default one
+        setOpenTabs([{ id: 'dashboard', title: 'Dashboard Principal' }]);
+        setActiveTab('dashboard');
       }
       return newTabs;
     });
@@ -187,7 +258,7 @@ export default function DashboardLayout({
                 ))}
             </div>
             <div className='text-xs opacity-80'>
-                TOTVS Compartilhamento - 03.9.0507 - TOTVS Linha RM - Serviços Alias: CorporeRM | 1-TOTVS SA
+                Minha Empresa Calçados | Unidade Matriz | Usuário: Admin
             </div>
             <div className='flex items-center gap-2'>
                 <Button variant='ghost' className='h-auto px-3 py-1 text-xs'>Sistema</Button>
@@ -227,18 +298,18 @@ export default function DashboardLayout({
             </div>
         </div>
          {/* Sub-header Toolbar */}
-        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border">
+        <div className="bg-card text-card-foreground flex h-[70px] items-center px-2 border-b border-t border-border overflow-x-auto">
           <div className="flex h-full items-start">
             {toolbarItems.map((group, groupIndex) => (
               <div key={group.group} className="flex h-full items-center">
-                <div className="flex flex-col items-center justify-center h-full px-2">
-                    <div className='flex items-center justify-center gap-2 h-full'>
+                <div className="flex flex-col items-center justify-center h-full px-1">
+                    <div className='flex items-center justify-center gap-0.5 h-full'>
                     {group.items.map((item) => (
                     <Button 
                       variant="ghost" 
                       key={item.id}
                       onClick={() => openTab({ id: item.id, title: item.label })}
-                      className="flex flex-col items-center justify-center h-full p-1 w-20 text-xs font-normal gap-1"
+                      className="flex flex-col items-center justify-center h-full p-1 w-14 text-xs font-normal gap-1"
                     >
                         {item.icon}
                         <span className='w-full text-center truncate'>{item.label}</span>
@@ -271,14 +342,16 @@ export default function DashboardLayout({
               </TabsTrigger>
             ))}
           </TabsList>
-          {openTabs.map(tab => {
-            const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
-            return (
-              <TabsContent key={tab.id} value={tab.id} className='bg-card border rounded-b-lg mt-0 flex-1'>
-                {PageComponent ? <PageComponent /> : <div className="p-4">Conteúdo para {tab.title}</div>}
-              </TabsContent>
-            )
-          })}
+          <React.Suspense fallback={<div className="p-4">Carregando...</div>}>
+            {openTabs.map(tab => {
+              const PageComponent = pageComponents[tab.id as keyof typeof pageComponents];
+              return (
+                <TabsContent key={tab.id} value={tab.id} className='bg-card border rounded-b-lg mt-0 flex-1 p-4'>
+                  {activeTab === tab.id && PageComponent ? <PageComponent /> : null}
+                </TabsContent>
+              )
+            })}
+          </React.Suspense>
         </Tabs>
       </main>
     </div>
