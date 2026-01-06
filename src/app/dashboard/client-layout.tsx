@@ -27,6 +27,7 @@ const MonitoramentoUsuariosPage = lazy(
 );
 
 // Import all the other pages that were created
+const EmployeesPage = lazy(() => import('./employees/page'));
 const AdministracaoPessoalPage = lazy(() => import('./pages/administracao-pessoal/page'));
 const FolhaMensalPage = lazy(() => import('./pages/folha-mensal/page'));
 const FeriasPage = lazy(() => import('./pages/ferias/page'));
@@ -70,6 +71,8 @@ const ContasComunicacaoPage = lazy(() => import('./pages/contas-comunicacao/page
 const AplicativosExternosPage = lazy(() => import('./pages/aplicativos-externos/page'));
 const AplicativosSamlPage = lazy(() => import('./pages/aplicativos-saml/page'));
 const SistemaPage = lazy(() => import('./pages/sistema/page'));
+const VisualizarColaboradorPage = lazy(() => import('./pages/visualizar-colaborador/page'));
+
 
 type Tab = {
   id: string;
@@ -86,6 +89,7 @@ const pagesMap: { [key: string]: React.LazyExoticComponent<any> } = {
   'curriculos': CurriculosPage,
   'filiais': FiliaisPage,
   'monitoramento-usuarios': MonitoramentoUsuariosPage,
+  'employees': EmployeesPage,
   'administracao-pessoal': AdministracaoPessoalPage,
   'colaboradores': AdministracaoPessoalPage,
   'folha-mensal': FolhaMensalPage,
@@ -130,6 +134,7 @@ const pagesMap: { [key: string]: React.LazyExoticComponent<any> } = {
   'aplicativos-externos': AplicativosExternosPage,
   'aplicativos-saml': AplicativosSamlPage,
   'sistema': SistemaPage,
+  'visualizar-colaborador': VisualizarColaboradorPage,
 };
 
 type DashboardContextType = {
@@ -155,23 +160,25 @@ export function DashboardClientLayout({
   const [nextTabId, setNextTabId] = useState(1);
 
   const openTab = (id: string, title?: string, data: any = {}) => {
+    // Check if a tab of the same base ID already exists
+    const baseId = id.split('-')[0];
     const existingTab = tabs.find((tab) => tab.id.startsWith(id));
+    
     if (existingTab) {
       setActiveTab(existingTab.id);
       return;
     }
 
-    const PageComponent = pagesMap[id];
+    const PageComponent = pagesMap[baseId];
     if (!PageComponent) {
-      console.error(`Page component for id "${id}" not found.`);
+      console.error(`Page component for id "${baseId}" not found.`);
       return;
     }
 
-    const newTabId = `${id}-${nextTabId}`;
-    setNextTabId(nextTabId + 1);
+    const newTabId = id; // Use the full dynamic ID now
     const newTab: Tab = {
       id: newTabId,
-      title: title || id.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+      title: title || baseId.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
       component: <PageComponent data={data} />,
     };
 

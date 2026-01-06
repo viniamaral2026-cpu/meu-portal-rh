@@ -1,140 +1,140 @@
 'use client';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Search, PlusCircle, FileUp, FileDown } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 
-const colaboradores = [
-    { id: '001', nome: 'Ana Silva', cargo: 'Costureira', setor: 'Produção', status: 'Ativo', filial: 'Matriz' },
-    { id: '002', nome: 'Bruno Costa', cargo: 'Gerente de RH', setor: 'Recursos Humanos', status: 'Ativo', filial: 'Matriz' },
-    { id: '003', nome: 'Carlos Dias', cargo: 'Operador de Máquinas', setor: 'Produção', status: 'Férias', filial: 'Filial Belo Horizonte' },
-    { id: '004', nome: 'Daniela Souza', cargo: 'Analista de TI', setor: 'TI', status: 'Ativo', filial: 'Matriz' },
-    { id: '005', nome: 'Eduardo Lima', cargo: 'Supervisor de Produção', setor: 'Produção', status: 'Ativo', filial: 'Filial Rio de Janeiro' },
-    { id: '006', nome: 'Fernanda Alves', cargo: 'Auxiliar Administrativo', setor: 'Administrativo', status: 'Afastado', filial: 'Matriz' },
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Search, FileDown, Trash2, Edit, Eye } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { useDashboard } from '../client-layout';
+
+
+const employees = [
+  {
+    id: 1,
+    code: '001',
+    name: 'João da Silva',
+    cpf: '123.456.789-00',
+    matricula: 'MAT001',
+    role: 'Cortador',
+    sector: 'Corte',
+  },
+  {
+    id: 2,
+    code: '002',
+    name: 'Maria Oliveira',
+    cpf: '234.567.890-11',
+    matricula: 'MAT002',
+    role: 'Costureira',
+    sector: 'Costura',
+  },
+  {
+    id: 3,
+    code: '003',
+    name: 'Pedro Santos',
+    cpf: '345.678.901-22',
+    matricula: 'MAT003',
+    role: 'Montador',
+    sector: 'Montagem',
+  },
+  {
+    id: 4,
+    code: '004',
+    name: 'Ana Souza',
+    cpf: '456.789.012-33',
+    matricula: 'MAT004',
+    role: 'Acabador',
+    sector: 'Acabamento',
+  },
+  {
+    id: 5,
+    code: '005',
+    name: 'Carlos Pereira',
+    cpf: '567.890.123-44',
+    matricula: 'MAT005',
+    role: 'Costureiro',
+    sector: 'Costura',
+  },
 ];
 
-export default function AdministracaoPessoalPage() {
+
+export default function EmployeesPage() {
+  const dashboard = useDashboard();
+
+  const handleViewClick = (employee: any) => {
+    if (dashboard) {
+        dashboard.openTab(`visualizar-colaborador-${employee.id}`, `Vis. ${employee.name}`, { employeeId: employee.id });
+    }
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between items-center">
-          <div>
-            <CardTitle>Administração de Pessoal</CardTitle>
-            <CardDescription>Gerencie todos os colaboradores da sua empresa.</CardDescription>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline"><FileUp className="mr-2 h-4 w-4" /> Importar</Button>
-            <Button variant="outline"><FileDown className="mr-2 h-4 w-4" /> Exportar</Button>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Novo Colaborador
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle>Cadastrar Novo Colaborador</DialogTitle>
-                  <DialogDescription>
-                    Preencha os dados do novo membro da equipe.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="nome" className="text-right">Nome</Label>
-                    <Input id="nome" placeholder="Nome completo" className="col-span-3" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="cargo" className="text-right">Cargo</Label>
-                    <Input id="cargo" placeholder="Ex: Costureira" className="col-span-3" />
-                  </div>
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="setor" className="text-right">Setor</Label>
-                     <Select>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Selecione o setor" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="producao">Produção</SelectItem>
-                        <SelectItem value="rh">Recursos Humanos</SelectItem>
-                        <SelectItem value="ti">TI</SelectItem>
-                        <SelectItem value="administrativo">Administrativo</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="filial" className="text-right">Filial</Label>
-                     <Select>
-                      <SelectTrigger className="col-span-3">
-                        <SelectValue placeholder="Selecione a filial" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="matriz">Matriz</SelectItem>
-                        <SelectItem value="filial-bh">Filial Belo Horizonte</SelectItem>
-                        <SelectItem value="filial-rj">Filial Rio de Janeiro</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button type="submit">Salvar Colaborador</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center pb-4">
-            <div className="relative w-full">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input placeholder="Buscar por nome, cargo ou setor..." className="pl-8" />
+    <div className="flex flex-col gap-4 p-4">
+      <div className="border rounded-lg p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-4 items-end">
+            <div className='space-y-2'>
+                <Label htmlFor='cod'>Código</Label>
+                <Input id='cod' placeholder="Código..." />
             </div>
+            <div className='space-y-2'>
+                <Label htmlFor='name'>Nome</Label>
+                <Input id='name' placeholder="Nome do colaborador..." />
+            </div>
+            <div className='space-y-2'>
+                <Label htmlFor='cpf'>CPF</Label>
+                <Input id='cpf' placeholder="CPF..." />
+            </div>
+             <div className='space-y-2'>
+                <Label htmlFor='matricula'>Matrícula</Label>
+                <Input id='matricula' placeholder="Matrícula..." />
+            </div>
+            <div className="flex gap-2">
+                <Button className='w-full'>
+                  <Search className="mr-2 h-4 w-4" />
+                  Pesquisar
+                </Button>
+                <Button className='w-full' variant='outline'>Limpar</Button>
+            </div>
+        </div>
+      </div>
+
+      <div className='border rounded-lg'>
+        <div className='p-4'>
+           <h3 className="text-lg font-semibold">Resultado da Busca</h3>
+           <p className="text-sm text-muted-foreground">Lista de colaboradores encontrados.</p>
         </div>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead>Código</TableHead>
               <TableHead>Nome</TableHead>
+              <TableHead>CPF</TableHead>
+              <TableHead>Matrícula</TableHead>
               <TableHead>Cargo</TableHead>
               <TableHead>Setor</TableHead>
-              <TableHead>Filial</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Ações</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {colaboradores.map(c => (
-                <TableRow key={c.id}>
-                    <TableCell className="font-mono text-xs">{c.id}</TableCell>
-                    <TableCell className="font-medium">{c.nome}</TableCell>
-                    <TableCell>{c.cargo}</TableCell>
-                    <TableCell>{c.setor}</TableCell>
-                    <TableCell>{c.filial}</TableCell>
-                    <TableCell>
-                      <Badge variant={c.status === 'Ativo' ? 'default' : 'secondary'}>{c.status}</Badge>
-                    </TableCell>
-                    <TableCell>
-                        <Button variant="outline" size="sm">Ver Perfil</Button>
-                    </TableCell>
-                </TableRow>
+            {employees.map((employee) => (
+              <TableRow key={employee.id} onDoubleClick={() => handleViewClick(employee)} className="cursor-pointer">
+                <TableCell>{employee.code}</TableCell>
+                <TableCell className="font-medium">{employee.name}</TableCell>
+                <TableCell>{employee.cpf}</TableCell>
+                <TableCell>{employee.matricula}</TableCell>
+                <TableCell>{employee.role}</TableCell>
+                <TableCell>{employee.sector}</TableCell>
+              </TableRow>
             ))}
           </TableBody>
         </Table>
-      </CardContent>
-    </Card>
-  )
+        <div className='flex justify-end items-center p-4 gap-2 border-t'>
+            <Button variant="outline" size="sm"><Edit className='mr-2' />Alterar</Button>
+            <Button variant="destructive" size="sm"><Trash2 className='mr-2'/>Excluir</Button>
+            <Button variant="outline" size="sm" onClick={() => handleViewClick(employees[0])}>
+                <Eye className='mr-2'/>Visualizar
+            </Button>
+            <Button variant="secondary" size="sm"><FileDown className='mr-2'/>Baixar Arquivo</Button>
+        </div>
+      </div>
+    </div>
+  );
 }
