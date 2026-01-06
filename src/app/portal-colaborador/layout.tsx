@@ -16,6 +16,7 @@ const navItems = [
     icon: FileText,
     isCollapsible: true,
     subItems: [
+      { href: '/portal-colaborador/documentos/assinaturas', label: 'Assinaturas Pendentes' },
       { href: '/portal-colaborador/documentos/atestados', label: 'Atestados' },
       { href: '/portal-colaborador/documentos/contratos', label: 'Contratos' },
     ],
