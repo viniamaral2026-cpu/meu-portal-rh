@@ -30,20 +30,11 @@ export default function PortalLogin() {
           description: 'Acessando o portal como um colaborador de teste.',
         });
         router.push('/portal-colaborador');
-        return;
-      }
-
-      if (cpf && pin) {
-        toast({
-          title: 'Login bem-sucedido!',
-          description: 'Redirecionando para o seu painel.',
-        });
-        router.push('/portal-colaborador');
       } else {
         toast({
           variant: 'destructive',
           title: 'Erro de login',
-          description: 'Por favor, verifique seu CPF e PIN.',
+          description: 'CPF ou PIN inválido. Por favor, verifique suas credenciais.',
         });
         setIsLoading(false);
       }
