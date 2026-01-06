@@ -7,7 +7,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { MeuRHLogo } from '@/components/icons';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,7 +42,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center p-4 bg-muted/40">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Meu Rh Portal</CardTitle>
+          <CardTitle className="text-2xl font-bold">Meu Rh</CardTitle>
           <CardDescription>Software de Gestão para Fábricas de Calçados</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
