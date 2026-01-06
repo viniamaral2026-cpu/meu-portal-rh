@@ -10,8 +10,8 @@
     --card-foreground: 224 71.4% 4.1%;
     --popover: 240 10% 100%;
     --popover-foreground: 224 71.4% 4.1%;
-    --primary: 222 47% 11%;
-    --primary-darker: 222 47% 9%;
+    --primary: 221 83% 45%;
+    --primary-darker: 221 83% 40%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 14.3% 95.9%;
     --secondary-foreground: 224 71.4% 4.1%;
@@ -43,7 +43,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-size: 13px;
+    font-size: 14px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
