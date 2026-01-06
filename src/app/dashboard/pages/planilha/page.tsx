@@ -14,8 +14,8 @@ import {
 import {
   Undo, Redo, Printer, Percent, Bold, Italic, Strikethrough, PaintBucket,
   Merge, AlignCenter, MoreVertical, Star, MessageSquare, Video,
-  Sigma, TextColor, Braces, WrapText,
-  File, Plus, Table as TableIcon,
+  ArrowUp, ArrowDown, ArrowLeft, ArrowRight, CornerUpLeft, Sigma, Baseline as TextColor, Braces, WrapText,
+  File, Edit, Eye, Plus, Table as TableIcon, BarChart2,
   Trash2, Copy, Scissors, Minus, ZoomIn, ZoomOut, FileUp, FileDown as FileDownIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
