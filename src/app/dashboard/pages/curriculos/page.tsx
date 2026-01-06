@@ -21,21 +21,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import Image from 'next/image';
+import { vagas as allVagas, candidatos as allCandidatos } from '@/data/database';
+import type { Vaga, Candidato as CandidateModel } from '@/data/models';
 
-// --- Mock Data Structures ---
-
-type Candidate = {
-  id: string;
-  name: string;
-  avatar: string;
-  role: string;
-  status: 'triagem' | 'entrevista-rh' | 'entrevista-tecnica' | 'proposta' | 'contratado';
-  tags: string[];
-  lastUpdate: string;
+type Candidate = CandidateModel & {
   details: {
-    email: string;
-    phone: string;
-    location: string;
     linkedin: string;
     resume: string;
     education: { institution: string; course: string; period: string }[];
@@ -44,51 +34,30 @@ type Candidate = {
   };
 };
 
-type Vacancy = {
-  id: string;
-  title: string;
-  location: string;
-  level: string;
-  candidatesCount: number;
-};
-
-type Note = {
-  id: string;
-  author: string;
-  timestamp: string;
-  content: string;
-};
-
-
 // --- Mock Data ---
-
-const vacancies: Vacancy[] = [
-  { id: 'v1', title: 'Analista de RH Pleno', location: 'Matriz (SP)', level: 'Pleno', candidatesCount: 8 },
-  { id: 'v2', title: 'Costureira (Pesponto)', location: 'Unidade MG', level: 'Operacional', candidatesCount: 25 },
-  { id: 'v3', title: 'Supervisor de Corte', location: 'Matriz (SP)', level: 'Liderança', candidatesCount: 12 },
-  { id: 'v4', title: 'Desenvolvedor Full Stack', location: 'Remoto', level: 'Sênior', candidatesCount: 4 },
-];
-
-const candidates: Candidate[] = [
-  { id: 'c1', name: 'Ana Beatriz', avatar: '/placeholder.svg?text=AB', role: 'Analista de RH', status: 'entrevista-rh', tags: ['eSocial', 'Folha'], lastUpdate: '2 dias atrás', details: { email: 'ana.b@example.com', phone: '(11) 98765-4321', location: 'São Paulo, SP', linkedin: '#', resume: '...', education: [{institution: 'USP', course: 'Psicologia', period: '2015-2019'}], experience: [{company: 'Empresa X', role: 'Analista de RH Jr', period: '2020-2023', description: 'Atuei com R&S e T&D.'}], skills: ['eSocial', 'Folha de Pagamento', 'Entrevistas', 'Power BI'] } },
-  { id: 'c2', name: 'Carlos Dantas', avatar: '/placeholder.svg?text=CD', role: 'Analista de RH', status: 'triagem', tags: ['Excel'], lastUpdate: '5 dias atrás', details: { email: 'carlos.d@example.com', phone: '(11) 98765-4322', location: 'São Paulo, SP', linkedin: '#', resume: '...', education: [], experience: [], skills: [] } },
-  { id: 'c3', name: 'Mariana Silva', avatar: '/placeholder.svg?text=MS', role: 'Costureira', status: 'triagem', tags: [], lastUpdate: '1 dia atrás', details: { email: 'mariana.s@example.com', phone: '(31) 98765-1111', location: 'Belo Horizonte, MG', linkedin: '#', resume: '...', education: [], experience: [], skills: [] } },
-  { id: 'c4', name: 'João Pereira', avatar: '/placeholder.svg?text=JP', role: 'Costureiro', status: 'entrevista-tecnica', tags: ['Couro'], lastUpdate: 'Hoje', details: { email: 'joao.p@example.com', phone: '(31) 98765-2222', location: 'Nova Serrana, MG', linkedin: '#', resume: '...', education: [], experience: [], skills: [] } },
-  { id: 'c5', name: 'Felipe Souza', avatar: '/placeholder.svg?text=FS', role: 'Desenvolvedor Sênior', status: 'proposta', tags: ['React', 'Node.js', 'Firebase'], lastUpdate: 'Ontem', details: { email: 'felipe.s@example.com', phone: '(21) 99999-8888', location: 'Rio de Janeiro, RJ', linkedin: '#', resume: '...', education: [{institution: 'UFRJ', course: 'Ciência da Computação', period: '2010-2014'}], experience: [{company: 'Tech Startup Y', role: 'Desenvolvedor Pleno', period: '2018-2022', description: 'Desenvolvimento de aplicação SaaS.'}], skills: ['React', 'Node.js', 'Firebase', 'TypeScript', 'Next.js'] } },
-];
-
-const notes: Note[] = [
+const notes = [
   { id: 'n1', author: 'Carla (RH)', timestamp: 'Ontem às 15:30', content: 'Candidato demonstrou excelente comunicação e conhecimento profundo em legislação trabalhista.' },
   { id: 'n2', author: 'Roberto (Gestor)', timestamp: 'Hoje às 10:15', content: 'Perfil técnico muito bom, mas parece ter pouca experiência com a máquina de pesponto eletrônica.' },
 ];
 
+const candidatosComDetalhes: Candidate[] = allCandidatos.map(c => ({
+    ...c,
+    details: {
+        linkedin: '#',
+        resume: '...',
+        education: c.nome === 'Mariana Oliveira' ? [{institution: 'USP', course: 'Psicologia', period: '2015-2019'}] : [],
+        experience: c.nome === 'Mariana Oliveira' ? [{company: 'Empresa X', role: 'Analista de RH Jr', period: '2020-2023', description: 'Atuei com R&S e T&D.'}] : [],
+        skills: c.nome === 'Mariana Oliveira' ? ['eSocial', 'Folha de Pagamento', 'Entrevistas', 'Power BI'] : ['React', 'Node.js', 'Firebase', 'TypeScript', 'Next.js'],
+    }
+}));
+
+
 // --- Columns for Kanban ---
 const columns = [
-  { id: 'triagem', title: 'Triagem' },
-  { id: 'entrevista-rh', title: 'Entrevista RH' },
-  { id: 'entrevista-tecnica', title: 'Entrevista Técnica' },
-  { id: 'proposta', title: 'Proposta' },
-  { id: 'contratado', title: 'Contratado' },
+  { id: 'Triagem', title: 'Triagem' },
+  { id: 'Entrevista RH', title: 'Entrevista RH' },
+  { id: 'Entrevista Técnica', title: 'Entrevista Técnica' },
+  { id: 'Proposta', title: 'Proposta' },
 ];
 
 // --- Components ---
@@ -97,17 +66,17 @@ const CandidateCard = ({ candidate }: { candidate: Candidate }) => (
   <Card className="p-3 mb-2 cursor-grab active:cursor-grabbing bg-card">
     <div className="flex items-start gap-3">
       <Avatar className="h-9 w-9">
-        <AvatarFallback>{candidate.name.charAt(0)}</AvatarFallback>
+        <AvatarFallback>{candidate.avatar}</AvatarFallback>
       </Avatar>
       <div>
-        <p className="font-semibold text-sm">{candidate.name}</p>
-        <p className="text-xs text-muted-foreground">{candidate.role}</p>
+        <p className="font-semibold text-sm">{candidate.nome}</p>
+        <p className="text-xs text-muted-foreground">{candidate.vagaId}</p>
       </div>
     </div>
     <div className="mt-2 flex gap-1 flex-wrap">
-      {candidate.tags.map(tag => <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>)}
+      {candidate.details.skills.slice(0,2).map(tag => <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>)}
     </div>
-    <p className="text-xs text-muted-foreground mt-2 text-right">Atualizado: {candidate.lastUpdate}</p>
+    <p className="text-xs text-muted-foreground mt-2 text-right">Score: {candidate.score}%</p>
   </Card>
 );
 
@@ -115,10 +84,10 @@ const InterviewModal = ({ candidate }: { candidate: Candidate }) => (
     <DialogContent className="max-w-6xl h-[90vh] flex flex-col p-0">
         <DialogHeader className="p-4 border-b">
             <DialogTitle className="flex items-center gap-2">
-                <Video /> Entrevista com {candidate.name}
+                <Video /> Entrevista com {candidate.nome}
             </DialogTitle>
             <DialogDescription>
-                Vaga: {candidate.role}
+                Vaga: {allVagas.find(v => v.id === candidate.vagaId)?.titulo}
             </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 flex-grow overflow-hidden">
@@ -132,9 +101,9 @@ const InterviewModal = ({ candidate }: { candidate: Candidate }) => (
                         <CardTitle>Informações do Candidato</CardTitle>
                     </CardHeader>
                      <CardContent className="text-sm">
-                        <p><strong>Email:</strong> {candidate.details.email}</p>
-                        <p><strong>Telefone:</strong> {candidate.details.phone}</p>
-                        <p><strong>Localização:</strong> {candidate.details.location}</p>
+                        <p><strong>Email:</strong> {candidate.email}</p>
+                        <p><strong>Telefone:</strong> {candidate.telefone}</p>
+                        <p><strong>Localização:</strong> N/A</p>
                     </CardContent>
                 </Card>
             </div>
@@ -176,13 +145,21 @@ const InterviewModal = ({ candidate }: { candidate: Candidate }) => (
 
 
 export default function CurriculosPage() {
-    const [selectedVacancy, setSelectedVacancy] = useState<string>('v2');
-    const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(candidates[3]);
+    const [vagas] = useState(allVagas);
+    const [candidatos, setCandidatos] = useState(candidatosComDetalhes);
+    const [selectedVacancy, setSelectedVacancy] = useState<string>('v1');
+    const [selectedCandidate, setSelectedCandidate] = useState<Candidate | null>(candidatos[0]);
     const { toast } = useToast();
 
     const handleNewNote = () => {
         toast({ title: 'Nova Anotação', description: 'Sua anotação foi salva com sucesso. (Simulação)' });
     }
+
+    const getCandidatesByVacancy = (vacancyId: string) => {
+        return candidatos.filter(c => c.vagaId === vacancyId);
+    }
+    const currentCandidates = getCandidatesByVacancy(selectedVacancy);
+    const selectedVacancyDetails = vagas.find(v => v.id === selectedVacancy);
 
     return (
         <div className="h-full flex gap-4 p-4">
@@ -199,7 +176,7 @@ export default function CurriculosPage() {
                 </CardHeader>
                 <ScrollArea className="flex-grow">
                     <div className="p-2 space-y-1">
-                        {vacancies.map(v => (
+                        {vagas.map(v => (
                             <div key={v.id}
                                  onClick={() => setSelectedVacancy(v.id)}
                                  className={cn(
@@ -207,10 +184,9 @@ export default function CurriculosPage() {
                                      selectedVacancy === v.id ? 'bg-muted border-primary' : 'border-transparent hover:bg-muted/50'
                                  )}>
                                 <div className="flex justify-between items-center">
-                                    <p className="font-semibold text-sm">{v.title}</p>
-                                    <Badge variant={selectedVacancy === v.id ? 'default' : 'secondary'}>{v.candidatesCount}</Badge>
+                                    <p className="font-semibold text-sm">{v.titulo}</p>
+                                    <Badge variant={selectedVacancy === v.id ? 'default' : 'secondary'}>{getCandidatesByVacancy(v.id).length}</Badge>
                                 </div>
-                                <p className="text-xs text-muted-foreground">{v.location} - {v.level}</p>
                             </div>
                         ))}
                     </div>
@@ -221,9 +197,9 @@ export default function CurriculosPage() {
             <div className="flex-grow flex gap-4 overflow-x-auto">
                 {columns.map(column => (
                     <div key={column.id} className="w-[280px] flex-shrink-0 bg-muted/60 rounded-lg flex flex-col">
-                        <h3 className="font-semibold p-3 text-sm border-b">{column.title}</h3>
+                        <h3 className="font-semibold p-3 text-sm border-b">{column.title} ({currentCandidates.filter(c => c.status === column.id).length})</h3>
                         <ScrollArea className="flex-grow p-2">
-                             {candidates.filter(c => c.status === column.id).map(c => (
+                             {currentCandidates.filter(c => c.status === column.id).map(c => (
                                 <div key={c.id} onClick={() => setSelectedCandidate(c)}>
                                     <CandidateCard candidate={c} />
                                 </div>
@@ -240,10 +216,10 @@ export default function CurriculosPage() {
                         <>
                             <CardHeader className="text-center">
                                 <Avatar className="h-20 w-20 mx-auto">
-                                <AvatarFallback>{selectedCandidate.name.charAt(0)}</AvatarFallback>
+                                <AvatarFallback>{selectedCandidate.avatar}</AvatarFallback>
                                 </Avatar>
-                                <CardTitle className="mt-2">{selectedCandidate.name}</CardTitle>
-                                <CardDescription>{selectedCandidate.role}</CardDescription>
+                                <CardTitle className="mt-2">{selectedCandidate.nome}</CardTitle>
+                                <CardDescription>{selectedVacancyDetails?.titulo}</CardDescription>
                                 <div className="flex justify-center gap-2 pt-2">
                                     <DialogTrigger asChild>
                                         <Button size="sm" variant="outline">
@@ -261,9 +237,8 @@ export default function CurriculosPage() {
                                     <div>
                                         <h4 className="font-semibold text-sm mb-2 flex items-center gap-2"><User size={16}/> Contato</h4>
                                         <div className="text-xs space-y-1 text-muted-foreground">
-                                            <p className="flex items-center gap-2"><Mail size={12}/> {selectedCandidate.details.email}</p>
-                                            <p className="flex items-center gap-2"><Phone size={12}/> {selectedCandidate.details.phone}</p>
-                                            <p className="flex items-center gap-2"><MapPin size={12}/> {selectedCandidate.details.location}</p>
+                                            <p className="flex items-center gap-2"><Mail size={12}/> {selectedCandidate.email}</p>
+                                            <p className="flex items-center gap-2"><Phone size={12}/> {selectedCandidate.telefone}</p>
                                         </div>
                                     </div>
                                     <Separator />

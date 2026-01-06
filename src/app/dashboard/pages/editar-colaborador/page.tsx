@@ -7,19 +7,19 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Save, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import type { Employee } from '../../employees/page';
+import type { Colaborador as Employee } from '@/data/models';
 
 type EditarColaboradorPageProps = {
-    data?: { employee: Employee };
+    tab: { data?: { employee: Employee } };
 }
 
-export default function EditarColaboradorPage({ data }: EditarColaboradorPageProps) {
-    const [employee, setEmployee] = useState<Employee | undefined>(data?.employee);
+export default function EditarColaboradorPage({ tab }: EditarColaboradorPageProps) {
+    const [employee, setEmployee] = useState<Employee | undefined>(tab?.data?.employee);
     const { toast } = useToast();
 
     useEffect(() => {
-        setEmployee(data?.employee);
-    }, [data]);
+        setEmployee(tab?.data?.employee);
+    }, [tab]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!employee) return;
@@ -31,7 +31,7 @@ export default function EditarColaboradorPage({ data }: EditarColaboradorPagePro
         e.preventDefault();
         toast({
             title: "Dados salvos!",
-            description: `As informações de ${employee?.name} foram atualizadas com sucesso.`,
+            description: `As informações de ${employee?.nome} foram atualizadas com sucesso.`,
         });
         // Here you would typically call an API to save the data
         // For now, we just show a toast. The local state of this tab is updated.
@@ -56,41 +56,29 @@ export default function EditarColaboradorPage({ data }: EditarColaboradorPagePro
             <Card className='flex-grow'>
                 <CardHeader>
                     <CardTitle>Editar Colaborador</CardTitle>
-                    <CardDescription>Alterando os dados de: {data?.employee?.name}</CardDescription>
+                    <CardDescription>Alterando os dados de: {tab?.data?.employee?.nome}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form id="edit-employee-form" onSubmit={handleSaveChanges} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div className="space-y-2">
-                            <Label htmlFor="name">Nome Completo</Label>
-                            <Input id="name" value={employee.name} onChange={handleChange} />
+                            <Label htmlFor="nome">Nome Completo</Label>
+                            <Input id="nome" value={employee.nome} onChange={handleChange} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="cpf">CPF</Label>
-                            <Input id="cpf" value={employee.cpf} onChange={handleChange} />
+                            <Label htmlFor="cargoId">ID Cargo</Label>
+                            <Input id="cargoId" value={employee.cargoId} onChange={handleChange} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="matricula">Matrícula</Label>
-                            <Input id="matricula" value={employee.matricula} onChange={handleChange} />
+                            <Label htmlFor="setorId">ID Setor</Label>
+                            <Input id="setorId" value={employee.setorId} onChange={handleChange} />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="code">Código</Label>
-                            <Input id="code" value={employee.code} onChange={handleChange} />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="role">Cargo</Label>
-                            <Input id="role" value={employee.role} onChange={handleChange} />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="sector">Setor</Label>
-                            <Input id="sector" value={employee.sector} onChange={handleChange} />
-                        </div>
-                        <div className="space-y-2">
-                            <Label htmlFor="admissionDate">Data de Admissão</Label>
-                            <Input type="date" id="admissionDate" value={employee.admissionDate || ''} onChange={handleChange} />
-                        </div>
-                         <div className="space-y-2">
                             <Label htmlFor="status">Status</Label>
                             <Input id="status" value={employee.status || ''} onChange={handleChange} />
+                        </div>
+                         <div className="space-y-2">
+                            <Label htmlFor="id">ID Colaborador</Label>
+                            <Input id="id" value={employee.id || ''} onChange={handleChange} disabled/>
                         </div>
                     </form>
                 </CardContent>

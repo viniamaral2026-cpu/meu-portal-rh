@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -10,74 +10,17 @@ import { Label } from '@/components/ui/label';
 import { useDashboard } from '../layout';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { colaboradores } from '@/data/database';
 
-const initialEmployees = [
-  {
-    id: 1,
-    code: '001',
-    name: 'João da Silva',
-    cpf: '123.456.789-00',
-    matricula: 'MAT001',
-    role: 'Cortador',
-    sector: 'Corte',
-    admissionDate: '2022-01-15',
-    status: 'Ativo',
-  },
-  {
-    id: 2,
-    code: '002',
-    name: 'Maria Oliveira',
-    cpf: '234.567.890-11',
-    matricula: 'MAT002',
-    role: 'Costureira',
-    sector: 'Costura',
-    admissionDate: '2021-07-20',
-    status: 'Ativo',
-  },
-  {
-    id: 3,
-    code: '003',
-    name: 'Pedro Santos',
-    cpf: '345.678.901-22',
-    matricula: 'MAT003',
-    role: 'Montador',
-    sector: 'Montagem',
-    admissionDate: '2023-03-10',
-    status: 'Férias',
-  },
-  {
-    id: 4,
-    code: '004',
-    name: 'Ana Souza',
-    cpf: '456.789.012-33',
-    matricula: 'MAT004',
-    role: 'Acabador',
-    sector: 'Acabamento',
-    admissionDate: '2020-11-05',
-    status: 'Ativo',
-  },
-  {
-    id: 5,
-    code: '005',
-    name: 'Carlos Pereira',
-    cpf: '567.890.123-44',
-    matricula: 'MAT005',
-    role: 'Costureiro',
-    sector: 'Costura',
-    admissionDate: '2022-09-01',
-    status: 'Afastado',
-  },
-];
-
-export type Employee = typeof initialEmployees[0];
+export type Employee = (typeof colaboradores)[0];
 
 export default function EmployeesPage() {
   const dashboard = useDashboard();
   const { toast } = useToast();
 
   const [filters, setFilters] = useState({ cod: '', name: '', cpf: '', matricula: '' });
-  const [employees, setEmployees] = useState(initialEmployees);
-  const [filteredEmployees, setFilteredEmployees] = useState(initialEmployees);
+  const [employees, setEmployees] = useState(colaboradores);
+  const [filteredEmployees, setFilteredEmployees] = useState(colaboradores);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,17 +30,12 @@ export default function EmployeesPage() {
 
   const handleSearch = () => {
     let result = employees;
+    // O CPF e a matrícula não existem no modelo Colaborador, então vamos filtrar pelos campos disponíveis.
     if (filters.cod) {
-      result = result.filter(emp => emp.code.includes(filters.cod));
+      result = result.filter(emp => emp.id.includes(filters.cod));
     }
     if (filters.name) {
-      result = result.filter(emp => emp.name.toLowerCase().includes(filters.name.toLowerCase()));
-    }
-    if (filters.cpf) {
-      result = result.filter(emp => emp.cpf.includes(filters.cpf));
-    }
-    if (filters.matricula) {
-      result = result.filter(emp => emp.matricula.includes(filters.matricula));
+      result = result.filter(emp => emp.nome.toLowerCase().includes(filters.name.toLowerCase()));
     }
     setFilteredEmployees(result);
   };
@@ -115,14 +53,14 @@ export default function EmployeesPage() {
     if (!selectedEmployee) return;
     setEmployees(prev => prev.filter(emp => emp.id !== selectedEmployee.id));
     setFilteredEmployees(prev => prev.filter(emp => emp.id !== selectedEmployee.id));
-    toast({ title: "Colaborador excluído", description: `${selectedEmployee.name} foi removido do sistema.` });
+    toast({ title: "Colaborador excluído", description: `${selectedEmployee.nome} foi removido do sistema.` });
     setSelectedEmployee(null);
   };
 
   const handleDownload = () => {
     const csvContent = "data:text/csv;charset=utf-8,"
-      + "Código,Nome,CPF,Matrícula,Cargo,Setor\n"
-      + filteredEmployees.map(e => `${e.code},${e.name},${e.cpf},${e.matricula},${e.role},${e.sector}`).join("\n");
+      + "Código,Nome,ID Cargo,ID Setor,Status,ID Filial\n"
+      + filteredEmployees.map(e => `${e.id},${e.nome},${e.cargoId},${e.setorId},${e.status},${e.filialId}`).join("\n");
     
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -143,7 +81,7 @@ export default function EmployeesPage() {
 
     const pageId = action === 'view' ? 'visualizar-colaborador' : 'editar-colaborador';
     const tabId = `${pageId}-${selectedEmployee.id}`;
-    const title = `${action === 'view' ? 'Vis.' : 'Edt.'} ${selectedEmployee.name.split(' ')[0]}`;
+    const title = `${action === 'view' ? 'Vis.' : 'Edt.'} ${selectedEmployee.nome.split(' ')[0]}`;
     dashboard.openTab({id: tabId, title, data: { employee: selectedEmployee }});
   };
 
@@ -188,10 +126,8 @@ export default function EmployeesPage() {
             <TableRow>
               <TableHead>Código</TableHead>
               <TableHead>Nome</TableHead>
-              <TableHead>CPF</TableHead>
-              <TableHead>Matrícula</TableHead>
-              <TableHead>Cargo</TableHead>
-              <TableHead>Setor</TableHead>
+              <TableHead>ID Cargo</TableHead>
+              <TableHead>ID Setor</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -202,12 +138,10 @@ export default function EmployeesPage() {
                 onDoubleClick={() => handleActionClick('view')}
                 className={selectedEmployee?.id === employee.id ? 'bg-muted/80' : 'cursor-pointer'}
               >
-                <TableCell>{employee.code}</TableCell>
-                <TableCell className="font-medium">{employee.name}</TableCell>
-                <TableCell>{employee.cpf}</TableCell>
-                <TableCell>{employee.matricula}</TableCell>
-                <TableCell>{employee.role}</TableCell>
-                <TableCell>{employee.sector}</TableCell>
+                <TableCell>{employee.id}</TableCell>
+                <TableCell className="font-medium">{employee.nome}</TableCell>
+                <TableCell>{employee.cargoId}</TableCell>
+                <TableCell>{employee.setorId}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -223,7 +157,7 @@ export default function EmployeesPage() {
                 <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
                 <AlertDialogDescription>
                   Esta ação não pode ser desfeita. Isso irá remover permanentemente o colaborador
-                  "{selectedEmployee?.name}" do sistema.
+                  "{selectedEmployee?.nome}" do sistema.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

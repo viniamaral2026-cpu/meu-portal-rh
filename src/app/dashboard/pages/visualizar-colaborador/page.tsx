@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, Smartphone, LogOut } from "lucide-react";
-import type { Employee } from "../../employees/page";
+import type { Colaborador as Employee } from "@/data/models";
 import { useDashboard } from "../../layout";
 import { Badge } from "@/components/ui/badge";
 
@@ -21,7 +21,7 @@ export default function VisualizarColaboradorPage({ tab }: VisualizarColaborador
         if (!employee) return;
         dashboard.openTab({
             id: `editar-colaborador-${employee.id}`,
-            title: `Edt. ${employee.name.split(' ')[0]}`,
+            title: `Edt. ${employee.nome.split(' ')[0]}`,
             data: { employee: employee }
         });
     }
@@ -46,15 +46,14 @@ export default function VisualizarColaboradorPage({ tab }: VisualizarColaborador
                 <CardHeader>
                     <div className="flex flex-col md:flex-row items-start gap-6">
                         <Avatar className="h-24 w-24 border-2 border-primary">
-                            <AvatarFallback className="text-4xl">{employee.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                            <AvatarFallback className="text-4xl">{employee.nome.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
-                            <CardTitle className="text-3xl">{employee.name}</CardTitle>
-                            <CardDescription className="text-base">{employee.role} - {employee.sector}</CardDescription>
+                            <CardTitle className="text-3xl">{employee.nome}</CardTitle>
+                            <CardDescription className="text-base">{employee.cargoId} - {employee.setorId}</CardDescription>
                              <div className="mt-2 flex gap-2">
                                 <Badge variant={employee.status === 'Ativo' ? 'default' : 'secondary'}>{employee.status}</Badge>
-                                <Badge variant="outline">Matrícula: {employee.matricula}</Badge>
-                                <Badge variant="outline">Código: {employee.code}</Badge>
+                                <Badge variant="outline">ID: {employee.id}</Badge>
                             </div>
                         </div>
                          <Button onClick={handleEdit}>Editar Perfil</Button>
@@ -68,7 +67,7 @@ export default function VisualizarColaboradorPage({ tab }: VisualizarColaborador
                     <CardContent className="space-y-3">
                          <div className="flex items-center gap-3 text-sm">
                             <Mail className="h-4 w-4 text-muted-foreground" />
-                            <span>{employee.name.toLowerCase().replace(' ', '.')}@meurh.com</span>
+                            <span>{employee.nome.toLowerCase().replace(' ', '.')}@meurh.com</span>
                         </div>
                         <div className="flex items-center gap-3 text-sm">
                             <Phone className="h-4 w-4 text-muted-foreground" />
