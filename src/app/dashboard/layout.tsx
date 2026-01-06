@@ -124,6 +124,7 @@ const AppAndroidPage = lazy(() => import('./pages/app-android/page'));
 const RelogioPontoApiPage = lazy(() => import('./pages/relogio-ponto-api/page'));
 const ChatPage = lazy(() => import('./pages/chat/page'));
 const GeminiApiPage = lazy(() => import('./pages/gemini-api/page'));
+const DocumentosGeradosPage = lazy(() => import('./pages/documentos-gerados/page'));
 
 const topBarIcons = [
   { id: 'controle-jornada', title: 'Controle de Jornada', icon: <Clock size={16} /> },
@@ -144,6 +145,7 @@ const navMenuItems = [
     { id: 'configuracoes', label: 'Configurações' },
     { id: 'assinatura-eletronica', label: 'Assinatura Eletrônica' },
     { id: 'customizacao', label: 'Customização' },
+    { id: 'documentos-gerados', label: 'Documentos' },
 ];
 
 const navRightIcons = [
@@ -279,6 +281,7 @@ const pageComponents: { [key: string]: ComponentType<PageComponentProps> } = {
   'relogio-ponto-api': RelogioPontoApiPage,
   chat: ChatPage,
   'gemini-api': GeminiApiPage,
+  'documentos-gerados': DocumentosGeradosPage,
   // Dynamic pages need a regex-like match
   'visualizar-colaborador': VisualizarColaboradorPage,
   'editar-colaborador': EditarColaboradorPage,
