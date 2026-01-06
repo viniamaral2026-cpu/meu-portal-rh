@@ -10,18 +10,29 @@ import { Label } from '@/components/ui/label';
 import { useDashboard } from '../layout';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { colaboradores } from '@/data/database';
+import { colaboradorService } from '@/services/ColaboradorService';
+import type { Colaborador } from '@/domain/Colaborador';
 
-export type Employee = (typeof colaboradores)[0];
+export type Employee = Colaborador;
 
 export default function EmployeesPage() {
   const dashboard = useDashboard();
   const { toast } = useToast();
 
   const [filters, setFilters] = useState({ cod: '', name: '', cpf: '', matricula: '' });
-  const [employees, setEmployees] = useState(colaboradores);
-  const [filteredEmployees, setFilteredEmployees] = useState(colaboradores);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [filteredEmployees, setFilteredEmployees] = useState<Employee[]>([]);
   const [selectedEmployee, setSelectedEmployee] = useState<Employee | null>(null);
+
+  const fetchEmployees = async () => {
+    const data = await colaboradorService.listarColaboradores();
+    setEmployees(data);
+    setFilteredEmployees(data);
+  }
+
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -30,7 +41,6 @@ export default function EmployeesPage() {
 
   const handleSearch = () => {
     let result = employees;
-    // O CPF e a matrícula não existem no modelo Colaborador, então vamos filtrar pelos campos disponíveis.
     if (filters.cod) {
       result = result.filter(emp => emp.id.includes(filters.cod));
     }
@@ -49,12 +59,18 @@ export default function EmployeesPage() {
     setSelectedEmployee(employee);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!selectedEmployee) return;
-    setEmployees(prev => prev.filter(emp => emp.id !== selectedEmployee.id));
-    setFilteredEmployees(prev => prev.filter(emp => emp.id !== selectedEmployee.id));
-    toast({ title: "Colaborador excluído", description: `${selectedEmployee.nome} foi removido do sistema.` });
-    setSelectedEmployee(null);
+
+    try {
+      await colaboradorService.excluirColaborador(selectedEmployee.id);
+      toast({ title: "Colaborador excluído", description: `${selectedEmployee.nome} foi removido do sistema.` });
+      // Refresca a lista
+      await fetchEmployees();
+      setSelectedEmployee(null);
+    } catch (error) {
+       toast({ variant: 'destructive', title: "Erro ao excluir", description: error instanceof Error ? error.message : 'Ocorreu um erro.' });
+    }
   };
 
   const handleDownload = () => {

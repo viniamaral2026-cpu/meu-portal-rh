@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Save, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import type { Colaborador as Employee } from '@/data/models';
+import type { Colaborador as Employee } from '@/domain/Colaborador';
 
 type EditarColaboradorPageProps = {
     tab: { data?: { employee: Employee } };
@@ -24,17 +24,17 @@ export default function EditarColaboradorPage({ tab }: EditarColaboradorPageProp
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!employee) return;
         const { id, value } = e.target;
-        setEmployee(prev => prev ? { ...prev, [id]: value } : undefined);
+        setEmployee(prev => prev ? { ...prev, [id]: value } as Employee : undefined);
     };
 
     const handleSaveChanges = (e: React.FormEvent) => {
         e.preventDefault();
         toast({
             title: "Dados salvos!",
-            description: `As informações de ${employee?.nome} foram atualizadas com sucesso.`,
+            description: `As informações de ${employee?.nome} foram atualizadas com sucesso. (Simulação)`,
         });
-        // Here you would typically call an API to save the data
-        // For now, we just show a toast. The local state of this tab is updated.
+        // Here you would typically call a service to save the data.
+        // For now, we just show a toast and the local state of this tab is updated.
     };
 
     if (!employee) {

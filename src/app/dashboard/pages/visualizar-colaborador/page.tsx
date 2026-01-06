@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Mail, Phone, Smartphone, LogOut } from "lucide-react";
-import type { Colaborador as Employee } from "@/data/models";
+import type { Colaborador as Employee } from "@/domain/Colaborador";
 import { useDashboard } from "../../layout";
 import { Badge } from "@/components/ui/badge";
 
