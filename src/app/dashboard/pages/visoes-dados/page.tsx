@@ -1,94 +1,241 @@
-'use client';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Database, PlusCircle, Play, Eye, Trash2 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
 
-const visoes = [
-  { id: '1', nome: 'VW_PROD_MENSAL', descricao: 'Visão consolidada da produção mensal por linha.', tabelas: ['production_lines', 'products'] },
-  { id: '2', nome: 'VW_CUSTO_FOLHA_SETOR', descricao: 'Custo total da folha (salário + encargos) agrupado por setor.', tabelas: ['users', 'attendance'] },
-  { id: '3', nome: 'VW_PERFORMANCE_GERAL', descricao: 'Média de performance dos colaboradores por filial e setor.', tabelas: ['users', 'performance'] },
+'use client';
+
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Separator } from '@/components/ui/separator';
+import { Database, PlusCircle, Trash2, Filter, Play, Save, FileDown, GripVertical, FileSearch, X } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
+
+const dataSources = {
+  employees: {
+    name: 'Colaboradores',
+    fields: ['id', 'nome', 'cpf', 'matricula', 'cargo', 'setor', 'data_admissao', 'salario_bruto', 'status'],
+  },
+  payroll: {
+    name: 'Folha de Pagamento',
+    fields: ['id_colaborador', 'competencia', 'salario_bruto', 'total_descontos', 'salario_liquido', 'horas_extras_50', 'horas_extras_100'],
+  },
+  vacations: {
+    name: 'Férias',
+    fields: ['id_colaborador', 'periodo_aquisitivo', 'data_inicio', 'data_fim', 'status_ferias'],
+  },
+};
+
+const sampleResultData = [
+    { nome: 'João da Silva', cargo: 'Cortador', setor: 'Corte', salario_bruto: 3500.00 },
+    { nome: 'Maria Oliveira', cargo: 'Costureira', setor: 'Costura', salario_bruto: 3200.00 },
+    { nome: 'Carlos Pereira', cargo: 'Costureiro', setor: 'Costura', salario_bruto: 3250.00 },
+    { nome: 'Pedro Santos', cargo: 'Montador', setor: 'Montagem', salario_bruto: 3300.00 },
 ];
 
+type Filter = {
+  id: number;
+  field: string;
+  condition: string;
+  value: string;
+};
+
 export default function VisoesDadosPage() {
-  return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle>Visões de Dados</CardTitle>
-              <CardDescription>Crie e gerencie visões de dados customizadas usando SQL.</CardDescription>
-            </div>
-            <Button><PlusCircle className="mr-2 h-4 w-4"/> Criar Nova Visão</Button>
-          </div>
-        </CardHeader>
-      </Card>
-      
-      <Card>
-        <CardHeader>
-          <h3 className="text-xl font-bold">Editor de Visão de Dados</h3>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-            <div className="md:col-span-3 space-y-2">
-                <label className="font-medium">Consulta SQL</label>
-                <textarea 
-                    className="w-full h-64 p-4 rounded-md border bg-slate-900 text-green-400 font-mono text-sm"
-                    defaultValue="SELECT\n  pl.lineId,\n  p.model,\n  SUM(pl.quantityProduced) AS total_produzido\nFROM\n  production_lines pl\nJOIN\n  products p ON pl.productId = p.productId\nWHERE\n  pl.endDate BETWEEN '2024-07-01' AND '2024-07-31'\nGROUP BY\n  pl.lineId, p.model;"
-                />
-            </div>
-             <div className="md:col-span-2 space-y-4">
-                <div>
-                    <label className="font-medium">Nome da Visão</label>
-                    <input className="w-full p-2 border rounded-md" defaultValue="VW_PROD_MENSAL_JULHO" />
+    const { toast } = useToast();
+    const [selectedSource, setSelectedSource] = useState('employees');
+    const [selectedFields, setSelectedFields] = useState<string[]>(['nome', 'cargo', 'setor', 'salario_bruto']);
+    const [filters, setFilters] = useState<Filter[]>([
+        { id: 1, field: 'setor', condition: 'igual a', value: 'Costura' }
+    ]);
+    const [viewName, setViewName] = useState('Nova Visão de Dados');
+
+    const handleAddField = (field: string) => {
+        if (!selectedFields.includes(field)) {
+            setSelectedFields(prev => [...prev, field]);
+        }
+    };
+    
+    const handleRemoveField = (field: string) => {
+        setSelectedFields(prev => prev.filter(f => f !== field));
+    };
+
+    const handleAddFilter = () => {
+        setFilters(prev => [...prev, { id: Date.now(), field: '', condition: 'igual a', value: '' }]);
+    };
+    
+    const handleRemoveFilter = (id: number) => {
+        setFilters(prev => prev.filter(f => f.id !== id));
+    };
+    
+    const handleExecute = () => {
+        toast({
+            title: 'Consulta Executada!',
+            description: 'Os resultados da sua visão de dados foram carregados. (simulação)',
+        });
+    }
+    
+    const handleSave = () => {
+        toast({
+            title: 'Visão Salva!',
+            description: `A visão "${viewName}" foi salva com sucesso.`
+        });
+    }
+
+    return (
+        <div className="p-4 h-full flex gap-4">
+            {/* Left Panel: Saved Views */}
+            <Card className="w-1/4 flex flex-col">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><FileSearch size={20} /> Visões Salvas</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow overflow-y-auto">
+                   <div className='space-y-2'>
+                        <Button variant='ghost' className='w-full justify-start'>- Colaboradores Ativos por Setor</Button>
+                        <Button variant='ghost' className='w-full justify-start'>- Análise de Salários</Button>
+                        <Button variant='ghost' className='w-full justify-start'>- Relatório de Férias Vencidas</Button>
+                   </div>
+                </CardContent>
+                <div className='p-4 border-t'>
+                    <Button className='w-full'><PlusCircle className='mr-2 h-4 w-4' /> Nova Visão</Button>
                 </div>
-                 <div>
-                    <label className="font-medium">Descrição</label>
-                    <textarea className="w-full p-2 border rounded-md h-24" defaultValue="Produção consolidada do mês de Julho." />
-                </div>
-                <div className="flex gap-2">
-                    <Button variant="secondary" className="w-full"><Play className="mr-2 h-4 w-4"/> Executar SQL</Button>
-                    <Button className="w-full">Salvar Visão</Button>
-                </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-      
-      <Card>
-        <CardHeader><h3 className="text-lg font-semibold">Visões Salvas</h3></CardHeader>
-        <CardContent>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Nome</TableHead>
-                        <TableHead>Descrição</TableHead>
-                        <TableHead>Tabelas Envolvidas</TableHead>
-                        <TableHead className="text-right">Ações</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {visoes.map(v => (
-                        <TableRow key={v.id}>
-                            <TableCell className="font-medium font-mono">{v.nome}</TableCell>
-                            <TableCell>{v.descricao}</TableCell>
-                            <TableCell>
-                                <div className="flex gap-1">
-                                    {v.tabelas.map(t => <Badge key={t} variant="outline">{t}</Badge>)}
+            </Card>
+
+            {/* Right Panel: Query Builder and Results */}
+            <div className="w-3/4 flex flex-col gap-4">
+                <Card>
+                    <CardHeader>
+                        <Input 
+                            className="text-xl font-semibold p-0 border-none focus-visible:ring-0 shadow-none" 
+                            value={viewName}
+                            onChange={(e) => setViewName(e.target.value)}
+                        />
+                        <CardDescription>
+                            Use o construtor abaixo para montar sua consulta. Arraste campos, adicione filtros e execute para ver os resultados.
+                        </CardDescription>
+                    </CardHeader>
+                     <CardContent className='flex justify-end gap-2'>
+                        <Button variant='destructive' onClick={handleSave}><Save className='mr-2 h-4 w-4' /> Salvar Visão</Button>
+                        <Button variant='secondary' onClick={handleSave}><FileDown className='mr-2 h-4 w-4' /> Exportar CSV</Button>
+                        <Button onClick={handleExecute}><Play className='mr-2 h-4 w-4' /> Executar</Button>
+                    </CardContent>
+                </Card>
+
+                {/* Builder Interface */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {/* Data Source and Fields */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><Database size={20} /> Fonte de Dados e Campos</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div>
+                                <Label>1. Selecione a Fonte de Dados Principal</Label>
+                                <Select value={selectedSource} onValueChange={setSelectedSource}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Selecione a fonte..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Object.entries(dataSources).map(([key, value]) => (
+                                            <SelectItem key={key} value={key}>{value.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <Label>2. Campos Disponíveis</Label>
+                                    <div className="mt-2 border rounded-lg p-2 h-48 overflow-y-auto space-y-1">
+                                        {(dataSources[selectedSource as keyof typeof dataSources]?.fields || []).map(field => (
+                                            <div key={field} onClick={() => handleAddField(field)} className="p-2 rounded-md hover:bg-muted cursor-pointer text-sm">{field}</div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </TableCell>
-                            <TableCell className="text-right">
-                                <Button variant="ghost" size="icon"><Eye className="h-4 w-4" /></Button>
-                                <Button variant="ghost" size="icon" className="text-destructive"><Trash2 className="h-4 w-4" /></Button>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </CardContent>
-      </Card>
-    </div>
-  );
+                                 <div>
+                                    <Label>3. Campos Selecionados</Label>
+                                    <div className="mt-2 border rounded-lg p-2 h-48 overflow-y-auto space-y-1">
+                                        {selectedFields.map(field => (
+                                             <div key={field} className="group flex items-center p-2 rounded-md bg-muted/50 text-sm">
+                                                <GripVertical className='w-4 h-4 mr-2 text-muted-foreground cursor-grab' />
+                                                <span className='flex-grow'>{field}</span>
+                                                <Button variant='ghost' size='icon' className='h-6 w-6 opacity-0 group-hover:opacity-100' onClick={() => handleRemoveField(field)}>
+                                                    <X size={14} />
+                                                </Button>
+                                             </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Filters */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2"><Filter size={20} /> Filtros da Consulta</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
+                                {filters.map((filter, index) => (
+                                    <div key={filter.id} className="flex items-center gap-2">
+                                        <Badge variant="secondary" className="h-full">{index === 0 ? 'ONDE' : 'E'}</Badge>
+                                        <Select defaultValue={filter.field}>
+                                            <SelectTrigger><SelectValue/></SelectTrigger>
+                                            <SelectContent>
+                                                {(dataSources[selectedSource as keyof typeof dataSources]?.fields || []).map(f => <SelectItem key={f} value={f}>{f}</SelectItem>)}
+                                            </SelectContent>
+                                        </Select>
+                                        <Select defaultValue={filter.condition}>
+                                            <SelectTrigger><SelectValue/></SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="igual a">igual a</SelectItem>
+                                                <SelectItem value="diferente de">diferente de</SelectItem>
+                                                <SelectItem value="maior que">maior que</SelectItem>
+                                                <SelectItem value="contém">contém</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <Input defaultValue={filter.value} />
+                                        <Button variant="ghost" size="icon" onClick={() => handleRemoveFilter(filter.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                                    </div>
+                                ))}
+                            </div>
+                            <Button variant="outline" onClick={handleAddFilter}><PlusCircle className="mr-2 h-4 w-4" /> Adicionar Filtro</Button>
+                        </CardContent>
+                    </Card>
+                </div>
+
+                {/* Results Table */}
+                <Card className="flex-grow flex flex-col">
+                    <CardHeader>
+                        <CardTitle>Resultados</CardTitle>
+                    </CardHeader>
+                    <CardContent className='flex-grow'>
+                        <div className='relative h-full overflow-auto border rounded-lg'>
+                            <Table>
+                                <TableHeader className='sticky top-0 bg-muted'>
+                                    <TableRow>
+                                        {selectedFields.map(field => <TableHead key={field} className='capitalize'>{field.replace('_', ' ')}</TableHead>)}
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {sampleResultData.map((row, index) => (
+                                        <TableRow key={index}>
+                                            {selectedFields.map(field => (
+                                                <TableCell key={field}>
+                                                    {row[field as keyof typeof row] !== undefined ? String(row[field as keyof typeof row]) : '-'}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+    );
 }
+
+    
