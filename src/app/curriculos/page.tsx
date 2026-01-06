@@ -10,37 +10,19 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-
-const curriculosData = [
-    { id: 1, nome: 'Mariana Oliveira', vaga: 'Desenvolvedor Frontend Pleno', status: 'Triagem', score: 85, avatar: 'MO', email: 'mari.oliveira@example.com', telefone: '(11) 98765-4321' },
-    { id: 2, nome: 'Rafael Martins', vaga: 'Analista de Dados Jr', status: 'Entrevista RH', score: 92, avatar: 'RM', email: 'rafa.martins@example.com', telefone: '(21) 91234-5678' },
-    { id: 3, nome: 'Juliana Pereira', vaga: 'UX/UI Designer', status: 'Rejeitado', score: 70, avatar: 'JP', email: 'ju.pereira@example.com', telefone: '(31) 99999-8888' },
-    { id: 4, nome: 'Fernando Costa', vaga: 'Desenvolvedor Frontend Pleno', status: 'Entrevista Técnica', score: 88, avatar: 'FC', email: 'fer.costa@example.com', telefone: '(48) 98888-7777' },
-    { id: 5, nome: 'Carla Dias', vaga: 'Analista de Dados Jr', status: 'Proposta', score: 95, avatar: 'CD', email: 'carla.dias@example.com', telefone: '(51) 98765-1234' },
-];
-
-const vagas = {
-    "Desenvolvedor Frontend Pleno": [
-        { id: 1, nome: 'Mariana Oliveira', status: 'Triagem', score: 85, avatar: 'MO' },
-        { id: 4, nome: 'Fernando Costa', status: 'Entrevista Técnica', score: 88, avatar: 'FC' },
-    ],
-    "Analista de Dados Jr": [
-        { id: 2, nome: 'Rafael Martins', status: 'Entrevista RH', score: 92, avatar: 'RM' },
-        { id: 5, nome: 'Carla Dias', status: 'Proposta', score: 95, avatar: 'CD' },
-    ],
-    "UX/UI Designer": [
-        { id: 3, nome: 'Juliana Pereira', status: 'Rejeitado', score: 70, avatar: 'JP' },
-    ]
-}
+import { candidatos, vagas } from '@/data/database';
 
 const statusColumns = ['Triagem', 'Entrevista RH', 'Entrevista Técnica', 'Proposta', 'Rejeitado'];
 
 
 export default function GestaoCurriculosPage() {
-    const [selectedVaga, setSelectedVaga] = useState("Desenvolvedor Frontend Pleno");
-    const [selectedCandidato, setSelectedCandidato] = useState(curriculosData[0]);
+    const [selectedVagaId, setSelectedVagaId] = useState("v1");
+    const [selectedCandidato, setSelectedCandidato] = useState(candidatos[0]);
     const [interviewDialogOpen, setInterviewDialogOpen] = useState(false);
-
+    
+    const getCandidatosPorVaga = (vagaId: string) => candidatos.filter(c => c.vagaId === vagaId);
+    
+    const selectedVaga = vagas.find(v => v.id === selectedVagaId);
 
   return (
     <div className="h-full flex flex-col">
@@ -57,13 +39,13 @@ export default function GestaoCurriculosPage() {
                 </div>
                 <Separator />
                 <div className="flex-1 overflow-y-auto">
-                    {Object.keys(vagas).map(vaga => (
-                        <button key={vaga}
-                           className={`w-full text-left p-4 text-sm font-medium hover:bg-accent ${selectedVaga === vaga ? 'bg-accent' : ''}`}
-                           onClick={() => setSelectedVaga(vaga)}
+                    {vagas.map(vaga => (
+                        <button key={vaga.id}
+                           className={`w-full text-left p-4 text-sm font-medium hover:bg-accent ${selectedVagaId === vaga.id ? 'bg-accent' : ''}`}
+                           onClick={() => setSelectedVagaId(vaga.id)}
                         >
-                           <p>{vaga}</p>
-                           <p className="text-xs text-muted-foreground">{vagas[vaga as keyof typeof vagas].length} candidatos</p>
+                           <p>{vaga.titulo}</p>
+                           <p className="text-xs text-muted-foreground">{getCandidatosPorVaga(vaga.id).length} candidatos</p>
                         </button>
                     ))}
                 </div>
@@ -74,14 +56,12 @@ export default function GestaoCurriculosPage() {
                 <div className="grid grid-cols-5 gap-4 min-w-[1200px]">
                     {statusColumns.map(status => (
                         <div key={status} className="bg-muted/60 rounded-lg p-2">
-                            <h3 className="font-semibold p-2">{status} ({vagas[selectedVaga as keyof typeof vagas].filter(c => c.status === status).length})</h3>
+                            <h3 className="font-semibold p-2">{status} ({getCandidatosPorVaga(selectedVagaId).filter(c => c.status === status).length})</h3>
                             <div className="space-y-2">
-                                {vagas[selectedVaga as keyof typeof vagas]
+                                {getCandidatosPorVaga(selectedVagaId)
                                     .filter(c => c.status === status)
-                                    .map(candidato => {
-                                        const fullCandidato = curriculosData.find(c => c.id === candidato.id)!;
-                                        return (
-                                        <Card key={candidato.id} className="p-3 cursor-pointer" onClick={() => setSelectedCandidato(fullCandidato)}>
+                                    .map(candidato => (
+                                        <Card key={candidato.id} className="p-3 cursor-pointer" onClick={() => setSelectedCandidato(candidato)}>
                                             <CardTitle className="text-sm">{candidato.nome}</CardTitle>
                                             <div className="flex justify-between items-center mt-2">
                                                 <Badge variant="secondary">Score: {candidato.score}%</Badge>
@@ -91,7 +71,7 @@ export default function GestaoCurriculosPage() {
                                             </div>
                                         </Card>
                                         )
-                                    })
+                                    )
                                 }
                             </div>
                         </div>
@@ -107,7 +87,7 @@ export default function GestaoCurriculosPage() {
                             <AvatarFallback className="text-3xl">{selectedCandidato.avatar}</AvatarFallback>
                         </Avatar>
                         <h2 className="text-lg font-bold">{selectedCandidato.nome}</h2>
-                        <p className="text-sm text-muted-foreground">{selectedCandidato.vaga}</p>
+                        <p className="text-sm text-muted-foreground">{vagas.find(v => v.id === selectedCandidato.vagaId)?.titulo}</p>
                         <div className="flex justify-center gap-2 mt-3">
                             <Button variant="outline" size="icon"><Mail className="h-4 w-4"/></Button>
                             <Button variant="outline" size="icon"><Phone className="h-4 w-4"/></Button>

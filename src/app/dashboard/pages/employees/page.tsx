@@ -16,17 +16,13 @@ import {
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-
-const colaboradores = [
-    { id: '001', nome: 'Ana Silva', cargo: 'Costureira', setor: 'Produção', status: 'Ativo', filial: 'Matriz' },
-    { id: '002', nome: 'Bruno Costa', cargo: 'Gerente de RH', setor: 'Recursos Humanos', status: 'Ativo', filial: 'Matriz' },
-    { id: '003', nome: 'Carlos Dias', cargo: 'Operador de Máquinas', setor: 'Produção', status: 'Férias', filial: 'Filial Belo Horizonte' },
-    { id: '004', nome: 'Daniela Souza', cargo: 'Analista de TI', setor: 'TI', status: 'Ativo', filial: 'Matriz' },
-    { id: '005', nome: 'Eduardo Lima', cargo: 'Supervisor de Produção', setor: 'Produção', status: 'Ativo', filial: 'Filial Rio de Janeiro' },
-    { id: '006', nome: 'Fernanda Alves', cargo: 'Auxiliar Administrativo', setor: 'Administrativo', status: 'Afastado', filial: 'Matriz' },
-];
+import { colaboradores, cargos as allCargos, departamentos as allDepartamentos, filiais as allFiliais } from '@/data/database';
 
 export default function AdministracaoPessoalPage() {
+  
+  const getCargoNome = (cargoId: string) => allCargos.find(c => c.id === cargoId)?.nome || 'N/A';
+  const getFilialNome = (filialId: string) => allFiliais.find(f => f.id === filialId)?.nome || 'N/A';
+
   return (
     <Card>
       <CardHeader>
@@ -82,9 +78,7 @@ export default function AdministracaoPessoalPage() {
                         <SelectValue placeholder="Selecione a filial" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="matriz">Matriz</SelectItem>
-                        <SelectItem value="filial-bh">Filial Belo Horizonte</SelectItem>
-                        <SelectItem value="filial-rj">Filial Rio de Janeiro</SelectItem>
+                        {allFiliais.map(f => <SelectItem key={f.id} value={f.id}>{f.nome}</SelectItem>)}
                       </SelectContent>
                     </Select>
                   </div>
@@ -117,21 +111,26 @@ export default function AdministracaoPessoalPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {colaboradores.map(c => (
-                <TableRow key={c.id}>
-                    <TableCell className="font-mono text-xs">{c.id}</TableCell>
-                    <TableCell className="font-medium">{c.nome}</TableCell>
-                    <TableCell>{c.cargo}</TableCell>
-                    <TableCell>{c.setor}</TableCell>
-                    <TableCell>{c.filial}</TableCell>
-                    <TableCell>
-                      <Badge variant={c.status === 'Ativo' ? 'default' : 'secondary'}>{c.status}</Badge>
-                    </TableCell>
-                    <TableCell>
-                        <Button variant="outline" size="sm">Ver Perfil</Button>
-                    </TableCell>
-                </TableRow>
-            ))}
+            {colaboradores.map(c => {
+                const cargo = allCargos.find(ca => ca.id === c.cargoId);
+                const departamento = allDepartamentos.find(d => d.id === cargo?.departamentoId);
+                
+                return (
+                    <TableRow key={c.id}>
+                        <TableCell className="font-mono text-xs">{c.id}</TableCell>
+                        <TableCell className="font-medium">{c.nome}</TableCell>
+                        <TableCell>{cargo?.nome || 'N/A'}</TableCell>
+                        <TableCell>{departamento?.nome || 'N/A'}</TableCell>
+                        <TableCell>{getFilialNome(c.filialId)}</TableCell>
+                        <TableCell>
+                        <Badge variant={c.status === 'Ativo' ? 'default' : 'secondary'}>{c.status}</Badge>
+                        </TableCell>
+                        <TableCell>
+                            <Button variant="outline" size="sm">Ver Perfil</Button>
+                        </TableCell>
+                    </TableRow>
+                )
+            })}
           </TableBody>
         </Table>
       </CardContent>

@@ -15,16 +15,7 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-
-const cargos = [
-    { cargo: 'Desenvolvedor Frontend Jr', departamento: 'TI', salarioMin: 'R$ 3.000', salarioMax: 'R$ 5.000' },
-    { cargo: 'Desenvolvedor Frontend Pl', departamento: 'TI', salarioMin: 'R$ 5.000', salarioMax: 'R$ 9.000' },
-    { cargo: 'Analista de RH', departamento: 'Recursos Humanos', salarioMin: 'R$ 4.000', salarioMax: 'R$ 7.000' },
-    { cargo: 'Gerente de Vendas', departamento: 'Vendas', salarioMin: 'R$ 8.000', salarioMax: 'R$ 15.000' },
-    { cargo: 'Costureira', departamento: 'Produção', salarioMin: 'R$ 2.200', salarioMax: 'R$ 3.500' },
-    { cargo: 'Operador de Máquinas', departamento: 'Produção', salarioMin: 'R$ 2.500', salarioMax: 'R$ 4.000' },
-    { cargo: 'Analista Financeiro', departamento: 'Financeiro', salarioMin: 'R$ 4.500', salarioMax: 'R$ 8.000' },
-]
+import { cargos, departamentos } from '@/data/database';
 
 export default function CargosSalariosPage() {
   return (
@@ -65,11 +56,7 @@ export default function CargosSalariosPage() {
                       <SelectValue placeholder="Selecione o departamento" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="ti">TI</SelectItem>
-                      <SelectItem value="rh">Recursos Humanos</SelectItem>
-                      <SelectItem value="vendas">Vendas</SelectItem>
-                      <SelectItem value="producao">Produção</SelectItem>
-                      <SelectItem value="financeiro">Financeiro</SelectItem>
+                      {departamentos.map(d => <SelectItem key={d.id} value={d.id}>{d.nome}</SelectItem>)}
                     </SelectContent>
                   </Select>
                 </div>
@@ -111,17 +98,20 @@ export default function CargosSalariosPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {cargos.map(c => (
-                <TableRow key={c.cargo}>
-                    <TableCell className="font-medium">{c.cargo}</TableCell>
-                    <TableCell>{c.departamento}</TableCell>
-                    <TableCell>{c.salarioMin}</TableCell>
-                    <TableCell>{c.salarioMax}</TableCell>
+            {cargos.map(c => {
+              const depto = departamentos.find(d => d.id === c.departamentoId);
+              return (
+                <TableRow key={c.id}>
+                    <TableCell className="font-medium">{c.nome}</TableCell>
+                    <TableCell>{depto?.nome || 'N/A'}</TableCell>
+                    <TableCell>{`R$ ${c.salarioMin.toFixed(2)}`}</TableCell>
+                    <TableCell>{`R$ ${c.salarioMax.toFixed(2)}`}</TableCell>
                     <TableCell>
                         <Button variant="outline" size="sm">Editar</Button>
                     </TableCell>
                 </TableRow>
-            ))}
+              )
+            })}
           </TableBody>
         </Table>
       </CardContent>
