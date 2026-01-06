@@ -8,7 +8,7 @@ const sourceCodePro = Source_Code_Pro({ subsets: ['latin'], variable: '--font-co
 
 
 export const metadata: Metadata = {
-  title: 'GPWay Portal | Acesso',
+  title: 'Meu Rh Portal | Acesso',
   description: 'Software de Gestão para Fábricas de Calçados',
 };
 

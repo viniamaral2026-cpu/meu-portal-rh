@@ -44,7 +44,7 @@ export default function LoginPage() {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <MeuRHLogo className="w-24 mx-auto mb-4" />
-          <CardTitle className="text-2xl">Acessar o GPWay Portal</CardTitle>
+          <CardTitle className="text-2xl">Acessar o Meu Rh Portal</CardTitle>
           <CardDescription>Software de Gestão para Fábricas de Calçados</CardDescription>
         </CardHeader>
         <form onSubmit={handleSubmit}>
