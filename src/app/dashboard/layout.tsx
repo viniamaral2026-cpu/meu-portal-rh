@@ -433,7 +433,7 @@ export default function DashboardLayout({
                 <Button variant='ghost' size='icon' className='h-7 w-7' onClick={() => openTab({id: 'filiais', title: 'Gestão de Filiais'})}>
                     <Factory size={16} />
                 </Button>
-                <Link href="/portal-colaborador" target="_blank" className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'h-7 w-7')}>
+                <Link href="/portal-colaborador/login" target="_blank" className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }), 'h-7 w-7')}>
                     <UserSquare size={16} />
                 </Link>
                 {navMenuItems.map(item => (
@@ -616,5 +616,3 @@ export default function DashboardLayout({
     </div>
   );
 }
-
-    
