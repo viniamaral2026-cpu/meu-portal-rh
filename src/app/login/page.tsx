@@ -19,19 +19,19 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulação de login
+    // Simulação de login com credenciais de administrador
     setTimeout(() => {
-      if (email && password) {
+      if (email === 'viniamaral2026@gmail.com' && password === 'Ma596220@') {
         toast({
           title: 'Login bem-sucedido!',
-          description: 'Redirecionando para o painel de controle.',
+          description: 'Acesso de administrador concedido. Redirecionando para o painel de controle.',
         });
         router.push('/dashboard');
       } else {
         toast({
           variant: 'destructive',
           title: 'Erro de login',
-          description: 'Por favor, verifique seu e-mail e senha.',
+          description: 'Credenciais inválidas. Por favor, verifique seu e-mail e senha.',
         });
         setIsLoading(false);
       }
